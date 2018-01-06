@@ -21,5 +21,19 @@ dependencies {
 
 bundle {
     instruction 'Import-Package', '*'
+    instruction 'Export-Package', 'org.libraryweasel.music.api'
     instruction 'Bundle-Activator', 'org.libraryweasel.music.Activator'
 }
+
+task webpack(type: Exec) {
+    workingDir "webpack"
+    commandLine "npm", "run", "dev"
+}
+
+task copyWebpack(type: Copy) {
+    from 'webpack/dist'
+    into 'build/resources/main/public'
+}
+
+tasks.jar.dependsOn(copyWebpack)
+tasks.copyWebpack.dependsOn(webpack)
