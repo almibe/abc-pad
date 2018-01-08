@@ -8,6 +8,6 @@ import io.vertx.ext.auth.User
 
 interface ABCManager {
     fun allABCDocuments(user: User): Set<ABCDocument>
-    fun persistABCDocument(user: User, abcDocument: ABCDocument)
-    fun removeABCDocument(user: User, abcDocument: ABCDocument)
+    fun persistABCDocument(user: User, id: Long?, name: String, document: String): Boolean
+    fun removeABCDocument(user: User, id: Long): Boolean
 }

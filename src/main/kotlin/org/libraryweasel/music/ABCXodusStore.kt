@@ -36,27 +36,27 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    override fun persistABCDocument(user: User, document: ABCDocument) {
+    override fun persistABCDocument(user: User, id: Long?, name: String, document: String): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val entity = fetchQueryEntity(txn, document.id)
+            val entity = if (id == null) null else fetchQueryEntity(txn, id)
             if (entity != null) {
-                entity.setProperty("name", document.name)
-                entity.setProperty("document", document.document)
+                entity.setProperty("name", name)
+                entity.setProperty("document", document)
                 txn.saveEntity(entity)
                 true
             } else {
                 val abcDocument = txn.newEntity(documentClass)
-                abcDocument.setProperty("name", document.name)
-                abcDocument.setProperty("document", document.document)
+                abcDocument.setProperty("name", name)
+                abcDocument.setProperty("document", document)
                 txn.saveEntity(abcDocument)
                 true
             }
         }
     }
 
-    override fun removeABCDocument(user: User, document: ABCDocument) {
+    override fun removeABCDocument(user: User, id: Long): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val result = fetchQueryEntity(txn, document.id)
+            val result = fetchQueryEntity(txn, id)
             if (result != null) {
                 result.delete()
                 true
