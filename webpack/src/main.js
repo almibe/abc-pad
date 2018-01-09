@@ -1,14 +1,4 @@
 import Vue from 'vue'
-import { load } from './store.js'
-import ABCEditor from './ABCEditor.vue'
+import Editor from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
-new Vue({
-  el: '#app',
-  render(h) {
-    return h(ABCEditor)
-  },
-  mounted() {
-    load()
-  }
-})
