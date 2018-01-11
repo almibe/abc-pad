@@ -20,6 +20,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
+          'style-loader',
           'css-loader',
           'sass-loader'
         ],
@@ -27,6 +28,7 @@ module.exports = {
       {
         test: /\.sass$/,
         use: [
+          'style-loader',
           'css-loader',
           'sass-loader?indentedSyntax'
         ],
