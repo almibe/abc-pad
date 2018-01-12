@@ -18,7 +18,8 @@ class Activator : DependencyActivatorBase() {
     override fun init(context: BundleContext, manager: DependencyManager) {
         val registrar = LibraryWeaselComponentRegistrar(manager)
         registrar.register(StaticFiles::class.java)
-        registrar.register(ABCEditorEntryPoint::class.java)
+        registrar.register(LoadABCEditorEntryPoint::class.java)
+        registrar.register(NewABCEditorEntryPoint::class.java)
         registrar.register(ABCHttpApp::class.java)
         registrar.register(ABCXodusStore::class.java)
     }
@@ -27,9 +28,12 @@ class Activator : DependencyActivatorBase() {
     }
 }
 
+val basePath = "/music/abc/"
+val kitName = "Music"
+
 @Component(HttpApp::class)
 class StaticFiles : HttpApp {
-    override val path: String = "/music/abc/"
+    override val path: String = basePath
 
     override fun initRouter(router: Router) {
         router.get().handler(StaticHandler.create("public", this.javaClass.classLoader))
@@ -37,9 +41,17 @@ class StaticFiles : HttpApp {
 }
 
 @Component(WebEntryPoint::class)
-class ABCEditorEntryPoint : WebEntryPoint {
-    override val kit: String = "Music"
-    override val name: String = "ABC Document Editor"
-    override val path: String = "/music/abc/"
+class LoadABCEditorEntryPoint : WebEntryPoint {
+    override val kit: String = kitName
+    override val name: String = "Load ABC Document"
+    override val path: String = "$basePath#load"
+    override val position: Float = 1F
+}
+
+@Component(WebEntryPoint::class)
+class NewABCEditorEntryPoint : WebEntryPoint {
+    override val kit: String = kitName
+    override val name: String = "New ABC Document"
+    override val path: String = basePath
     override val position: Float = 0F
 }

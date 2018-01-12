@@ -20,7 +20,7 @@ class ABCHttpApp : HttpApp {
     @Service @Volatile
     lateinit var abcManager: ABCManager
 
-    override val path: String = "/music/abc/"
+    override val path: String = basePath
     val logger = LoggerFactory.getLogger(ABCHttpApp::class.java)
     val gson = Gson()
 
