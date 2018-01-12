@@ -21,14 +21,14 @@ const view = (state, actions) =>
     h("section", { class: "section" }, [
       h("div", { class: "container" }, [
         "Document Name: ",
-        h("input", { class: "input", style: "width: 300px", type: "text" }, ""), " ",
+        h("input", { class: "input name-input", type: "text" }, ""), " ",
         h("button", { class: "button" }, "Save"), " ",
         h("button", { class: "button" }, "Load")
       ])
     ]),
     h("section", { class: "section" }, [
       h("div", { class: "container" }, [
-        h("textarea", { id: "abcEditor", class: "", style: "font-family: monospace", cols: "80", rows: "20" }, ""),
+        h("textarea", { id: "abcEditor", class: "textarea code", cols: "80", rows: "20" }, ""),
         h("div", { id: "warnings" }, []),
         h("div", { id: "midi" }, []),
         h("div", { id: "canvas" }, [])
