@@ -21,16 +21,15 @@ const view = (state, actions) =>
     h("section", { class: "section" }, [
       h("div", { class: "container" }, [
         "Document Name: ",
-        h("input", { class: "input name-input", type: "text" }, ""), " ",
+        h("input", { class: "input", type: "text" }, ""), " ",
         h("button", { class: "button" }, "Save"), " ",
         h("button", { class: "button" }, "Load")
       ])
     ]),
     h("section", { class: "section" }, [
       h("div", { class: "container" }, [
-        h("textarea", { id: "abcEditor", class: "textarea code", cols: "80", rows: "20" }, ""),
+        h("textarea", { id: "abcEditor", class: "textarea code" }, ""),
         h("div", { id: "warnings" }, []),
-        h("div", { id: "midi" }, []),
         h("div", { id: "canvas" }, [])
       ])
     ])
@@ -39,5 +38,6 @@ const view = (state, actions) =>
 window.main = app(state, actions, view, document.body)
 
 window.onload = function() {
-  abc_editor = new ABCJS.Editor("abcEditor", { canvas_id: "canvas", generate_midi: true, midi_id:"midi", warnings_id:"warnings" });
+  const abcEditor = new ABCJS.Editor("abcEditor",
+    { canvas_id: "canvas", generate_midi: false, warnings_id: "warnings" })
 }
