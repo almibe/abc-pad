@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.libraryweasel.music
+package org.libraryweasel.music.abc
 
 import io.vertx.ext.auth.User
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.StoreTransaction
-import org.libraryweasel.music.api.ABCDocument
-import org.libraryweasel.music.api.ABCManager
+import org.libraryweasel.music.abc.api.ABCDocument
+import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
 import org.libraryweasel.xodus.api.EntityStoreInstanceManager

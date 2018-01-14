@@ -8,6 +8,8 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.StaticHandler
 import org.apache.felix.dm.DependencyActivatorBase
 import org.apache.felix.dm.DependencyManager
+import org.libraryweasel.music.abc.ABCHttpApp
+import org.libraryweasel.music.abc.ABCXodusStore
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.LibraryWeaselComponentRegistrar
 import org.libraryweasel.vertx.api.HttpApp
