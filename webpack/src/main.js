@@ -6,12 +6,18 @@ import { html } from 'snabbdom-jsx'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
-function intent(dom) {
+function intent(domSource, http) {
+  const saveClick$ = //
+  const loadClick$ = //
+  const nameChange$ = //
+  const documentChange$ = //
 
-  return {}
+  const http$ = //
+
+  return { http$ }
 }
 
-function model(actions, http) {
+function model(actions) {
 //const state = {
 //  id: null,
 //  name: "",
@@ -20,37 +26,40 @@ function model(actions, http) {
 }
 
 function view(state$) {
-//  h("section", { class: "section" }, [
-//    h("section", { class: "section" }, [
-//      h("div", { class: "container" }, [
-//        h("h1", { class: "title" }, "ABC Editor")
-//      ])
-//    ]),
-//    h("section", { class: "section" }, [
-//      h("div", { class: "container" }, [
-//        "Document Name: ",
-//        h("input", { class: "input", type: "text" }, ""), " ",
-//        h("button", { class: "button" }, "Save"), " ",
-//        h("button", { class: "button" }, "Load")
-//      ])
-//    ]),
-//    h("section", { class: "section" }, [
-//      h("div", { class: "container" }, [
-//        h("textarea", { id: "abcEditor", class: "textarea code" }, ""),
-//        h("div", { id: "warnings" }, []),
-//        h("div", { id: "canvas" }, [])
-//      ])
-//    ])
-//  ])
+  return xs.of(
+    <section class="section">
+      <section class="section">
+        <div class="container">
+          <h1 class="title">ABC Editor</h1>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          Document Name:
+          <input class="input" type="text">
+          <button class="button">Save</button>
+          <button class="button">Load</button>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <textarea id="abcEditor" class="textarea code"></textarea>
+          <div id="warnings"></div>
+          <div id="canvas"></div>
+        </div>
+      </section>
+    </section>
+  )
 }
 
 function main(sources) {
-  const actions = intent(sources.DOM)
-  const state$ = model(actions, sources.HTTP)
+  const actions = intent(sources.DOM, sources.HTTP)
+  const state$ = model(actions)
   const vdom$ = view(state$)
 
   return {
-    DOM: vdom$
+    DOM: vdom$,
+    HTTP: actions['http$']
   }
 }
 
