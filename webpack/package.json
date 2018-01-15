@@ -16,8 +16,10 @@
     "@cycle/http": "^14.8.0",
     "@cycle/run": "^4.1.0",
     "abcjs": "^3.2.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "bulma": "^0.6.1",
     "font-awesome": "^4.7.0",
+    "snabbdom-jsx": "^0.4.2",
     "xstream": "^11.1.0"
   },
   "browserslist": [

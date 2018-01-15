@@ -2,6 +2,7 @@ import xs from 'xstream'
 import {run} from '@cycle/run'
 import { makeDOMDriver } from '@cycle/dom'
 import { makeHTTPDriver } from '@cycle/http'
+import { html } from 'snabbdom-jsx'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
