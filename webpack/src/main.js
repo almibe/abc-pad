@@ -1,7 +1,22 @@
-import { h, app } from 'hyperapp'
+import xs from 'xstream'
+import {run} from '@cycle/run'
+import { makeDOMDriver } from '@cycle/dom'
+import { makeHTTPDriver } from '@cycle/http'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
+function main(sources) {
+
+}
+
+const drivers = {
+  DOM: makeDOMDriver('#app'),
+  HTTP: makeHTTPDriver()
+}
+
+run(main, drivers)
+
+//OLD HYPERAPP CODE
 const state = {
   id: null,
   name: "",
@@ -9,6 +24,7 @@ const state = {
 }
 
 const actions = {
+  save: value => state =>
 }
 
 const view = (state, actions) =>
