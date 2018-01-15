@@ -5,8 +5,27 @@ import { makeHTTPDriver } from '@cycle/http'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
-function main(sources) {
+function intent(sources) {
 
+  return {}
+}
+
+function model(actions, http) {
+
+}
+
+function view(state$) {
+
+}
+
+function main(sources) {
+  const actions = intent(sources.DOM)
+  const state$ = model(actions, sources.HTTP)
+  const vdom$ = view(state$)
+
+  return {
+    DOM: vdom$
+  }
 }
 
 const drivers = {
