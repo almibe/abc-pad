@@ -6,11 +6,11 @@ import { html } from 'snabbdom-jsx'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
-function intent(domSource, http) {
-  const saveClick$ = //
-  const loadClick$ = //
-  const nameChange$ = //
-  const documentChange$ = //
+function intent(domSource, httpSource) {
+  const saveClick$ = domSource.select('#save').events('click')
+  const loadClick$ = domSource.select('#load').events('click')
+  const nameChange$ = domSource.select('#name').events('change')
+  const documentChange$ = domSource.select('#abcEditor').events('change')
 
   const http$ = //
 
@@ -36,9 +36,9 @@ function view(state$) {
       <section class="section">
         <div class="container">
           Document Name:
-          <input class="input" type="text">
-          <button class="button">Save</button>
-          <button class="button">Load</button>
+          <input id="name" class="input" type="text">
+          <button class="button" id="save">Save</button>
+          <button class="button" id="load">Load</button>
         </div>
       </section>
       <section class="section">
