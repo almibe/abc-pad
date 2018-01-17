@@ -17,7 +17,7 @@ function view(state$) {
       <section class="section">
         <div class="container">
           Document Name:
-          <input id="name" class="input" type="text">
+          <input id="name" class="input" type="text" />
           <button class="button" id="save">Save</button>
           <button class="button" id="load">Load</button>
         </div>
@@ -37,31 +37,31 @@ function main(sources) {
   const domSource = sources.DOM
   const httpSource = sources.HTTP
 
-  const saveClick$ = domSource.select('#save').events('click')
-  const loadClick$ = domSource.select('#load').events('click')
-  const nameChange$ = domSource.select('#name').events('change')
-  const documentChange$ = domSource.select('#abcEditor').events('change')
-
-  const nameValue$ = nameChange$.map(e => e.target.value)
-  const documentValue$ = documentChange$.map(e => e.target.value)
-
-  const saveRequest$ = saveClick$.map({
-    name: nameValue$.value,
-    document: documentValue$.value
-  }) //TODO map to http request
-
-  const dialogVisible$ = loadClick$ //
-
-  //TODO read httpSource
-
-  const loadRequest$ = null //TODO
-
-  const state$ = xs.of(state)
+//  const saveClick$ = domSource.select('#save').events('click')
+//  const loadClick$ = domSource.select('#load').events('click')
+//  const nameChange$ = domSource.select('#name').events('change')
+//  const documentChange$ = domSource.select('#abcEditor').events('change')
+//
+//  const nameValue$ = nameChange$.map(e => e.target.value)
+//  const documentValue$ = documentChange$.map(e => e.target.value)
+//
+//  const saveRequest$ = saveClick$.map({
+//    name: nameValue$.value,
+//    document: documentValue$.value
+//  }) //TODO map to http request
+//
+//  const dialogVisible$ = loadClick$ //
+//
+//  //TODO read httpSource
+//
+//  const loadRequest$ = null //TODO
+//
+  const state$ = xs.of({})
   const vdom$ = view(state$)
 
   return {
     DOM: vdom$,
-    HTTP: xs.merge(saveRequest$, loadRequest$)
+    HTTP: xs.empty()//xs.merge(saveRequest$, loadRequest$)
   }
 }
 
