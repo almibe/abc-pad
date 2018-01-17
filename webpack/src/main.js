@@ -6,25 +6,6 @@ import { html } from 'snabbdom-jsx'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
-function intent(domSource, httpSource) {
-  const saveClick$ = domSource.select('#save').events('click')
-  const loadClick$ = domSource.select('#load').events('click')
-  const nameChange$ = domSource.select('#name').events('change')
-  const documentChange$ = domSource.select('#abcEditor').events('change')
-
-  const http$ = //
-
-  return { http$ }
-}
-
-function model(actions) {
-//const state = {
-//  id: null,
-//  name: "",
-//  document: ""
-//}
-}
-
 function view(state$) {
   return xs.of(
     <section class="section">
@@ -53,13 +34,34 @@ function view(state$) {
 }
 
 function main(sources) {
-  const actions = intent(sources.DOM, sources.HTTP)
-  const state$ = model(actions)
+  const domSource = sources.DOM
+  const httpSource = sources.HTTP
+
+  const saveClick$ = domSource.select('#save').events('click')
+  const loadClick$ = domSource.select('#load').events('click')
+  const nameChange$ = domSource.select('#name').events('change')
+  const documentChange$ = domSource.select('#abcEditor').events('change')
+
+  const nameValue$ = nameChange$.map(e => e.target.value)
+  const documentValue$ = documentChange$.map(e => e.target.value)
+
+  const saveRequest$ = saveClick$.map({
+    name: nameValue$.value,
+    document: documentValue$.value
+  }) //TODO map to http request
+
+  const dialogVisible$ = loadClick$ //
+
+  //TODO read httpSource
+
+  const loadRequest$ = null //TODO
+
+  const state$ = xs.of(state)
   const vdom$ = view(state$)
 
   return {
     DOM: vdom$,
-    HTTP: actions['http$']
+    HTTP: xs.merge(saveRequest$, loadRequest$)
   }
 }
 
