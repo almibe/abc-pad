@@ -71,34 +71,34 @@ function main(sources) {
   const nameValue$ = nameChange$.map(e => e.target.value)
   const idValue$ = idChange$.map(e => e.target.value)
   const documentValue$ = documentChange$.map(e => e.target.value)
-  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, true)
+  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, false)
 
   const state$ = xs.combine(idValue$, nameValue$, documentValue$, dialogVisible$)
     .map(([id, name, document, showDialog]) => {
       return { id, name, document, showDialog }
     })
 
-  const saveRequest$ = saveClick$.compose({
-    return state$.map({
-      //TODO map to http save request
-    })
-  })
-
-  const saveResponse = httpSource.select('save-document') //TODO finish
-
-  const loadRequest$ = loadClick$.compose({
-    return state$.map({
-      //TODO map to http load request
-    })
-  })
-
-  const loadResponse = httpSource.select('load-document') //TODO finish
+//  const saveRequest$ = saveClick$.compose((input) =>
+//    state$.map(
+//      {} //TODO map to http save request
+//    )
+//  )
+//
+//  const saveResponse = httpSource.select('save-document') //TODO finish
+//
+//  const loadRequest$ = loadClick$.compose((input) =>
+//    state$.map(
+//      {} //TODO map to http load request
+//    )
+//  )
+//
+//  const loadResponse = httpSource.select('load-document') //TODO finish
 
   const vdom$ = view(state$)
 
   return {
     DOM: vdom$,
-    HTTP: xs.merge(saveRequest$, loadRequest$)
+    HTTP: xs.empty() //xs.merge(saveRequest$, loadRequest$)
   }
 }
 
