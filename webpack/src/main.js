@@ -36,7 +36,7 @@ function view(state$) {
                 <button className="button" id="save">Save</button>
               </div>
               <div className="control">
-                <button className="button" id="load">Load</button>
+                <button className="button" id="showLoad">Load</button>
               </div>
             </div>
           </div>
@@ -62,6 +62,7 @@ function main(sources) {
   const httpSource = sources.HTTP
 
   const saveClick$ = domSource.select('#save').events('click')
+  const showLoadClick$ = domSource.select('#showLoad').events('click')
   const loadClick$ = domSource.select('#load').events('click')
   const nameChange$ = domSource.select('#name').events('change')
   const idChange$ = domSource.select('#id').events('change')
@@ -70,27 +71,34 @@ function main(sources) {
   const nameValue$ = nameChange$.map(e => e.target.value)
   const idValue$ = idChange$.map(e => e.target.value)
   const documentValue$ = documentChange$.map(e => e.target.value)
+  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, true)
 
-//  const saveRequest$ = saveClick$.map({
-//    name: nameValue$.value,
-//    document: documentValue$.value
-//  }) //TODO map to http request
-//
-//  const dialogVisible$ = loadClick$ //
-//
-//  //TODO read httpSource
-//
-//  const loadRequest$ = null //TODO
-
-  const state$ = xs.combine(idValue$, nameValue$, documentValue$)
-    .map(([id, name, document]) => {
-      return { id, name, document }
+  const state$ = xs.combine(idValue$, nameValue$, documentValue$, dialogVisible$)
+    .map(([id, name, document, showDialog]) => {
+      return { id, name, document, showDialog }
     })
+
+  const saveRequest$ = saveClick$.compose({
+    return state$.map({
+      //TODO map to http save request
+    })
+  })
+
+  const saveResponse = httpSource.select('save-document') //TODO finish
+
+  const loadRequest$ = loadClick$.compose({
+    return state$.map({
+      //TODO map to http load request
+    })
+  })
+
+  const loadResponse = httpSource.select('load-document') //TODO finish
+
   const vdom$ = view(state$)
 
   return {
     DOM: vdom$,
-    HTTP: xs.empty()//xs.merge(saveRequest$, loadRequest$)
+    HTTP: xs.merge(saveRequest$, loadRequest$)
   }
 }
 
