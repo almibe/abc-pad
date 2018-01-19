@@ -76,23 +76,23 @@ function main(sources) {
   const state$ = xs.combine(idValue$, nameValue$, documentValue$, dialogVisible$)
     .map(([id, name, document, showDialog]) => {
       return { id, name, document, showDialog }
-    })
+    }).startWith({id: 0, name: "", document: "", showDialog: false})
 
-//  const saveRequest$ = saveClick$.compose((input) =>
-//    state$.map(
-//      {} //TODO map to http save request
-//    )
-//  )
-//
-//  const saveResponse = httpSource.select('save-document') //TODO finish
-//
-//  const loadRequest$ = loadClick$.compose((input) =>
-//    state$.map(
-//      {} //TODO map to http load request
-//    )
-//  )
-//
-//  const loadResponse = httpSource.select('load-document') //TODO finish
+  const saveRequest$ = saveClick$.compose((input) =>
+    state$.map(
+      {} //TODO map to http save request
+    )
+  )
+
+  const saveResponse = httpSource.select('save-document') //TODO finish
+
+  const loadRequest$ = loadClick$.compose((input) =>
+    state$.map(
+      {} //TODO map to http load request
+    )
+  )
+
+  const loadResponse = httpSource.select('load-document') //TODO finish
 
   const vdom$ = view(state$)
 
