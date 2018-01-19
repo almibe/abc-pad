@@ -23,22 +23,34 @@ function view(state$) {
               <div className="field-body">
                 <div className="field">
                   <p className="control">
-                    <input id="name" className="input" type="text" value="${state.name}" />
+                    <input id="name" className="input" type="text" value={state.name} />
                   </p>
                 </div>
               </div>
             </div>
           </div>
           <div className="column">
-            <button className="button" id="save">Save</button>
-            <button className="button" id="load">Load</button>
+            <div className="field is-grouped">
+              <div className="control">
+                <button className="button" id="save">Save</button>
+              </div>
+              <div className="control">
+                <button className="button" id="load">Load</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div className="container">
-        <textarea id="abcEditor" className="textarea code">{state.document}</textarea>
-        <div id="warnings"></div>
-        <div id="canvas"></div>
+        <div className="columns">
+          <div className="column">
+            <textarea id="abcEditor" className="textarea code" rows="20">{state.document}</textarea>
+            <div id="warnings"></div>
+          </div>
+          <div className="column">
+            <div id="canvas"></div>
+          </div>
+        </div>
       </div>
     </section>
   )
