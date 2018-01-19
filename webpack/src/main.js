@@ -24,6 +24,7 @@ function view(state$) {
                 <div className="field">
                   <p className="control">
                     <input id="name" className="input" type="text" value={state.name} />
+                    <input id="id" className="input" type="hidden" value={state.id} />
                   </p>
                 </div>
               </div>
@@ -60,14 +61,16 @@ function main(sources) {
   const domSource = sources.DOM
   const httpSource = sources.HTTP
 
-//  const saveClick$ = domSource.select('#save').events('click')
-//  const loadClick$ = domSource.select('#load').events('click')
-//  const nameChange$ = domSource.select('#name').events('change')
-//  const documentChange$ = domSource.select('#abcEditor').events('change')
-//
-//  const nameValue$ = nameChange$.map(e => e.target.value)
-//  const documentValue$ = documentChange$.map(e => e.target.value)
-//
+  const saveClick$ = domSource.select('#save').events('click')
+  const loadClick$ = domSource.select('#load').events('click')
+  const nameChange$ = domSource.select('#name').events('change')
+  const idChange$ = domSource.select('#id').events('change')
+  const documentChange$ = domSource.select('#abcEditor').events('change')
+
+  const nameValue$ = nameChange$.map(e => e.target.value)
+  const idValue$ = idChange$.map(e => e.target.value)
+  const documentValue$ = documentChange$.map(e => e.target.value)
+
 //  const saveRequest$ = saveClick$.map({
 //    name: nameValue$.value,
 //    document: documentValue$.value
@@ -78,8 +81,11 @@ function main(sources) {
 //  //TODO read httpSource
 //
 //  const loadRequest$ = null //TODO
-//
-  const state$ = xs.of({})
+
+  const state$ = xs.combine(idValue$, nameValue$, documentValue$)
+    .map(([id, name, document]) => {
+      return { id, name, document }
+    })
   const vdom$ = view(state$)
 
   return {
