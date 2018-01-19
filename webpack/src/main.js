@@ -7,28 +7,39 @@ import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
 import './main.scss'
 
 function view(state$) {
-  return xs.of(
-    <section class="section">
-      <section class="section">
-        <div class="container">
-          <h1 class="title">ABC Editor</h1>
+  return state$.map( state =>
+    <section className="section">
+      <div className="container">
+        <h1 className="title">ABC Editor</h1>
+      </div>
+
+      <div className="container">
+        <div className="columns">
+          <div className="column">
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Name</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control">
+                    <input id="name" className="input" type="text" value="${state.name}" />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="column">
+            <button className="button" id="save">Save</button>
+            <button className="button" id="load">Load</button>
+          </div>
         </div>
-      </section>
-      <section class="section">
-        <div class="container">
-          Document Name:
-          <input id="name" class="input" type="text" />
-          <button class="button" id="save">Save</button>
-          <button class="button" id="load">Load</button>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container">
-          <textarea id="abcEditor" class="textarea code"></textarea>
-          <div id="warnings"></div>
-          <div id="canvas"></div>
-        </div>
-      </section>
+      </div>
+      <div className="container">
+        <textarea id="abcEditor" className="textarea code">{state.document}</textarea>
+        <div id="warnings"></div>
+        <div id="canvas"></div>
+      </div>
     </section>
   )
 }
