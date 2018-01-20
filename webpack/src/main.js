@@ -108,7 +108,7 @@ function main(sources) {
   const saveResponse$ = httpSource.select('save-document').flatten() //TODO finish
 
   const fetchAllRequest$ = dialogVisible$.filter(i => i).compose((input) =>
-    state$.take(1).map(state => {
+    xs.of({
       url: 'documents',
       category: 'fetch-all'
     })
@@ -117,9 +117,11 @@ function main(sources) {
   const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
   const loadRequest$ = loadClick$.compose((input) =>
-    state$.take(1).map( state =>
-      {} //TODO map to http load request
-    )
+    state$.take(1).map( state => {
+      url: 'documents',
+      category: 'load-document',
+      query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
+    })
   )
 
   const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
