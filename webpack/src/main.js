@@ -53,6 +53,24 @@ function view(state$) {
           </div>
         </div>
       </div>
+
+      <div className="modal">
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title">Load Document</p>
+            <button className="delete" aria-label="close"></button>
+          </header>
+          <section className="modal-card-body">
+            Content
+          </section>
+          <footer className="modal-card-foot">
+            <button className="button is-success">Load</button>
+            <button className="button">Cancel</button>
+          </footer>
+        </div>
+      </div>
+
     </section>
   )
 }
@@ -79,26 +97,38 @@ function main(sources) {
     }).startWith({id: 0, name: "", document: "", showDialog: false})
 
   const saveRequest$ = saveClick$.compose((input) =>
-    state$.map(
-      {} //TODO map to http save request
-    )
+    state$.take(1).map(state => {
+      url: 'documents',
+      method: 'POST',
+      category: 'save-document',
+      send: { id: state.id, name: state.name, document: state.document }
+    })
   )
 
-  const saveResponse = httpSource.select('save-document') //TODO finish
+  const saveResponse$ = httpSource.select('save-document').flatten() //TODO finish
+
+  const fetchAllRequest$ = dialogVisible$.filter(i => i).compose((input) =>
+    state$.take(1).map(state => {
+      url: 'documents',
+      category: 'fetch-all'
+    })
+  )
+
+  const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
   const loadRequest$ = loadClick$.compose((input) =>
-    state$.map(
+    state$.take(1).map( state =>
       {} //TODO map to http load request
     )
   )
 
-  const loadResponse = httpSource.select('load-document') //TODO finish
+  const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
 
   const vdom$ = view(state$)
 
   return {
     DOM: vdom$,
-    HTTP: xs.empty() //xs.merge(saveRequest$, loadRequest$)
+    HTTP: xs.merge(saveRequest$, loadRequest$, fetchAllRequest$)
   }
 }
 
