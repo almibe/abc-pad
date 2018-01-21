@@ -4,14 +4,17 @@ import { makeDOMDriver } from '@cycle/dom'
 import { makeHTTPDriver } from '@cycle/http'
 import { html } from 'snabbdom-jsx'
 import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
-import ABCEditor from 'components/ABCEditor'
-import Header from 'components/Header'
-import LoadDialog from 'component/LoadDialog'
+import { ABCEditor } from './components/ABCEditor'
+import { Header } from './components/Header'
+import { LoadDialog } from './components/LoadDialog'
 import './main.scss'
 
-function view(state$) {
-  return state$.map( state =>
+function view(header, abcEditor, loadDialog) {
+  return xs.combine(header.DOM, abcEditor.DOM, loadDialog.DOM).map(([headerDOM, abcEditorDOM, loadDialogDOM]) =>
     <section className="section">
+      {headerDOM}
+      {abcEditorDOM}
+      {loadDialogDOM}
     </section>
   )
 }
@@ -37,17 +40,18 @@ function main(sources) {
       return { id, name, document, showDialog }
     }).startWith({id: 0, name: "", document: "", showDialog: false})
 
-  const abcEditor = ABCEditor({ DOM: sources.DOM, state: state$ }) //TODO append abcEditor.DOM in final view
-  const header = Header({ DOM: sources.DOM, state: state$ }) //TODO append header.DOM in final view
-  const loadDialog = LoadDialog({ DOM: sources.DOM, state: state$ }) //TODO append header.DOM in final view
+  const abcEditor = ABCEditor({ DOM: sources.DOM, state: state$ })
+  const header = Header({ DOM: sources.DOM, state: state$ })
+  const loadDialog = LoadDialog({ DOM: sources.DOM, state: state$ })
 
   const saveRequest$ = saveClick$.compose((input) =>
-    state$.take(1).map(state => {
-      url: 'documents',
-      method: 'POST',
-      category: 'save-document',
-      send: { id: state.id, name: state.name, document: state.document }
-    })
+    xs.never()
+//    state$.take(1).map(state => {
+//      url: 'documents',
+//      method: 'POST',
+//      category: 'save-document',
+//      send: { id: state.id, name: state.name, document: state.document }
+//    })
   )
 
   const saveResponse$ = httpSource.select('save-document').flatten() //TODO finish
@@ -62,16 +66,17 @@ function main(sources) {
   const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
   const loadRequest$ = loadClick$.compose((input) =>
-    state$.take(1).map( state => {
-      url: 'documents',
-      category: 'load-document',
-      query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
-    })
+    xs.never()
+//    state$.take(1).map( state => {
+//      url: 'documents',
+//      category: 'load-document',
+//      query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
+//    })
   )
 
   const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
 
-  const vdom$ = view(state$)
+  const vdom$ = view(header, abcEditor, loadDialog)
 
   return {
     DOM: vdom$,

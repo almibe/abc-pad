@@ -1,7 +1,7 @@
 import xs from 'xstream'
 import { html } from 'snabbdom-jsx'
 
-export function LoadButton(sources) {
+export function LoadDialog(sources) {
   const domSource = sources.DOM
   const state$ = sources.state
 
