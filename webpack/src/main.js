@@ -30,15 +30,15 @@ function main(sources) {
   const idChange$ = domSource.select('#id').events('change')
   const documentChange$ = domSource.select('#abcEditor').events('change')
 
-  const nameValue$ = nameChange$.map(e => e.target.value)
-  const idValue$ = idChange$.map(e => e.target.value)
-  const documentValue$ = documentChange$.map(e => e.target.value)
-  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, false)
+  const nameValue$ = nameChange$.map(e => e.target.value).startWith("")
+  const idValue$ = idChange$.map(e => e.target.value).startWith(null)
+  const documentValue$ = documentChange$.map(e => e.target.value).startWith("")
+  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, false).startWith(false)
 
   const state$ = xs.combine(idValue$, nameValue$, documentValue$, dialogVisible$)
     .map(([id, name, document, showDialog]) => {
       return { id, name, document, showDialog }
-    }).startWith({id: 0, name: "", document: "", showDialog: false})
+    }).startWith({id: null, name: "", document: "", showDialog: false})
 
   const abcEditor = ABCEditor({ DOM: sources.DOM, state: state$ })
   const header = Header({ DOM: sources.DOM, state: state$ })
@@ -56,17 +56,16 @@ function main(sources) {
     }
   }
 
-  saveClick$.addListener(function(clickEvent) { //TODO not working properly
-    console.log("test")
-    state$.take(1).addListener((state) => {
+  saveClick$.addListener({next: function(clickEvent) {
+    state$.take(1).addListener({next: function(state) {
       httpRequestProducer.sendRequest({
         url: 'documents',
         method: 'POST',
         category: 'save-document',
         send: { id: state.id, name: state.name, document: state.document }
       })
-    })
-  })
+    }})
+  }})
 
   const httpRequest$ = xs.create(httpRequestProducer)
 
@@ -81,7 +80,7 @@ function main(sources) {
 
   const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
-  const loadRequest$ = loadClick$.compose((input) =>  //TODO rewrite to mirror how saveClick is done
+  loadClick$.compose((input) =>  //TODO rewrite to mirror how saveClick is done
     state$.take(1).map(function(state) {
       return {
         url: 'documents',
