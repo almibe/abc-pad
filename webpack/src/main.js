@@ -33,12 +33,11 @@ function main(sources) {
   const nameValue$ = nameChange$.map(e => e.target.value).startWith("")
   const idValue$ = idChange$.map(e => e.target.value).startWith(null)
   const documentValue$ = documentChange$.map(e => e.target.value).startWith("")
-  const dialogVisible$ = showLoadClick$.fold((prev, curr) => !curr, false).startWith(false)
 
-  const state$ = xs.combine(idValue$, nameValue$, documentValue$, dialogVisible$)
-    .map(([id, name, document, showDialog]) => {
-      return { id, name, document, showDialog }
-    }).startWith({id: null, name: "", document: "", showDialog: false})
+  const state$ = xs.combine(idValue$, nameValue$, documentValue$)
+    .map(([id, name, document]) => {
+      return { id, name, document }
+    }).startWith({ id: null, name: "", document: "" })
 
   const abcEditor = ABCEditor({ DOM: sources.DOM, state: state$ })
   const header = Header({ DOM: sources.DOM, state: state$ })
