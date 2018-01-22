@@ -44,15 +44,31 @@ function main(sources) {
   const header = Header({ DOM: sources.DOM, state: state$ })
   const loadDialog = LoadDialog({ DOM: sources.DOM, state: state$ })
 
-  const saveRequest$ = saveClick$.compose((input) =>
-    xs.never()
-//    state$.take(1).map(state => {
-//      url: 'documents',
-//      method: 'POST',
-//      category: 'save-document',
-//      send: { id: state.id, name: state.name, document: state.document }
-//    })
-  )
+  const httpRequestProducer = {
+    start: function(listener) {
+      this.stream = listener
+    },
+    stop: function() {
+      //Do nothing
+    },
+    sendRequest: function(request) {
+      this.stream.next(request)
+    }
+  }
+
+  saveClick$.addListener(function(clickEvent) { //TODO not working properly
+    console.log("test")
+    state$.take(1).addListener((state) => {
+      httpRequestProducer.sendRequest({
+        url: 'documents',
+        method: 'POST',
+        category: 'save-document',
+        send: { id: state.id, name: state.name, document: state.document }
+      })
+    })
+  })
+
+  const httpRequest$ = xs.create(httpRequestProducer)
 
   const saveResponse$ = httpSource.select('save-document').flatten() //TODO finish
 
@@ -65,13 +81,14 @@ function main(sources) {
 
   const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
-  const loadRequest$ = loadClick$.compose((input) =>
-    xs.never()
-//    state$.take(1).map( state => {
-//      url: 'documents',
-//      category: 'load-document',
-//      query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
-//    })
+  const loadRequest$ = loadClick$.compose((input) =>  //TODO rewrite to mirror how saveClick is done
+    state$.take(1).map(function(state) {
+      return {
+        url: 'documents',
+        category: 'load-document',
+        query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
+      }
+    })
   )
 
   const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
@@ -80,7 +97,7 @@ function main(sources) {
 
   return {
     DOM: vdom$,
-    HTTP: xs.merge(saveRequest$, loadRequest$, fetchAllRequest$)
+    HTTP: httpRequest$
   }
 }
 
