@@ -1,3 +1,4 @@
+import sampleCombine from 'xstream/extra/sampleCombine'
 import xs from 'xstream'
 import {run} from '@cycle/run'
 import { makeDOMDriver } from '@cycle/dom'
@@ -43,19 +44,7 @@ function main(sources) {
   const header = Header({ DOM: sources.DOM, state: state$ })
   const loadDialog = LoadDialog({ DOM: sources.DOM, state: state$ })
 
-  const httpRequestProducer = {
-    start: function(listener) {
-      this.stream = listener
-    },
-    stop: function() {
-      //Do nothing
-    },
-    sendRequest: function(request) {
-      this.stream.next(request)
-    }
-  }
-
-  saveClick$.addListener({next: function(clickEvent) {
+  saveClick$.addListener({next: function(clickEvent) { //TODO remove listeners and use sampleCombine
     state$.take(1).addListener({next: function(state) {
       httpRequestProducer.sendRequest({
         url: 'documents',
@@ -65,6 +54,8 @@ function main(sources) {
       })
     }})
   }})
+
+  const saveRequest$ = saveClick$.compose(sampleCombine(state$)).map() //TODO finish
 
   const httpRequest$ = xs.create(httpRequestProducer)
 
@@ -95,7 +86,7 @@ function main(sources) {
 
   return {
     DOM: vdom$,
-    HTTP: httpRequest$
+    HTTP: xs.merge(saveRequest$) //TODO add load
   }
 }
 
