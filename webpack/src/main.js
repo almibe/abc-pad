@@ -44,18 +44,14 @@ function main(sources) {
   const header = Header({ DOM: sources.DOM, state: state$ })
   const loadDialog = LoadDialog({ DOM: sources.DOM, state: state$ })
 
-  saveClick$.addListener({next: function(clickEvent) { //TODO remove listeners and use sampleCombine
-    state$.take(1).addListener({next: function(state) {
-      httpRequestProducer.sendRequest({
-        url: 'documents',
-        method: 'POST',
-        category: 'save-document',
-        send: { id: state.id, name: state.name, document: state.document }
-      })
-    }})
-  }})
-
-  const saveRequest$ = saveClick$.compose(sampleCombine(state$)).map() //TODO finish
+  const saveRequest$ = saveClick$.compose(sampleCombine(state$)).map(function([event, state]) {
+    return {
+      url: 'documents',
+      method: 'POST',
+      category: 'save-document',
+      send: { id: state.id, name: state.name, document: state.document }
+    }
+  })
 
   const httpRequest$ = xs.create(httpRequestProducer)
 
