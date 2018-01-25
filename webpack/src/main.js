@@ -53,28 +53,24 @@ function main(sources) {
     }
   })
 
-  const httpRequest$ = xs.create(httpRequestProducer)
-
   const saveResponse$ = httpSource.select('save-document').flatten() //TODO finish
 
-  const fetchAllRequest$ = dialogVisible$.filter(i => i).compose((input) =>
-    xs.of({
+  const fetchAllRequest$ = dialogVisible$.filter(i => i).map((input) =>
+    {
       url: 'documents',
       category: 'fetch-all'
-    })
+    }
   )
 
   const fetchAllResponse$ = httpSource.select('fetch-all').flatten() //TODO finish
 
-  loadClick$.compose((input) =>  //TODO rewrite to mirror how saveClick is done
-    state$.take(1).map(function(state) {
-      return {
-        url: 'documents',
-        category: 'load-document',
-        query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
-      }
-    })
-  )
+  const loadRequest$ = loadClick$.compose(sampleCombine(state$)).map(function([event, state]) {
+    return {
+      url: 'documents',
+      category: 'load-document',
+      query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
+    }
+  })
 
   const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
 
@@ -82,7 +78,7 @@ function main(sources) {
 
   return {
     DOM: vdom$,
-    HTTP: xs.merge(saveRequest$) //TODO add load
+    HTTP: xs.merge(saveRequest$, fetchAllRequest$, loadRequest$)
   }
 }
 
