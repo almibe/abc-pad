@@ -7,7 +7,6 @@ package org.libraryweasel.music.abc
 import io.vertx.ext.auth.User
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.StoreTransaction
-import org.libraryweasel.music.abc.api.ABCDocument
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
@@ -25,14 +24,14 @@ class ABCXodusStore : ABCManager {
 
     private fun username(user: User) : String = user.principal().getString("username")
 
-    override fun allABCDocuments(user: User): Set<ABCDocument> {
+    override fun allABCDocuments(user: User): Map<Long, String> {
         return entityStore.instance.computeInReadonlyTransaction { txn ->
             val results = txn.find(documentClass, "username", username(user))
-            val queries = mutableSetOf<ABCDocument>()
+            val documents = mutableMapOf<Long, String>()
             results.forEach { it ->
-                queries.add(ABCDocument(it.id.localId, it.getProperty("name") as String, it.getProperty("document") as String))
+                documents.put(it.id.localId, it.getProperty("name") as String)
             }
-            queries
+            documents
         }
     }
 

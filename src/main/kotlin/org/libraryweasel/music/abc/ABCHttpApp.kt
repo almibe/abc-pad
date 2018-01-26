@@ -7,7 +7,6 @@ package org.libraryweasel.music.abc
 import com.google.gson.Gson
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
-import org.libraryweasel.music.abc.api.ABCDocument
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.basePath
 import org.libraryweasel.servo.Component
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory
 
 @Component(HttpApp::class)
 class ABCHttpApp : HttpApp {
-    data class AllDocuments(val documents: Collection<ABCDocument>)
     @Service @Volatile
     lateinit var abcManager: ABCManager
 
@@ -32,7 +30,7 @@ class ABCHttpApp : HttpApp {
                     logger.debug("in GET for /documents")
                     val response = context.response()
                     val allDocuments = abcManager.allABCDocuments(context.user())
-                    response.end(gson.toJson(AllDocuments(allDocuments)))
+                    response.end(gson.toJson(allDocuments))
                 }
         router.route(HttpMethod.POST, "/documents")
                 .produces("application/json")
