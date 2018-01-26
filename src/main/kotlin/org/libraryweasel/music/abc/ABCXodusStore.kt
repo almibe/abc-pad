@@ -7,6 +7,7 @@ package org.libraryweasel.music.abc
 import io.vertx.ext.auth.User
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.StoreTransaction
+import org.libraryweasel.music.abc.api.ABCDocument
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
@@ -32,6 +33,17 @@ class ABCXodusStore : ABCManager {
                 documents.put(it.id.localId, it.getProperty("name") as String)
             }
             documents
+        }
+    }
+
+    override fun fetchABCDocument(user: User, id: Long): ABCDocument {
+        return  entityStore.instance.computeInReadonlyTransaction { txn ->
+            val entity = fetchQueryEntity(txn, id)
+            if (entity!!.getProperty("username") as String == username(user)) {
+                ABCDocument(id, entity.getProperty("name") as String, entity.getProperty("document") as String)
+            } else {
+                throw RuntimeException("document not owned by user")
+            }
         }
     }
 
