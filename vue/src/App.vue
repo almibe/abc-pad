@@ -6,8 +6,15 @@
 </template>
 
 <script>
+import Header from './components/Header.vue'
+import ABCEditor from './components/ABCEditor.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Header,
+    ABCEditor
+  }
 }
 </script>
 
