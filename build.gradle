@@ -33,7 +33,7 @@ bundle {
 
 task webpack(type: Exec) {
     workingDir "webpack"
-    commandLine "npm", "run", "dev"
+    commandLine "npm", "run", "build"
 }
 
 task copyWebpack(type: Copy) {
