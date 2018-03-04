@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 // import router from './router' // TODO add back for #19
 import '../node_modules/bulma/css/bulma.css'
+import './main.css'
 
 Vue.config.productionTip = false
 
