@@ -32,12 +32,12 @@ bundle {
 }
 
 task webpack(type: Exec) {
-    workingDir "webpack"
+    workingDir "parcel"
     commandLine "npm", "run", "build"
 }
 
 task copyWebpack(type: Copy) {
-    from 'webpack/dist'
+    from 'parcel/dist'
     into 'build/resources/main/public'
 }
 
