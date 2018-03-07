@@ -1,13 +1,3 @@
-function view(header, abcEditor, loadDialog) {
-  return xs.combine(header.DOM, abcEditor.DOM, loadDialog.DOM).map(([headerDOM, abcEditorDOM, loadDialogDOM]) =>
-    <section className="section">
-      {headerDOM}
-      {abcEditorDOM}
-      {loadDialogDOM}
-    </section>
-  )
-}
-
 function main(sources) {
   const domSource = sources.DOM
   const httpSource = sources.HTTP
