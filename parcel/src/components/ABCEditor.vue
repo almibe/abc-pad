@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
+
 export default {
   name: 'ABCEditor',
   data () {

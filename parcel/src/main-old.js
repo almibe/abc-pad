@@ -1,15 +1,3 @@
-import sampleCombine from 'xstream/extra/sampleCombine'
-import xs from 'xstream'
-import {run} from '@cycle/run'
-import { makeDOMDriver } from '@cycle/dom'
-import { makeHTTPDriver } from '@cycle/http'
-import { html } from 'snabbdom-jsx'
-import ABCJS from '../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
-import { ABCEditor } from './components/ABCEditor'
-import { Header } from './components/Header'
-import { LoadDialog } from './components/LoadDialog'
-import './main.scss'
-
 function view(header, abcEditor, loadDialog) {
   return xs.combine(header.DOM, abcEditor.DOM, loadDialog.DOM).map(([headerDOM, abcEditorDOM, loadDialogDOM]) =>
     <section className="section">
