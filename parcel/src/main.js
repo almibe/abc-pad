@@ -12,3 +12,8 @@ new Vue({
   // router, //TODO add back for #19
   render: h => h(App)
 })
+
+window.onload = function() {
+  const abcEditor = new ABCJS.Editor("abcEditor",
+    { canvas_id: "canvas", generate_midi: false, warnings_id: "warnings" })
+}

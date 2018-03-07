@@ -67,7 +67,3 @@ const drivers = {
 
 run(main, drivers)
 
-window.onload = function() {
-  const abcEditor = new ABCJS.Editor("abcEditor",
-    { canvas_id: "canvas", generate_midi: false, warnings_id: "warnings" })
-}
