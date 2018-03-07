@@ -1,7 +1,4 @@
 function main(sources) {
-  const domSource = sources.DOM
-  const httpSource = sources.HTTP
-
   const saveClick$ = domSource.select('#save').events('click')
   const showLoadClick$ = domSource.select('#showLoad').events('click')
   const loadClick$ = domSource.select('#load').events('click')
@@ -49,21 +46,4 @@ function main(sources) {
       query: { id: state.idToLoad } //TODO state.idToLoad doesn't exist yet
     }
   })
-
-  const loadResponse$ = httpSource.select('load-document').flatten() //TODO finish
-
-  const vdom$ = view(header, abcEditor, loadDialog)
-
-  return {
-    DOM: vdom$,
-    HTTP: xs.merge(saveRequest$, fetchAllRequest$, loadRequest$)
-  }
 }
-
-const drivers = {
-  DOM: makeDOMDriver('#app'),
-  HTTP: makeHTTPDriver()
-}
-
-run(main, drivers)
-
