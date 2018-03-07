@@ -68,7 +68,7 @@ class ABCXodusStore : ABCManager {
     override fun removeABCDocument(user: User, id: Long): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
             val result = fetchQueryEntity(txn, id)
-            if (result != null) {
+            if (result != null && result.getProperty("username") as String == username(user)) {
                 result.delete()
                 true
             } else {
