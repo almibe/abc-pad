@@ -13,9 +13,7 @@
 </template>
 
 <script>
-module.import ABCJS from '../../node_modules/abcjs/bin/abcjs_editor_latest-min.js'
-
-modlule.export default {
+export default {
   name: 'ABCEditor',
   data () {
     return {
