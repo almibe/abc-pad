@@ -1,6 +1,6 @@
 {
-  "name": "brunch-vue-barebones",
-  "description": "A Barebones Vue Skeleton for Brunch",
+  "name": "library-weasel-music",
+  "description": "Vuejs application for library-weasel-music",
   "version": "0.0.1",
   "license": "MPL-2.0",
   "private": true,
