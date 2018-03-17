@@ -8,13 +8,21 @@
     "build": "parcel build index.html --public-url ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "url": "https://github.com/almibe/library-weasel-music"
+  },
   "keywords": [],
   "author": "almibe",
   "license": "MPL-2.0",
   "dependencies": {
+    "axios": "^0.18.0",
+    "bulma": "^0.6.2",
+    "font-awesome": "^4.7.0",
+    "hyperapp": "^1.1.2"
+  },
+  "devDependencies": {
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.1",
-    "hyperapp": "^1.1.2",
     "parcel-bundler": "^1.6.2"
   }
 }
