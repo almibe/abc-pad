@@ -1,0 +1,20 @@
+{
+  "name": "library-weasel-music",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "library-weasel-music",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "almibe",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "hyperapp": "^1.1.2",
+    "parcel-bundler": "^1.6.2"
+  }
+}
