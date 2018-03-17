@@ -31,15 +31,15 @@ bundle {
     instruction 'Bundle-Activator', 'org.libraryweasel.music.Activator'
 }
 
-task brunch(type: Exec) {
-    workingDir "brunch"
+task parcel(type: Exec) {
+    workingDir "parcel"
     commandLine "npm", "run", "build"
 }
 
-task copyBrunch(type: Copy) {
-    from 'brunch/public'
+task copyParcel(type: Copy) {
+    from 'parcel/dist'
     into 'build/resources/main/public'
 }
 
-tasks.jar.dependsOn(copyBrunch)
-tasks.copyBrunch.dependsOn(brunch)
+tasks.jar.dependsOn(copyParcel)
+tasks.copyParcel.dependsOn(parcel)
