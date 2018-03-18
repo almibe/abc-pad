@@ -1,4 +1,6 @@
-<template>
+import { h } from 'hyperapp'
+
+export const LoadDialog = ({ }) => (
   <div className="modal">
     <div className="modal-background"></div>
     <div className="modal-card">
@@ -15,18 +17,4 @@
       </footer>
     </div>
   </div>
-</template>
-
-<script>
-export default {
-  name: 'LoadDialog',
-  data () {
-    return {
-
-    }
-  }
-}
-</script>
-
-<style scoped>
-</style>
+)

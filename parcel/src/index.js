@@ -21,3 +21,7 @@ const view = () =>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
+
+window.onload = function () {
+  new abcjs.Editor('abcEditor', { canvas_id: 'canvas', generate_midi: false, warnings_id: 'warnings' })
+}
