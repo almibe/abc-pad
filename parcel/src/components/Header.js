@@ -1,4 +1,6 @@
-<template>
+import { h } from 'hyperapp'
+
+export const Header = ({ docId, docName }) => (
   <div class="container">
     <div class="container">
       <h1 class="title">ABC Editor</h1>
@@ -34,19 +36,4 @@
       </div>
     </div>
   </div>
-</template>
-
-<script>
-export default {
-  name: 'Header',
-  data () {
-    return {
-      docName: '',
-      docId: null
-    }
-  }
-}
-</script>
-
-<style scoped>
-</style>
+)
