@@ -1,12 +1,13 @@
 import { h, app } from 'hyperapp'
-import Header from './components/Header.js'
-import ABCEditor from './components/ABCEditor.js'
-import LoadDialog from './components/LoadDialog.js'
+import { Header } from './components/Header.js'
+import { ABCEditor } from './components/ABCEditor.js'
+import { LoadDialog } from './components/LoadDialog.js'
+import '../node_modules/bulma/bulma.sass'
 
 const state = {
   title: 'Untitled',
   document: '',
-  documentId: null
+  documentId: ''
 }
 
 const actions = {
@@ -15,13 +16,9 @@ const actions = {
 
 const view = () =>
   <main>
-    <Header></Header>
+    <Header title={state.title} documentId={state.documentId}></Header>
     <ABCEditor></ABCEditor>
     <LoadDialog></LoadDialog>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
-
-window.onload = function () {
-  new abcjs.Editor('abcEditor', { canvas_id: 'canvas', generate_midi: false, warnings_id: 'warnings' })
-}

@@ -1,6 +1,6 @@
 import { h } from 'hyperapp'
 
-export const Header = ({ docId, docName }) => (
+export const Header = ({ documentId, title }) => (
   <div class="container">
     <div class="container">
       <h1 class="title">ABC Editor</h1>
@@ -16,8 +16,8 @@ export const Header = ({ docId, docName }) => (
             <div class="field-body">
               <div class="field">
                 <p class="control">
-                  <input id="name" class="input" type="text" value={docName} />
-                  <input id="id" class="input" type="hidden" value={docId} />
+                  <input id="name" class="input" type="text" value={title} />
+                  <input id="id" class="input" type="hidden" value={documentId} />
                 </p>
               </div>
             </div>
