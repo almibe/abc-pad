@@ -1,11 +1,11 @@
 import { h } from 'hyperapp'
 import abcjs from 'abcjs'
 
-export const ABCEditor = ({ }) => (
+export const ABCEditor = ({ document, setText }) => (
   <div class="container" oncreate={element => init()}>
     <div class="columns">
       <div class="column">
-        <textarea id="abcEditor" class="textarea code" rows="20">T: Unknown</textarea>
+        <textarea id="abcEditor" class="textarea code" rows="20" value={document} oninput={e => setText(e.target.value)}></textarea>
         <div id="warnings"></div>
       </div>
       <div class="column">

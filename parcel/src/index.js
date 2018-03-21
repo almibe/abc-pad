@@ -8,12 +8,27 @@ import './main.css'
 
 const state = {
   documentId: -1,
-  showDialog: false
+  showDialog: false,
+  document: 'T: Untitled\nC: Unknown'
 }
 
 const actions = {
+  setText: text => ({
+    document: text
+  }),
   saveDocument: value => state => ({
     //TODO make axios call
+
+//    axios.post('/document', {
+//        firstName: 'Fred',
+//        lastName: 'Flintstone'
+//      })
+//      .then(function (response) {
+//        console.log(response);
+//      })
+//      .catch(function (error) {
+//        console.log(error);
+//      });
   }),
   loadDocument: value => state => ({
     //TODO make axios call
@@ -24,7 +39,7 @@ const actions = {
 const view = () =>
   <main>
     <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
-    <ABCEditor></ABCEditor>
+    <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
     <LoadDialog showDialog={state.showDialog} ></LoadDialog>
   </main>
 
