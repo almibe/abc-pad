@@ -1,19 +1,19 @@
 import { h } from 'hyperapp'
 
-export const LoadDialog = ({ }) => (
-  <div className="modal">
-    <div className="modal-background"></div>
-    <div className="modal-card">
-      <header className="modal-card-head">
-        <p className="modal-card-title">Load Document</p>
-        <button className="delete" aria-label="close"></button>
+export const LoadDialog = ({ showDialog }) => (
+  <div class={`modal ${showDialog && "is-active"}`}>
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Load Document</p>
+        <button class="delete" aria-label="close"></button>
       </header>
-      <section className="modal-card-body">
+      <section class="modal-card-body">
         Content
       </section>
-      <footer className="modal-card-foot">
-        <button className="button is-success">Load</button>
-        <button className="button">Cancel</button>
+      <footer class="modal-card-foot">
+        <button class="button is-success">Load</button>
+        <button class="button">Cancel</button>
       </footer>
     </div>
   </div>

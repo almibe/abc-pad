@@ -8,7 +8,7 @@ export const ABCEditor = ({ }) => (
         <textarea id="abcEditor" class="textarea code" rows="20"></textarea>
         <div id="warnings"></div>
       </div>
-      <div className="column">
+      <div class="column">
         <div id="canvas"></div>
       </div>
     </div>
