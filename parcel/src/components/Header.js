@@ -1,7 +1,7 @@
 import { h } from 'hyperapp'
 
-export const Header = () => (state, actions) => (
-  <div class="container">
+export const Header = ({saveDocument, showLoad}) => (
+  <div class="container header">
     <div class="container">
       <div class="columns">
         <div class="column">
@@ -10,10 +10,10 @@ export const Header = () => (state, actions) => (
         <div class="column">
           <div class="field is-grouped">
             <div class="control">
-              <button class="button" id="save" onclick={() => actions.saveDocument()}>Save</button>
+              <button class="button" id="save" onclick={() => saveDocument()}>Save</button>
             </div>
             <div class="control">
-              <button class="button" id="showLoad" onclick={() => actions.showLoad()}>Load</button>
+              <button class="button" id="showLoad" onclick={() => showLoad()}>Load</button>
             </div>
           </div>
         </div>

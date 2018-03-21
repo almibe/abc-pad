@@ -23,7 +23,7 @@ const actions = {
 
 const view = () =>
   <main>
-    <Header></Header>
+    <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
     <ABCEditor></ABCEditor>
     <LoadDialog showDialog={state.showDialog} ></LoadDialog>
   </main>
