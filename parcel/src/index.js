@@ -1,5 +1,5 @@
 import { h, app } from 'hyperapp'
-import { axios } from 'axios'
+import axios from 'axios'
 import { Header } from './components/Header.js'
 import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
@@ -17,20 +17,29 @@ const actions = {
     document: text
   }),
   saveDocument: value => state => ({
-    //TODO make axios call
-
-//    axios.post('/document', {
-//        firstName: 'Fred',
-//        lastName: 'Flintstone'
-//      })
-//      .then(function (response) {
-//        console.log(response);
-//      })
-//      .catch(function (error) {
-//        console.log(error);
-//      });
+    if (state.documentId > 0) {
+      axios.patch('/document/'+state.documentId, {
+        document: state.document
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    } else {
+      axios.post('/document/', {
+        document: state.document
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   }),
-  loadDocument: value => state => ({
+  loadDocument: ({ id }) => state => ({
     //TODO make axios call
   }),
   showLoad: value => state => ({ showDialog: true })
