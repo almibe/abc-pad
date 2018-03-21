@@ -40,24 +40,24 @@ class ABCXodusStore : ABCManager {
         return  entityStore.instance.computeInReadonlyTransaction { txn ->
             val entity = fetchQueryEntity(txn, id)
             if (entity!!.getProperty("username") as String == username(user)) {
-                ABCDocument(id, entity.getProperty("name") as String, entity.getProperty("document") as String)
+                ABCDocument(id, entity.getProperty("document") as String)
             } else {
                 throw RuntimeException("document not owned by user")
             }
         }
     }
 
-    override fun persistABCDocument(user: User, id: Long?, name: String, document: String): Boolean {
+    override fun persistABCDocument(user: User, id: Long?, document: String): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
             val entity = if (id == null) null else fetchQueryEntity(txn, id)
             if (entity != null) {
-                entity.setProperty("name", name)
+                entity.setProperty("name", documentToName(document))
                 entity.setProperty("document", document)
                 txn.saveEntity(entity)
                 true
             } else {
                 val abcDocument = txn.newEntity(documentClass)
-                abcDocument.setProperty("name", name)
+                abcDocument.setProperty("name", documentToName(document))
                 abcDocument.setProperty("document", document)
                 txn.saveEntity(abcDocument)
                 true
@@ -80,5 +80,11 @@ class ABCXodusStore : ABCManager {
     private fun fetchQueryEntity(txn: StoreTransaction, id: Long): Entity? {
         val results = txn.findIds(documentClass, id, id)
         return results.first
+    }
+
+    private fun documentToName(document: String): String {
+        val title: String = document.lines().find { it.trim().startsWith("T:") }?.trim() ?: "untitled"
+        val composer: String = document.lines().find { it.trim().startsWith("C:") }?.trim() ?: "unknown"
+        return "$title - $composer"
     }
 }

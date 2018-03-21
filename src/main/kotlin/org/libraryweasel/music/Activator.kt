@@ -30,12 +30,12 @@ class Activator : DependencyActivatorBase() {
     }
 }
 
-val basePath = "/music/abc/"
+val abcBasePath = "/music/abc/"
 val kitName = "Music"
 
 @Component(HttpApp::class)
 class StaticFiles : HttpApp {
-    override val path: String = basePath
+    override val path: String = abcBasePath
 
     override fun initRouter(router: Router) {
         router.get().handler(StaticHandler.create("public", this.javaClass.classLoader))
@@ -46,7 +46,7 @@ class StaticFiles : HttpApp {
 class LoadABCEditorEntryPoint : WebEntryPoint {
     override val kit: String = kitName
     override val name: String = "Load ABC Document"
-    override val path: String = "$basePath#load"
+    override val path: String = "$abcBasePath#load"
     override val position: Float = 1F
 }
 
@@ -54,6 +54,6 @@ class LoadABCEditorEntryPoint : WebEntryPoint {
 class NewABCEditorEntryPoint : WebEntryPoint {
     override val kit: String = kitName
     override val name: String = "New ABC Document"
-    override val path: String = basePath
+    override val path: String = abcBasePath
     override val position: Float = 0F
 }

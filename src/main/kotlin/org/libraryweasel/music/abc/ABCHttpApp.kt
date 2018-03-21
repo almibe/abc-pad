@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
 import org.libraryweasel.music.abc.api.ABCManager
-import org.libraryweasel.music.basePath
+import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
 import org.libraryweasel.vertx.api.HttpApp
@@ -19,7 +19,7 @@ class ABCHttpApp : HttpApp {
     @Service @Volatile
     lateinit var abcManager: ABCManager
 
-    override val path: String = basePath
+    override val path: String = abcBasePath
     val logger = LoggerFactory.getLogger(ABCHttpApp::class.java)
     val gson = Gson()
 
@@ -32,17 +32,25 @@ class ABCHttpApp : HttpApp {
                     val allDocuments = abcManager.allABCDocuments(context.user())
                     response.end(gson.toJson(allDocuments))
                 }
+        router.route(HttpMethod.GET, "/documents/:id/")
+                .produces("application/json")
+                .blockingHandler { context ->
+                    val id = context.request().getParam("id").toLong()
+                    logger.debug("in GET for /documents/$id/")
+                    val response = context.response()
+                    val document = abcManager.fetchABCDocument(context.user(), id)
+                    response.end(gson.toJson(document))
+                }
         router.route(HttpMethod.POST, "/documents")
                 .produces("application/json")
                 .blockingHandler { context ->
                     logger.debug("in POST for /documents with content: {}", context.bodyAsJson.toString())
                     val response = context.response()
                     val request = context.bodyAsJson
-                    if (request.containsKey("name") && request.containsKey("document")) {
-                        val name = request.getString("name")
+                    if (request.containsKey("document")) {
                         val document = request.getString("document")
                         val id: Long? = request.getLong("id")
-                        val result = abcManager.persistABCDocument(context.user(), id, name, document)
+                        val result = abcManager.persistABCDocument(context.user(), id, document)
                         if (result) {
                             response.end(gson.toJson(mapOf(Pair("result", "success"))))
                         } else {
