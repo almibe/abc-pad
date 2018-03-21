@@ -3,25 +3,9 @@ import { h } from 'hyperapp'
 export const Header = ({ documentId, title }) => (
   <div class="container">
     <div class="container">
-      <h1 class="title">ABC Editor</h1>
-    </div>
-
-    <div class="container">
       <div class="columns">
         <div class="column">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Name</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <p class="control">
-                  <input id="name" class="input" type="text" value={title} />
-                  <input id="id" class="input" type="hidden" value={documentId} />
-                </p>
-              </div>
-            </div>
-          </div>
+          <h1 class="title">ABC Editor</h1>
         </div>
         <div class="column">
           <div class="field is-grouped">

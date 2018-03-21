@@ -5,8 +5,6 @@ import { LoadDialog } from './components/LoadDialog.js'
 import '../node_modules/bulma/bulma.sass'
 
 const state = {
-  title: 'Untitled',
-  document: '',
   documentId: ''
 }
 
