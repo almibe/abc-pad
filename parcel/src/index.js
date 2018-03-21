@@ -9,43 +9,48 @@ import './main.css'
 const state = {
   documentId: -1,
   showDialog: false,
-  document: 'T: Untitled\nC: Unknown'
+  document: 'T: Untitled\nC: Unknown',
+  documentList: [],
+  status: ''
 }
 
 const actions = {
   setText: text => ({
     document: text
   }),
-  saveDocument: value => state => ({
+  saveDocument: value => state => {
     if (state.documentId > 0) {
-      axios.patch('/document/'+state.documentId, {
+      axios.patch('document/'+state.documentId, {
         document: state.document
       })
       .then(function (response) {
-        console.log(response);
+        console.log(response); //TODO present feedback to user
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error); //TODO present feedback to user
       });
     } else {
-      axios.post('/document/', {
+      axios.post('document/', {
         document: state.document
       })
       .then(function (response) {
-        console.log(response);
+        console.log(response); //TODO present feedback to user
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error); //TODO present feedback to user
       });
     }
-  }),
-  loadDocument: ({ id }) => state => ({
+  },
+  loadDocument: ({ id }) => state => {
     //TODO make axios call
-  }),
-  showLoad: value => state => ({ showDialog: true })
+  },
+  showDialog: value => state => { showDialog: true },
+  postStatus: status => state => {
+      //TODO update status text + set timer to clear status in 5 seconds
+  }
 }
 
-const view = () =>
+const view = (state, actions) =>
   <main>
     <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
     <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
