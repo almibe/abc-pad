@@ -1,4 +1,5 @@
 import { h, app } from 'hyperapp'
+import { axios } from 'axios'
 import { Header } from './components/Header.js'
 import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
@@ -11,8 +12,12 @@ const state = {
 }
 
 const actions = {
-  saveDocument: value => state => ({})
-  loadDocument: value => state => ({})
+  saveDocument: value => state => ({
+    //TODO make axios call
+  }),
+  loadDocument: value => state => ({
+    //TODO make axios call
+  }),
   showLoad: value => state => ({ showDialog: true })
 }
 
