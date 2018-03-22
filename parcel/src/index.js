@@ -20,7 +20,7 @@ const actions = {
   }),
   saveDocument: value => state => {
     if (state.documentId > 0) {
-      axios.patch('document/'+state.documentId, {
+      axios.patch('documents/'+state.documentId, {
         document: state.document
       })
       .then(function (response) {
@@ -30,7 +30,7 @@ const actions = {
         console.log(error); //TODO present feedback to user
       });
     } else {
-      axios.post('document/', {
+      axios.post('documents/', {
         document: state.document
       })
       .then(function (response) {

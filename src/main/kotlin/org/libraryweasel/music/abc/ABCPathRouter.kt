@@ -7,20 +7,21 @@ package org.libraryweasel.music.abc
 import com.google.gson.Gson
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
-import org.libraryweasel.vertx.api.HttpApp
+import org.libraryweasel.vertx.api.PathRouter
 import org.slf4j.LoggerFactory
 
-@Component(HttpApp::class)
-class ABCHttpApp : HttpApp {
+@Component(PathRouter::class)
+class ABCPathRouter : PathRouter {
     @Service @Volatile
     lateinit var abcManager: ABCManager
 
     override val path: String = abcBasePath
-    val logger = LoggerFactory.getLogger(ABCHttpApp::class.java)
+    val logger = LoggerFactory.getLogger(ABCPathRouter::class.java)
     val gson = Gson()
 
     override fun initRouter(router: Router) {
@@ -41,16 +42,16 @@ class ABCHttpApp : HttpApp {
                     val document = abcManager.fetchABCDocument(context.user(), id)
                     response.end(gson.toJson(document))
                 }
-        router.route(HttpMethod.POST, "/documents")
+        router.route(HttpMethod.POST, "/documents/:id/")
                 .produces("application/json")
-                .blockingHandler { context ->
+                .blockingHandler { context: RoutingContext ->
                     logger.debug("in POST for /documents with content: {}", context.bodyAsJson.toString())
                     val response = context.response()
                     val request = context.bodyAsJson
                     if (request.containsKey("document")) {
                         val document = request.getString("document")
-                        val id: Long? = request.getLong("id")
-                        val result = abcManager.persistABCDocument(context.user(), id, document)
+                        val id: Long = request.getLong("id")
+                        val result = abcManager.updateABCDocument(context.user(), id, document)
                         if (result) {
                             response.end(gson.toJson(mapOf(Pair("result", "success"))))
                         } else {
@@ -59,6 +60,11 @@ class ABCHttpApp : HttpApp {
                     } else {
                         context.next()
                     }
+                }
+        router.route(HttpMethod.PATCH, "/documents/:id/")
+                .produces("application/json")
+                .blockingHandler { context ->
+                    //TODO handle PATCH update here
                 }
         router.route(HttpMethod.DELETE, "/documents/:id/")
                 .produces("application/json")
