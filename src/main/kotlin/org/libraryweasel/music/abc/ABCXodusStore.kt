@@ -38,8 +38,8 @@ class ABCXodusStore : ABCManager {
 
     override fun fetchABCDocument(user: User, id: Long): ABCDocument {
         return  entityStore.instance.computeInReadonlyTransaction { txn ->
-            val entity = fetchQueryEntity(txn, id)
-            if (entity!!.getProperty("username") as String == username(user)) {
+            val entity = fetchABCDocumentEntity(txn, user, id)
+            if (entity != null) {
                 ABCDocument(id, entity.getProperty("document") as String)
             } else {
                 throw RuntimeException("document not owned by user")
@@ -47,28 +47,35 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    override fun persistABCDocument(user: User, id: Long?, document: String): Boolean {
+    override fun createABCDocument(user: User, document: String): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val entity = if (id == null) null else fetchQueryEntity(txn, id)
+            val abcDocument = txn.newEntity(documentClass)
+            abcDocument.setProperty("name", documentToName(document))
+            abcDocument.setProperty("document", document)
+            abcDocument.setProperty("username", username(user))
+            txn.saveEntity(abcDocument)
+            true
+        }
+    }
+
+    override fun updateABCDocument(user: User, id: Long, document: String): Boolean {
+        return entityStore.instance.computeInTransaction { txn ->
+            val entity = fetchABCDocumentEntity(txn, user, id)
             if (entity != null) {
                 entity.setProperty("name", documentToName(document))
                 entity.setProperty("document", document)
                 txn.saveEntity(entity)
                 true
             } else {
-                val abcDocument = txn.newEntity(documentClass)
-                abcDocument.setProperty("name", documentToName(document))
-                abcDocument.setProperty("document", document)
-                txn.saveEntity(abcDocument)
-                true
+                false
             }
         }
     }
 
     override fun removeABCDocument(user: User, id: Long): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val result = fetchQueryEntity(txn, id)
-            if (result != null && result.getProperty("username") as String == username(user)) {
+            val result = fetchABCDocumentEntity(txn, user, id)
+            if (result != null) {
                 result.delete()
                 true
             } else {
@@ -77,9 +84,13 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    private fun fetchQueryEntity(txn: StoreTransaction, id: Long): Entity? {
+    private fun fetchABCDocumentEntity(txn: StoreTransaction, user: User, id: Long): Entity? {
         val results = txn.findIds(documentClass, id, id)
-        return results.first
+        return if (!results.isEmpty && results.first?.getProperty("username") as String == username(user)) {
+            results.first
+        } else {
+            null
+        }
     }
 
     private fun documentToName(document: String): String {
