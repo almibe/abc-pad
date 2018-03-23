@@ -4,25 +4,21 @@
 
 package org.libraryweasel.music
 
-import io.vertx.ext.web.Router
-import io.vertx.ext.web.handler.StaticHandler
 import org.apache.felix.dm.DependencyActivatorBase
 import org.apache.felix.dm.DependencyManager
-import org.libraryweasel.music.abc.ABCHttpApp
+import org.libraryweasel.music.abc.ABCPathRouter
 import org.libraryweasel.music.abc.ABCXodusStore
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.LibraryWeaselComponentRegistrar
-import org.libraryweasel.vertx.api.HttpApp
 import org.libraryweasel.vertx.api.WebEntryPoint
 import org.osgi.framework.BundleContext
 
 class Activator : DependencyActivatorBase() {
     override fun init(context: BundleContext, manager: DependencyManager) {
         val registrar = LibraryWeaselComponentRegistrar(manager)
-        registrar.register(StaticFiles::class.java)
         registrar.register(LoadABCEditorEntryPoint::class.java)
         registrar.register(NewABCEditorEntryPoint::class.java)
-        registrar.register(ABCHttpApp::class.java)
+        registrar.register(ABCPathRouter::class.java)
         registrar.register(ABCXodusStore::class.java)
     }
 
@@ -32,15 +28,6 @@ class Activator : DependencyActivatorBase() {
 
 val abcBasePath = "/music/abc/"
 val kitName = "Music"
-
-@Component(HttpApp::class)
-class StaticFiles : HttpApp {
-    override val path: String = abcBasePath
-
-    override fun initRouter(router: Router) {
-        router.get().handler(StaticHandler.create("public", this.javaClass.classLoader))
-    }
-}
 
 @Component(WebEntryPoint::class)
 class LoadABCEditorEntryPoint : WebEntryPoint {

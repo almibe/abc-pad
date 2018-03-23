@@ -8,12 +8,16 @@ import com.google.gson.Gson
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import io.vertx.ext.web.handler.StaticHandler
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
 import org.libraryweasel.vertx.api.PathRouter
 import org.slf4j.LoggerFactory
+
+//TODO add extension methods to Router here
+
 
 @Component(PathRouter::class)
 class ABCPathRouter : PathRouter {
@@ -42,10 +46,28 @@ class ABCPathRouter : PathRouter {
                     val document = abcManager.fetchABCDocument(context.user(), id)
                     response.end(gson.toJson(document))
                 }
-        router.route(HttpMethod.POST, "/documents/:id/")
+        router.route(HttpMethod.POST, "/documents/")
                 .produces("application/json")
                 .blockingHandler { context: RoutingContext ->
                     logger.debug("in POST for /documents with content: {}", context.bodyAsJson.toString())
+                    val response = context.response()
+                    val request = context.bodyAsJson
+                    if (request.containsKey("document")) {
+                        val document = request.getString("document")
+                        val result = abcManager.createABCDocument(context.user(), document)
+                        if (result) {
+                            response.end(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
+                        } else {
+                            response.end(gson.toJson(mapOf(Pair("result", "error"))))
+                        }
+                    } else {
+                        context.next()
+                    }
+                }
+        router.route(HttpMethod.PATCH, "/documents/:id/")
+                .produces("application/json")
+                .blockingHandler { context ->
+                    logger.debug("in PATCH for /documents with content: {}", context.bodyAsJson.toString())
                     val response = context.response()
                     val request = context.bodyAsJson
                     if (request.containsKey("document")) {
@@ -61,11 +83,6 @@ class ABCPathRouter : PathRouter {
                         context.next()
                     }
                 }
-        router.route(HttpMethod.PATCH, "/documents/:id/")
-                .produces("application/json")
-                .blockingHandler { context ->
-                    //TODO handle PATCH update here
-                }
         router.route(HttpMethod.DELETE, "/documents/:id/")
                 .produces("application/json")
                 .blockingHandler { context ->
@@ -80,5 +97,6 @@ class ABCPathRouter : PathRouter {
                         response.end(gson.toJson(mapOf(Pair("result", "error"))))
                     }
                 }
+        router.route(HttpMethod.GET, "/*").handler(StaticHandler.create("public", this.javaClass.classLoader))
     }
 }
