@@ -16,19 +16,10 @@ group 'org.libraryweasel'
 version '0.1.0-SNAPSHOT'
 
 dependencies {
-    compile pluginDeps.slf4jApiDep.id
-    compile pluginDeps.kotlinDep.id
-    compile pluginDeps.gsonDep.id
-    compile pluginDeps.libraryWeaselXodusDep.id
-    compile pluginDeps.libraryWeaselVertxApiDep.id
-    compile pluginDeps.libraryWeaselServoDep.id
-    testCompile testingDeps.spockDep.id
-}
-
-bundle {
-    instruction 'Import-Package', '*'
-    instruction 'Export-Package', 'org.libraryweasel.music.api'
-    instruction 'Bundle-Activator', 'org.libraryweasel.music.Activator'
+    compile pluginDeps.sparkDep
+    compile pluginDeps.slf4jApiDep
+    compile pluginDeps.kotlinDep
+    compile pluginDeps.gsonDep
 }
 
 task parcel(type: Exec) {

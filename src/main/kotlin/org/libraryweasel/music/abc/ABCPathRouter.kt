@@ -16,9 +16,6 @@ import org.libraryweasel.servo.Service
 import org.libraryweasel.vertx.api.PathRouter
 import org.slf4j.LoggerFactory
 
-//TODO add extension methods to Router here
-
-
 @Component(PathRouter::class)
 class ABCPathRouter : PathRouter {
     @Service @Volatile
