@@ -23,22 +23,22 @@ class ABCXodusStore : ABCManager {
     private fun start() {
     }
 
-    private fun username(account: Account) : String = account.principal().getString("username")
+    private fun username(account: Account) : String = account.principal.name
 
-    override fun allABCDocuments(user: Account): Map<Long, String> {
+    override fun allABCDocuments(account: Account): Map<Long, String> {
         return entityStore.instance.computeInReadonlyTransaction { txn ->
-            val results = txn.find(documentClass, "username", username(user))
+            val results = txn.find(documentClass, "username", username(account))
             val documents = mutableMapOf<Long, String>()
             results.forEach { it ->
-                documents.put(it.id.localId, it.getProperty("name") as String)
+                documents[it.id.localId] = it.getProperty("name") as String
             }
             documents
         }
     }
 
-    override fun fetchABCDocument(user: Account, id: Long): ABCDocument {
+    override fun fetchABCDocument(account: Account, id: Long): ABCDocument {
         return  entityStore.instance.computeInReadonlyTransaction { txn ->
-            val entity = fetchABCDocumentEntity(txn, user, id)
+            val entity = fetchABCDocumentEntity(txn, account, id)
             if (entity != null) {
                 ABCDocument(id, entity.getProperty("document") as String)
             } else {
@@ -47,20 +47,20 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    override fun createABCDocument(user: Account, document: String): Boolean {
+    override fun createABCDocument(account: Account, document: String): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
             val abcDocument = txn.newEntity(documentClass)
             abcDocument.setProperty("name", documentToName(document))
             abcDocument.setProperty("document", document)
-            abcDocument.setProperty("username", username(user))
+            abcDocument.setProperty("username", username(account))
             txn.saveEntity(abcDocument)
             true
         }
     }
 
-    override fun updateABCDocument(user: Account, id: Long, document: String): Boolean {
+    override fun updateABCDocument(account: Account, id: Long, document: String): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val entity = fetchABCDocumentEntity(txn, user, id)
+            val entity = fetchABCDocumentEntity(txn, account, id)
             if (entity != null) {
                 entity.setProperty("name", documentToName(document))
                 entity.setProperty("document", document)
@@ -72,9 +72,9 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    override fun removeABCDocument(user: Account, id: Long): Boolean {
+    override fun removeABCDocument(account: Account, id: Long): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val result = fetchABCDocumentEntity(txn, user, id)
+            val result = fetchABCDocumentEntity(txn, account, id)
             if (result != null) {
                 result.delete()
                 true
@@ -84,9 +84,9 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    private fun fetchABCDocumentEntity(txn: StoreTransaction, user: Account, id: Long): Entity? {
+    private fun fetchABCDocumentEntity(txn: StoreTransaction, account: Account, id: Long): Entity? {
         val results = txn.findIds(documentClass, id, id)
-        return if (!results.isEmpty && results.first?.getProperty("username") as String == username(user)) {
+        return if (!results.isEmpty && results.first?.getProperty("username") as String == username(account)) {
             results.first
         } else {
             null
