@@ -5,8 +5,8 @@
 package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
+import io.undertow.Handlers
 import io.undertow.server.HttpHandler
-import io.undertow.server.handlers.PathHandler
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
@@ -23,9 +23,10 @@ class ABCWebPlugin : WebPlugin {
     val logger = LoggerFactory.getLogger(ABCWebPlugin::class.java)
     val gson = Gson()
 
-    override val handler: HttpHandler = PathHandler()
+    override val handler: HttpHandler = createHandler()
 
-    private fun start() {
+    private fun createHandler(): HttpHandler {
+        val pathHandler =  Handlers.path()
 //        fun initRouter(router: Router) {
 //            router.route(HttpMethod.GET, "/documents")
 //                    .produces("application/json")
@@ -98,5 +99,9 @@ class ABCWebPlugin : WebPlugin {
 //            router.route(HttpMethod.GET, "/*").handler(StaticHandler.create("public", this.javaClass.classLoader))
 //
 //    }
+        return pathHandler
+    }
+
+    private fun start() {
     }
 }
