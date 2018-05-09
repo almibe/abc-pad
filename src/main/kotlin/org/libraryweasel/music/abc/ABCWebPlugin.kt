@@ -5,24 +5,20 @@
 package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
-import io.vertx.core.http.HttpMethod
-import io.vertx.ext.web.Router
-import io.vertx.ext.web.RoutingContext
-import io.vertx.ext.web.handler.StaticHandler
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
-import org.libraryweasel.vertx.api.PathRouter
+import org.libraryweasel.web.api.WebPlugin
 import org.slf4j.LoggerFactory
 
-@Component(PathRouter::class)
-class ABCPathRouter : PathRouter {
+@Component(WebPlugin::class)
+class ABCWebPlugin : WebPlugin {
     @Service @Volatile
     lateinit var abcManager: ABCManager
 
     override val path: String = abcBasePath
-    val logger = LoggerFactory.getLogger(ABCPathRouter::class.java)
+    val logger = LoggerFactory.getLogger(ABCWebPlugin::class.java)
     val gson = Gson()
 
     override fun initRouter(router: Router) {

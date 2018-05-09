@@ -4,12 +4,12 @@
 
 package org.libraryweasel.music.abc.api
 
-import io.vertx.ext.auth.User
+import io.undertow.security.idm.Account
 
 interface ABCManager {
-    fun allABCDocuments(user: User): Map<Long, String>
-    fun fetchABCDocument(user: User, id: Long): ABCDocument
-    fun createABCDocument(user: User, document: String): Boolean
-    fun updateABCDocument(user: User, id: Long, document: String): Boolean
-    fun removeABCDocument(user: User, id: Long): Boolean
+    fun allABCDocuments(account: Account): Map<Long, String>
+    fun fetchABCDocument(account: Account, id: Long): ABCDocument
+    fun createABCDocument(account: Account, document: String): Boolean
+    fun updateABCDocument(account: Account, id: Long, document: String): Boolean
+    fun removeABCDocument(account: Account, id: Long): Boolean
 }
