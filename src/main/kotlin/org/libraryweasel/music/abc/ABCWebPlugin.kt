@@ -26,8 +26,11 @@ class ABCWebPlugin : WebPlugin {
     override val handler: HttpHandler = createHandler()
 
     private fun createHandler(): HttpHandler {
-        val pathHandler =  Handlers.path()
-//        fun initRouter(router: Router) {
+        val pathHandler =  Handlers.pathTemplate()
+
+        pathHandler.add("/documents", { exchange ->
+            if (exchange.requestMethod.equalToString("get")) {
+                //        fun initRouter(router: Router) {
 //            router.route(HttpMethod.GET, "/documents")
 //                    .produces("application/json")
 //                    .blockingHandler {context ->
@@ -36,16 +39,8 @@ class ABCWebPlugin : WebPlugin {
 //                        val allDocuments = abcManager.allABCDocuments(context.user())
 //                        response.end(gson.toJson(allDocuments))
 //                    }
-//            router.route(HttpMethod.GET, "/documents/:id/")
-//                    .produces("application/json")
-//                    .blockingHandler { context ->
-//                        val id = context.request().getParam("id").toLong()
-//                        logger.debug("in GET for /documents/$id/")
-//                        val response = context.response()
-//                        val document = abcManager.fetchABCDocument(context.user(), id)
-//                        response.end(gson.toJson(document))
-//                    }
-//            router.route(HttpMethod.POST, "/documents/")
+            } else if (exchange.requestMethod.equalToString("post")) {
+                //            router.route(HttpMethod.POST, "/documents/")
 //                    .produces("application/json")
 //                    .blockingHandler { context: RoutingContext ->
 //                        logger.debug("in POST for /documents with content: {}", context.bodyAsJson.toString())
@@ -63,7 +58,22 @@ class ABCWebPlugin : WebPlugin {
 //                            context.next()
 //                        }
 //                    }
-//            router.route(HttpMethod.PATCH, "/documents/:id/")
+            }
+        })
+
+        pathHandler.add("/documents/{id}/", { exchange ->
+            if (exchange.requestMethod.equalToString("get")) {
+                //            router.route(HttpMethod.GET, "/documents/:id/")
+//                    .produces("application/json")
+//                    .blockingHandler { context ->
+//                        val id = context.request().getParam("id").toLong()
+//                        logger.debug("in GET for /documents/$id/")
+//                        val response = context.response()
+//                        val document = abcManager.fetchABCDocument(context.user(), id)
+//                        response.end(gson.toJson(document))
+//                    }
+            } else if (exchange.requestMethod.equalToString("patch")) {
+                //            router.route(HttpMethod.PATCH, "/documents/:id/")
 //                    .produces("application/json")
 //                    .blockingHandler { context ->
 //                        logger.debug("in PATCH for /documents with content: {}", context.bodyAsJson.toString())
@@ -82,7 +92,8 @@ class ABCWebPlugin : WebPlugin {
 //                            context.next()
 //                        }
 //                    }
-//            router.route(HttpMethod.DELETE, "/documents/:id/")
+            } else if (exchange.requestMethod.equalToString("delete")) {
+                //            router.route(HttpMethod.DELETE, "/documents/:id/")
 //                    .produces("application/json")
 //                    .blockingHandler { context ->
 //                        val request = context.request()
@@ -96,9 +107,10 @@ class ABCWebPlugin : WebPlugin {
 //                            response.end(gson.toJson(mapOf(Pair("result", "error"))))
 //                        }
 //                    }
+            }
+        })
+
 //            router.route(HttpMethod.GET, "/*").handler(StaticHandler.create("public", this.javaClass.classLoader))
-//
-//    }
         return pathHandler
     }
 
