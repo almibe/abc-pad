@@ -5,8 +5,11 @@
 package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.undertow.Handlers
 import io.undertow.server.HttpHandler
+import io.undertow.server.HttpServerExchange
+import io.undertow.util.Headers
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
@@ -30,34 +33,29 @@ class ABCWebPlugin : WebPlugin {
 
         pathHandler.add("/documents", { exchange ->
             if (exchange.requestMethod.equalToString("get")) {
-                //        fun initRouter(router: Router) {
-//            router.route(HttpMethod.GET, "/documents")
-//                    .produces("application/json")
-//                    .blockingHandler {context ->
-//                        logger.debug("in GET for /documents")
-//                        val response = context.response()
-//                        val allDocuments = abcManager.allABCDocuments(context.user())
-//                        response.end(gson.toJson(allDocuments))
-//                    }
+                //TODO move to blocking thread
+                logger.debug("in GET for /documents")
+                val response = exchange.responseSender
+                val allDocuments = abcManager.allABCDocuments(exchange.securityContext.authenticatedAccount)
+                exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+                response.send(gson.toJson(allDocuments))
             } else if (exchange.requestMethod.equalToString("post")) {
-                //            router.route(HttpMethod.POST, "/documents/")
-//                    .produces("application/json")
-//                    .blockingHandler { context: RoutingContext ->
-//                        logger.debug("in POST for /documents with content: {}", context.bodyAsJson.toString())
-//                        val response = context.response()
-//                        val request = context.bodyAsJson
-//                        if (request.containsKey("document")) {
-//                            val document = request.getString("document")
-//                            val result = abcManager.createABCDocument(context.user(), document)
-//                            if (result) {
-//                                response.end(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
-//                            } else {
-//                                response.end(gson.toJson(mapOf(Pair("result", "error"))))
-//                            }
-//                        } else {
-//                            context.next()
-//                        }
-//                    }
+                //TODO move to blocking thread
+                exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+                exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange?, message: String? ->
+                    logger.debug("in POST for /documents with content: {}", message)
+                    val response = exchange!!.responseSender
+                    val request = gson.fromJson(message, JsonObject::class.java)
+                    if (request.has("document")) {
+                        val document = request.getAsJsonPrimitive("document").asString
+                        val result = abcManager.createABCDocument(exchange.securityContext.authenticatedAccount, document).block()
+                        if (result != null) {
+                            response.send(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
+                        } else {
+                            response.send(gson.toJson(mapOf(Pair("result", "error"))))
+                        }
+                    }
+                }
             }
         })
 
