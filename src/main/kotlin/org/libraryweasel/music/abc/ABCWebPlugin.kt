@@ -9,7 +9,9 @@ import com.google.gson.JsonObject
 import io.undertow.Handlers
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
+import io.undertow.server.handlers.resource.ClassPathResourceManager
 import io.undertow.util.Headers
+import io.undertow.util.PathTemplateMatch
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
@@ -60,55 +62,48 @@ class ABCWebPlugin : WebPlugin {
         })
 
         pathHandler.add("/documents/{id}/", { exchange ->
+            val id = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]!!.toLong()
             if (exchange.requestMethod.equalToString("get")) {
-                //            router.route(HttpMethod.GET, "/documents/:id/")
-//                    .produces("application/json")
-//                    .blockingHandler { context ->
-//                        val id = context.request().getParam("id").toLong()
-//                        logger.debug("in GET for /documents/$id/")
-//                        val response = context.response()
-//                        val document = abcManager.fetchABCDocument(context.user(), id)
-//                        response.end(gson.toJson(document))
-//                    }
+                //TODO move to blocking thread
+                exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+                logger.debug("in GET for /documents/$id/")
+                val response = exchange.responseSender
+                val document = abcManager.fetchABCDocument(exchange.securityContext.authenticatedAccount, id)
+                response.send(gson.toJson(document))
             } else if (exchange.requestMethod.equalToString("patch")) {
-                //            router.route(HttpMethod.PATCH, "/documents/:id/")
-//                    .produces("application/json")
-//                    .blockingHandler { context ->
-//                        logger.debug("in PATCH for /documents with content: {}", context.bodyAsJson.toString())
-//                        val response = context.response()
-//                        val request = context.bodyAsJson
-//                        if (request.containsKey("document")) {
-//                            val document = request.getString("document")
-//                            val id: Long = request.getLong("id")
-//                            val result = abcManager.updateABCDocument(context.user(), id, document)
-//                            if (result) {
-//                                response.end(gson.toJson(mapOf(Pair("result", "success"))))
-//                            } else {
-//                                response.end(gson.toJson(mapOf(Pair("result", "error"))))
-//                            }
-//                        } else {
-//                            context.next()
-//                        }
-//                    }
+                //TODO move to blocking thread
+                exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+
+                exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
+                    logger.debug("in PATCH for /documents with content: {}", message)
+                    val response = exchange.responseSender
+                    val request = gson.fromJson(message, JsonObject::class.java)
+                    if (request.has("document")) {
+                        val document = request.getAsJsonPrimitive("document").asString
+                        val result = abcManager.updateABCDocument(exchange.securityContext.authenticatedAccount, id, document).block()
+                        if (result != null) {
+                            response.send(gson.toJson(mapOf(Pair("result", "success"))))
+                        } else {
+                            response.send(gson.toJson(mapOf(Pair("result", "error"))))
+                        }
+                    }
+                }
+
             } else if (exchange.requestMethod.equalToString("delete")) {
-                //            router.route(HttpMethod.DELETE, "/documents/:id/")
-//                    .produces("application/json")
-//                    .blockingHandler { context ->
-//                        val request = context.request()
-//                        val id = request.getParam("id").toLong()
-//                        logger.debug("in DELETE for /documents with content: {}", id)
-//                        val response = context.response()
-//                        val result = abcManager.removeABCDocument(context.user(), id)
-//                        if (result) {
-//                            response.end(gson.toJson(mapOf(Pair("result", "success"))))
-//                        } else {
-//                            response.end(gson.toJson(mapOf(Pair("result", "error"))))
-//                        }
-//                    }
+                //TODO move to blocking thread
+                exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+                logger.debug("in DELETE for /documents with content: {}", id)
+                val response = exchange.responseSender
+                val result = abcManager.removeABCDocument(exchange.securityContext.authenticatedAccount, id).block()
+                if (result != null && result) {
+                    response.send(gson.toJson(mapOf(Pair("result", "success"))))
+                } else {
+                    response.send(gson.toJson(mapOf(Pair("result", "error"))))
+                }
             }
         })
 
-//            router.route(HttpMethod.GET, "/*").handler(StaticHandler.create("public", this.javaClass.classLoader))
+        pathHandler.add("/*", Handlers.resource(ClassPathResourceManager(this.javaClass.classLoader, "/public/")))
         return pathHandler
     }
 
