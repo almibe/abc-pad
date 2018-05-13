@@ -26,6 +26,11 @@ dependencies {
     compile pluginDeps.libraryWeaselServoDep.id
 }
 
+bundle {
+    instruction 'Import-Package', '*'
+    instruction 'Bundle-Activator', 'org.libraryweasel.music.Activator'
+}
+
 task parcel(type: Exec) {
     workingDir "parcel"
     commandLine "npm", "run", "build"
