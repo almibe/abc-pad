@@ -9,7 +9,7 @@ import './main.css'
 const state = {
   documentId: -1,
   showDialog: false,
-  document: 'T: Untitled\nC: Unknown',
+  document: 'T: Untitled\nC: Unknown\nK: ',
   documentList: [],
   status: ''
 }
