@@ -33,10 +33,10 @@ class ABCWebPlugin : WebPlugin {
     private fun createHandler(): HttpHandler {
         val pathHandler =  Handlers.pathTemplate()
 
-        pathHandler.add("/documents", { exchange ->
+        pathHandler.add("/documents/", { exchange ->
             if (exchange.requestMethod.equalToString("get")) {
                 //TODO move to blocking thread
-                logger.debug("in GET for /documents")
+                logger.debug("in GET for /documents/")
                 val response = exchange.responseSender
                 val allDocuments = abcManager.allABCDocuments(exchange.securityContext.authenticatedAccount)
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
@@ -45,7 +45,7 @@ class ABCWebPlugin : WebPlugin {
                 //TODO move to blocking thread
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
                 exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange?, message: String? ->
-                    logger.debug("in POST for /documents with content: {}", message)
+                    logger.debug("in POST for /documents/ with content: {}", message)
                     val response = exchange!!.responseSender
                     val request = gson.fromJson(message, JsonObject::class.java)
                     if (request.has("document")) {
@@ -62,20 +62,20 @@ class ABCWebPlugin : WebPlugin {
         })
 
         pathHandler.add("/documents/{id}/", { exchange ->
-            val id = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]!!.toLong()
-            if (exchange.requestMethod.equalToString("get")) {
+            val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
+            if (exchange.requestMethod.equalToString("get") && id != null) {
                 //TODO move to blocking thread
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
                 logger.debug("in GET for /documents/$id/")
                 val response = exchange.responseSender
                 val document = abcManager.fetchABCDocument(exchange.securityContext.authenticatedAccount, id)
                 response.send(gson.toJson(document))
-            } else if (exchange.requestMethod.equalToString("patch")) {
+            } else if (exchange.requestMethod.equalToString("patch") && id != null) {
                 //TODO move to blocking thread
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
 
                 exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
-                    logger.debug("in PATCH for /documents with content: {}", message)
+                    logger.debug("in PATCH for /documents/ with content: {}", message)
                     val response = exchange.responseSender
                     val request = gson.fromJson(message, JsonObject::class.java)
                     if (request.has("document")) {
@@ -89,10 +89,10 @@ class ABCWebPlugin : WebPlugin {
                     }
                 }
 
-            } else if (exchange.requestMethod.equalToString("delete")) {
+            } else if (exchange.requestMethod.equalToString("delete") && id != null) {
                 //TODO move to blocking thread
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-                logger.debug("in DELETE for /documents with content: {}", id)
+                logger.debug("in DELETE for /documents/ with content: {}", id)
                 val response = exchange.responseSender
                 val result = abcManager.removeABCDocument(exchange.securityContext.authenticatedAccount, id).block()
                 if (result != null && result) {
