@@ -5,6 +5,7 @@ import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
 import '../node_modules/bulma/bulma.sass'
 import './main.css'
+import { controllers } from './controllers.js'
 
 const state = {
   documentId: -1,
@@ -19,34 +20,14 @@ const actions = {
     document: text
   }),
   saveDocument: value => state => {
-    if (state.documentId > 0) {
-      axios.patch('documents/'+state.documentId, {
-        document: state.document
-      })
-      .then(function (response) {
-        console.log(response); //TODO present feedback to user
-      })
-      .catch(function (error) {
-        console.log(error); //TODO present feedback to user
-      });
-    } else {
-      axios.post('documents/', {
-        document: state.document
-      })
-      .then(function (response) {
-        console.log(response); //TODO present feedback to user
-      })
-      .catch(function (error) {
-        console.log(error); //TODO present feedback to user
-      });
-    }
+    controllers.saveDocument(state)
   },
   loadDocument: ({ id }) => state => {
-    //TODO make axios call
+    controllers.loadDocument(id)
   },
   showDialog: value => state => { showDialog: true },
   postStatus: status => state => {
-      //TODO update status text + set timer to clear status in 5 seconds
+    status: status
   }
 }
 
