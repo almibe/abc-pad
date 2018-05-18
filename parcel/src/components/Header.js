@@ -11,7 +11,7 @@ export const Header = ({saveDocument, showLoad, status}) => (
               <button class="button" id="save" onclick={() => saveDocument()}>Save</button>
             </div>
             <div class="control">
-              <button class="button" id="showLoad" onclick={() => showDialog()}>Manage Documents</button>
+              <button class="button" id="showLoad" onclick={() => showLoad()}>Manage Documents</button>
             </div>
           </div>
         </div>
