@@ -103,7 +103,7 @@ class ABCWebPlugin : WebPlugin {
             }
         })
 
-        pathHandler.add("/*", Handlers.resource(ClassPathResourceManager(this.javaClass.classLoader, "/public/")))
+        pathHandler.add("/", Handlers.resource(ClassPathResourceManager(this.javaClass.classLoader, "/public/")))
         return pathHandler
     }
 

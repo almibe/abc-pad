@@ -1,5 +1,5 @@
 
-export default  = {
+const controllers  = {
   saveDocument: function(state) {
     if (state.documentId > 0) {
       axios.patch('documents/'+state.documentId, {
@@ -27,3 +27,5 @@ export default  = {
     //TODO make axios call
   }
 }
+
+export default controllers;
