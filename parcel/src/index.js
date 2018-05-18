@@ -1,5 +1,4 @@
 import { h, app } from 'hyperapp'
-import axios from 'axios'
 import { Header } from './components/Header.js'
 import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
