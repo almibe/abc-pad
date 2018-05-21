@@ -1,0 +1,19 @@
+{
+  "name": "webpack",
+  "version": "0.1.0",
+  "description": "Webfiles for library-weasel-music plugin.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/almibe/library-weasel-music.git"
+  },
+  "author": "Alex Berry",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/almibe/library-weasel-music/issues"
+  },
+  "homepage": "https://github.com/almibe/library-weasel-music#readme"
+}
