@@ -24,7 +24,7 @@ const actions = {
   loadDocument: ({ id }) => state => {
     controllers.loadDocument(id)
   },
-  showLoad: value => state => { showLoad: true },
+  showLoad: value => state => { return {showLoad: true} },
   postStatus: status => state => {
     status: status
   }

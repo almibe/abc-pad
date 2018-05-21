@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const controllers  = {
+const controllers = {
   saveDocument: function(state) {
     if (state.documentId > 0) {
       axios.patch('documents/'+state.documentId, {

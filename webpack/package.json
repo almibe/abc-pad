@@ -1,19 +1,52 @@
 {
   "name": "webpack",
   "version": "0.1.0",
-  "description": "Webfiles for library-weasel-music plugin.",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/almibe/library-weasel-music.git"
+  "dependencies": {
+    "abcjs": "^5.1.1",
+    "axios": "^0.18.0",
+    "bulma": "^0.7.1",
+    "font-awesome": "^4.7.0",
+    "vue": "^2.5.16"
   },
-  "author": "Alex Berry",
-  "license": "MPL-2.0",
-  "bugs": {
-    "url": "https://github.com/almibe/library-weasel-music/issues"
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-beta.11",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.11",
+    "@vue/cli-service": "^3.0.0-beta.11",
+    "vue-template-compiler": "^2.5.16"
   },
-  "homepage": "https://github.com/almibe/library-weasel-music#readme"
+  "babel": {
+    "presets": [
+      "@vue/app"
+    ]
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

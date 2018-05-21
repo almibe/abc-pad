@@ -1,7 +1,7 @@
 import { h } from 'hyperapp'
 
-export const LoadDialog = showDialog => state =>
-  <div class={`modal ${state.showDialog ? "is-active" : ""}`}>
+export const LoadDialog = ({showDialog}) => (
+  <div class={`$showDialog modal`}>
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -17,3 +17,4 @@ export const LoadDialog = showDialog => state =>
       </footer>
     </div>
   </div>
+)
