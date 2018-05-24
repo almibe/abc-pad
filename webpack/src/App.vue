@@ -1,10 +1,36 @@
-import { h, app } from 'hyperapp'
+<template>
+  <div id="app">
+    <img src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  </div>
+</template>
+
+<script>
+//import HelloWorld from './components/HelloWorld.vue'
+
 import { Header } from './components/Header.js'
 import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
 import '../node_modules/bulma/bulma.sass'
 import './main.css'
 import controllers from './controllers.js'
+
+
+export default {
+  name: 'app',
+  components: {
+
+  }
+}
+</script>
+
+<style>
+
+</style>
+
+
+
+/**
 
 const state = {
   documentId: -1,
@@ -38,3 +64,5 @@ const view = (state, actions) =>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
+
+**/
