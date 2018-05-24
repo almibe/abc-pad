@@ -31,15 +31,15 @@ bundle {
     instruction 'Bundle-Activator', 'org.libraryweasel.music.Activator'
 }
 
-task parcel(type: Exec) {
-    workingDir "parcel"
+task webpack(type: Exec) {
+    workingDir "webpack"
     commandLine "npm", "run", "build"
 }
 
-task copyParcel(type: Copy) {
-    from 'parcel/dist'
+task copyWebpack(type: Copy) {
+    from 'webpack/dist'
     into 'build/resources/main/public'
 }
 
-tasks.jar.dependsOn(copyParcel)
-tasks.copyParcel.dependsOn(parcel)
+tasks.jar.dependsOn(copyWebpack)
+tasks.copyWebpack.dependsOn(webpack)
