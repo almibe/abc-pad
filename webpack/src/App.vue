@@ -1,36 +1,20 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <main>
+      <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
+      <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
+      <LoadDialog showLoad={state.showLoad} ></LoadDialog>
+    </main>
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-
-import { Header } from './components/Header.js'
-import { ABCEditor } from './components/ABCEditor.js'
-import { LoadDialog } from './components/LoadDialog.js'
+import Header from './components/Header.vue'
+import ABCEditor from './components/ABCEditor.vue'
+import LoadDialog from './components/LoadDialog.vue'
 import '../node_modules/bulma/bulma.sass'
 import './main.css'
 import controllers from './controllers.js'
-
-
-export default {
-  name: 'app',
-  components: {
-
-  }
-}
-</script>
-
-<style>
-
-</style>
-
-
-
-/**
 
 const state = {
   documentId: -1,
@@ -56,13 +40,13 @@ const actions = {
   }
 }
 
-const view = (state, actions) =>
-  <main>
-    <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
-    <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
-    <LoadDialog showLoad={state.showLoad} ></LoadDialog>
-  </main>
+export default {
+  name: 'app',
+  components: {
 
-const application = app(state, actions, view, document.getElementById('app'))
+  }
+}
+</script>
 
-**/
+<style>
+</style>
