@@ -1,6 +1,4 @@
-import { h } from 'hyperapp'
-
-export const Header = ({saveDocument, showLoad, status}) => (
+<template>
   <div class="container header">
     <div class="container">
       <div class="columns">
@@ -16,9 +14,15 @@ export const Header = ({saveDocument, showLoad, status}) => (
           </div>
         </div>
         <div class="column">
-          {status}
+          {{ status }}
         </div>
       </div>
     </div>
   </div>
-)
+</template>
+
+<style>
+.header {
+  margin-top: 12px;
+}
+</style>

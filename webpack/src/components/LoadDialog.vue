@@ -1,6 +1,4 @@
-import { h } from 'hyperapp'
-
-export const LoadDialog = ({showDialog}) => (
+<template>
   <div class={`$showDialog modal`}>
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -17,4 +15,4 @@ export const LoadDialog = ({showDialog}) => (
       </footer>
     </div>
   </div>
-)
+</template>

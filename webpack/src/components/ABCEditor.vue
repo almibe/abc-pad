@@ -1,7 +1,4 @@
-import { h } from 'hyperapp'
-import abcjs from 'abcjs'
-
-export const ABCEditor = ({ document, setText }) => (
+<template>
   <div class="container" oncreate={element => init()}>
     <div class="columns">
       <div class="column">
@@ -13,8 +10,18 @@ export const ABCEditor = ({ document, setText }) => (
       </div>
     </div>
   </div>
-)
+</template>
+
+<script>
+import abcjs from 'abcjs'
 
 function init() {
   new abcjs.Editor('abcEditor', { canvas_id: 'canvas', generate_midi: false, warnings_id: 'warnings' })
 }
+</script>
+
+<style>
+textarea.code {
+  font-family: monospace;
+}
+</style>
