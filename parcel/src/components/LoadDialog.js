@@ -1,12 +1,12 @@
 import { h } from 'hyperapp'
 
-export const LoadDialog = showDialog => state =>
-  <div class={`modal ${state.showDialog ? "is-active" : ""}`}>
+export const LoadDialog = ({dialogState, hideLoad}) =>
+  <div class={`modal ${dialogState}`}>
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Manage Documents</p>
-        <button class="delete" aria-label="close"></button>
+        <button class="delete" aria-label="close" onclick={() => hideLoad()}></button>
       </header>
       <section class="modal-card-body">
         Content

@@ -8,7 +8,7 @@ import controllers from './controllers.js'
 
 const state = {
   documentId: -1,
-  showLoad: false,
+  dialogState: '',
   document: 'T: Untitled\nC: Unknown\nK: ',
   documentList: [],
   status: ''
@@ -24,7 +24,12 @@ const actions = {
   loadDocument: ({ id }) => state => {
     controllers.loadDocument(id)
   },
-  showLoad: value => state => { showLoad: true },
+  showLoad: function(state) {
+    return {dialogState: "is-active"}
+  },
+  hideLoad: function(state) {
+    return {dialogState: ""}
+  },
   postStatus: status => state => {
     status: status
   }
@@ -34,7 +39,7 @@ const view = (state, actions) =>
   <main>
     <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
     <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
-    <LoadDialog showLoad={state.showLoad} ></LoadDialog>
+    <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad}></LoadDialog>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
