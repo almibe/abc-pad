@@ -22,13 +22,6 @@ export default {
     Header,
     ABCEditor,
     LoadDialog
-  },
-  data: {
-    documentId: -1,
-    showLoad: false,
-    document: 'T: Untitled\nC: Unknown\nK: ',
-    documentList: [],
-    status: ''
   }
 }
 </script>
