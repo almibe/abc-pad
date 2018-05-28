@@ -16,22 +16,6 @@ import '../node_modules/bulma/bulma.sass'
 import './assets/main.css'
 import controllers from './controllers.js'
 
-const actions = {
-  setText: text => ({
-    document: text
-  }),
-  saveDocument: value => state => {
-    controllers.saveDocument(state)
-  },
-  loadDocument: ({ id }) => state => {
-    controllers.loadDocument(id)
-  },
-  showLoad: value => state => { return {showLoad: true} },
-  postStatus: status => state => {
-    status: status
-  }
-}
-
 export default {
   name: 'App',
   components: {
