@@ -1,8 +1,8 @@
 <template>
-  <div class="container" oncreate={element => init()}>
+  <div class="container">
     <div class="columns">
       <div class="column">
-        <textarea id="abcEditor" class="textarea code" rows="20" value={document} oninput={e => setText(e.target.value)}></textarea>
+        <textarea id="abcEditor" class="textarea code" rows="20" value={{$store.state.document}}></textarea>
         <div id="warnings"></div>
       </div>
       <div class="column">
@@ -15,8 +15,10 @@
 <script>
 import abcjs from 'abcjs'
 
-function init() {
-  new abcjs.Editor('abcEditor', { canvas_id: 'canvas', generate_midi: false, warnings_id: 'warnings' })
+export default {
+  mounted: function() {
+    new abcjs.Editor('abcEditor', { canvas_id: 'canvas', generate_midi: false, warnings_id: 'warnings' })
+  }
 }
 </script>
 
