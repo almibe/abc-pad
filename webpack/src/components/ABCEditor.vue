@@ -20,7 +20,7 @@ function init() {
 }
 </script>
 
-<style>
+<style scoped>
 textarea.code {
   font-family: monospace;
 }

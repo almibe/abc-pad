@@ -13,16 +13,8 @@ import Header from './components/Header.vue'
 import ABCEditor from './components/ABCEditor.vue'
 import LoadDialog from './components/LoadDialog.vue'
 import '../node_modules/bulma/bulma.sass'
-import './main.css'
+import './assets/main.css'
 import controllers from './controllers.js'
-
-const state = {
-  documentId: -1,
-  showLoad: false,
-  document: 'T: Untitled\nC: Unknown\nK: ',
-  documentList: [],
-  status: ''
-}
 
 const actions = {
   setText: text => ({
@@ -41,12 +33,18 @@ const actions = {
 }
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-
+    Header,
+    ABCEditor,
+    LoadDialog
+  },
+  data: {
+    documentId: -1,
+    showLoad: false,
+    document: 'T: Untitled\nC: Unknown\nK: ',
+    documentList: [],
+    status: ''
   }
 }
 </script>
-
-<style>
-</style>
