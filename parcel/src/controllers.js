@@ -24,6 +24,12 @@ const controllers  = {
       });
     }
   },
+  loadDocumentList: function() {
+    //TODO make axios call
+  },
+  deleteDocument: function(id) {
+    //TODO make axios call
+  },
   loadDocument: function(id) {
     //TODO make axios call
   }
