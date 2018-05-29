@@ -9,7 +9,12 @@ export const LoadDialog = ({dialogState, hideLoad, documentList}) =>
         <button class="delete" aria-label="close" onclick={() => hideLoad()}></button>
       </header>
       <section class="modal-card-body">
-        Content
+        {documentList.length < 1 &&
+          <p>No documents</p>
+        }
+        {documentList.length > 0 &&
+          <p>Documents</p>
+        }
       </section>
     </div>
   </div>
