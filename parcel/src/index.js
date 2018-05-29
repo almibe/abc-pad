@@ -39,7 +39,7 @@ const view = (state, actions) =>
   <main>
     <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
     <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
-    <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad}></LoadDialog>
+    <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad} documentList={state.documentList}></LoadDialog>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
