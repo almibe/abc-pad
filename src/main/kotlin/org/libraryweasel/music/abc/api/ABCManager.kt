@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 interface ABCManager {
-    fun allABCDocuments(account: Account): Flux<ABCDocument>
+    fun allABCDocumentDetails(account: Account): Flux<ABCDocumentDetails>
     fun fetchABCDocument(account: Account, id: Long): Mono<ABCDocument>
     fun createABCDocument(account: Account, document: String): Mono<ABCDocument>
     fun updateABCDocument(account: Account, id: Long, document: String): Mono<ABCDocument>
