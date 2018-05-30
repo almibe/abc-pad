@@ -38,7 +38,7 @@ class ABCWebPlugin : WebPlugin {
                 //TODO move to blocking thread
                 logger.debug("in GET for /documents/")
                 val response = exchange.responseSender
-                val allDocuments = abcManager.allABCDocuments(exchange.securityContext.authenticatedAccount)
+                val allDocuments = abcManager.allABCDocumentDetails(exchange.securityContext.authenticatedAccount)
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
                 response.send(gson.toJson(allDocuments))
             } else if (exchange.requestMethod.equalToString("post")) {

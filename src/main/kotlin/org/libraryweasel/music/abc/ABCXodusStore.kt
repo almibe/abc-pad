@@ -8,6 +8,7 @@ import io.undertow.security.idm.Account
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.StoreTransaction
 import org.libraryweasel.music.abc.api.ABCDocument
+import org.libraryweasel.music.abc.api.ABCDocumentDetails
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
@@ -27,14 +28,14 @@ class ABCXodusStore : ABCManager {
 
     private fun username(account: Account) : String = account.principal.name
 
-    override fun allABCDocuments(account: Account): Flux<ABCDocument> {
+    override fun allABCDocumentDetails(account: Account): Flux<ABCDocumentDetails> {
         return try {
             entityStore.instance.computeInReadonlyTransaction { txn ->
                 val results = txn.find(documentClass, "username", username(account))
-                val documents = results.map { it ->
-                    ABCDocument(it.id.localId, it.getProperty("document") as String)
+                val documentDetails = results.map { it ->
+                    ABCDocumentDetails(it.id.localId, it.getProperty("title") as String, it.getProperty("composer") as String)
                 }
-                Flux.fromIterable(documents)
+                Flux.fromIterable(documentDetails)
             }
         } catch (ex: Exception) {
             Flux.error(ex)
@@ -54,14 +55,14 @@ class ABCXodusStore : ABCManager {
         } catch (ex: Exception) {
             Mono.error(ex)
         }
-
     }
 
     override fun createABCDocument(account: Account, document: String): Mono<ABCDocument> {
         return try {
             entityStore.instance.computeInTransaction { txn ->
                 val abcDocument = txn.newEntity(documentClass)
-                abcDocument.setProperty("name", documentToName(document))
+                abcDocument.setProperty("title", documentToTitle(document))
+                abcDocument.setProperty("composer", documentToComposer(document))
                 abcDocument.setProperty("document", document)
                 abcDocument.setProperty("username", username(account))
                 txn.saveEntity(abcDocument)
@@ -77,8 +78,8 @@ class ABCXodusStore : ABCManager {
             entityStore.instance.computeInTransaction { txn ->
                 val entity = fetchABCDocumentEntity(txn, account, id)
                 if (entity != null) {
-                    //TODO set other fields
-                    entity.setProperty("name", documentToName(document))
+                    entity.setProperty("title", documentToTitle(document))
+                    entity.setProperty("composer", documentToComposer(document))
                     entity.setProperty("document", document)
                     txn.saveEntity(entity)
                     Mono.just(ABCDocument(id, document))
@@ -116,9 +117,9 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    private fun documentToName(document: String): String {
-        val title: String = document.lines().find { it.trim().startsWith("T:") }?.trim() ?: "untitled"
-        val composer: String = document.lines().find { it.trim().startsWith("C:") }?.trim() ?: "unknown"
-        return "$title - $composer"
-    }
+    private fun documentToTitle(document: String): String =
+            document.lines().find { it.trim().startsWith("T:") }?.trim() ?: "untitled"
+
+    private fun documentToComposer(document: String): String =
+            document.lines().find { it.trim().startsWith("C:") }?.trim() ?: "unknown"
 }
