@@ -6,4 +6,4 @@ package org.libraryweasel.music.abc.api
 
 data class ABCDocument(val id: Long, val document: String)
 
-data class ABCDocumentDetails(val id: Long, val title: String?, val composer: String?)
+data class ABCDocumentDetails(val id: Long, val title: String = "", val composer: String = "")
