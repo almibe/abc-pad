@@ -18,6 +18,11 @@ class ABCXodusStoreTest : StringSpec({
         override fun getPrincipal(): Principal = Principal { "test" }
     }
 
+    val account2 = object : Account {
+        override fun getRoles(): MutableSet<String> = mutableSetOf()
+        override fun getPrincipal(): Principal = Principal { "test2" }
+    }
+
     val persistentEntityStore = PersistentEntityStores.newInstance(createTempDir())
     val entityStoreInstanceManager = EntityStoreInstanceManager { persistentEntityStore }
     val abcDocumentStore = ABCXodusStore(entityStoreInstanceManager)
@@ -54,27 +59,41 @@ class ABCXodusStoreTest : StringSpec({
         result.filter { it.title == "A Rainbow in Curved Air" }.size shouldBe 1
     }
 
-//    "edit documents" {
-//        "test".length shouldBe 4
-//    }
-//
-//    "test new details and fetch" {
-//        "test".length shouldBe 4
-//    }
-//
-//    "remove one document" {
-//        "test".length shouldBe 4
-//    }
-//
-//    "test details of remaining document and fetch" {
-//        "test".length shouldBe 4
-//    }
-//
-//    "add document for another user" {
-//        "test".length shouldBe 4
-//    }
-//
-//    "make sure that accounts are being used with details and fetching" {
-//        "test".length shouldBe 4
-//    }
+    "edit documents" {
+        val result = abcDocumentStore.allABCDocumentDetails(account).collectList().block()!!
+        val id = result.first { it.title.contains("Grand") }.id
+        val content = abcDocumentStore.fetchABCDocument(account, id).block()!!.document
+        abcDocumentStore.updateABCDocument(account, id, "$content\nabc")
+
+        val testResult: List<ABCDocumentDetails> = abcDocumentStore.allABCDocumentDetails(account).collectList().block()!!
+        testResult.size shouldBe 3
+    }
+
+    "test new details and fetch" {
+        val results = abcDocumentStore.allABCDocumentDetails(account).collectList().block()!!.filter { it.title.contains("Grand") }
+        results.size shouldBe 1
+        val doc = abcDocumentStore.fetchABCDocument(account, results.first().id).block()!!
+        doc.document.contains("abc") shouldBe true
+        results.first().composer shouldBe "Mauro Giuliani"
+    }
+
+    "remove one document" {
+        val result = abcDocumentStore.allABCDocumentDetails(account).collectList().block()!!
+        val id = result.first { it.title.contains("Grand") }.id
+        abcDocumentStore.removeABCDocument(account, id)
+        abcDocumentStore.allABCDocumentDetails(account).count().block()!! shouldBe 2L
+    }
+
+    "add document for another user and make sure accounts are being stored correctly" {
+        abcDocumentStore.createABCDocument(account2, "This is a test")
+
+        abcDocumentStore.allABCDocumentDetails(account).count().block() shouldBe 2L
+        abcDocumentStore.allABCDocumentDetails(account2).count().block() shouldBe 1L
+    }
+
+    "make sure that documents without C and T fields are stored correctly" {
+        val docDetails = abcDocumentStore.allABCDocumentDetails(account2).collectList().block()!!.first()
+        docDetails.composer shouldBe "unknown"
+        docDetails.title shouldBe "untitled"
+    }
 })
