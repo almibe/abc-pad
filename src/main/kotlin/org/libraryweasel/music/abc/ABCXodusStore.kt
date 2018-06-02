@@ -17,9 +17,9 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component(ABCManager::class)
-class ABCXodusStore : ABCManager {
+class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
     @Service @Volatile
-    private lateinit var entityStore: EntityStoreInstanceManager
+    private var entityStore: EntityStoreInstanceManager = storeArg!!
 
     private val documentClass = "music.abc.Document"
 
@@ -118,8 +118,8 @@ class ABCXodusStore : ABCManager {
     }
 
     private fun documentToTitle(document: String): String =
-            document.lines().find { it.trim().startsWith("T:") }?.trim() ?: "untitled"
+            document.lines().find { it.trim().startsWith("T:") }?.substring(2)?.trim() ?: "untitled"
 
     private fun documentToComposer(document: String): String =
-            document.lines().find { it.trim().startsWith("C:") }?.trim() ?: "unknown"
+            document.lines().find { it.trim().startsWith("C:") }?.substring(2)?.trim() ?: "unknown"
 }
