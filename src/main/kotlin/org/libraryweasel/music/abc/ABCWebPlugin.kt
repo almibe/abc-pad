@@ -17,93 +17,6 @@ import org.libraryweasel.servo.Service
 import org.libraryweasel.web.api.WebPlugin
 import org.slf4j.LoggerFactory
 
-val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
-    TODO()
-//    if (exchange.requestMethod.equalToString("get")) {
-//        //TODO move to blocking thread
-//        logger.debug("in GET for /documents/")
-//        val response = exchange.responseSender
-//        val allDocuments = abcManager.allABCDocumentDetails(exchange.securityContext.authenticatedAccount)
-//        exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//        response.send(gson.toJson(allDocuments))
-}
-
-val postDocumentEndPoint = JsonEndPoint("/documents", "post") {
-    TODO()
-//} else if (exchange.requestMethod.equalToString("post")) {
-    //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange?, message: String? ->
-//        logger.debug("in POST for /documents/ with content: {}", message)
-//        val response = exchange!!.responseSender
-//        val request = gson.fromJson(message, JsonObject::class.java)
-//        if (request.has("document")) {
-//            val document = request.getAsJsonPrimitive("document").asString
-//            val result = abcManager.createABCDocument(exchange.securityContext.authenticatedAccount, document).block()
-//            if (result != null) {
-//                response.send(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
-//            } else {
-//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//            }
-//        }
-//    }
-//}
-//})
-}
-
-val getSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "get") {
-    TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//    if (exchange.requestMethod.equalToString("get") && id != null) {
-//        //TODO move to blocking thread
-//        exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//        logger.debug("in GET for /documents/$id/")
-//        val response = exchange.responseSender
-//        val document = abcManager.fetchABCDocument(exchange.securityContext.authenticatedAccount, id)
-//        response.send(gson.toJson(document))
-}
-
-val patchSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "patch") {
-    TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//} else if (exchange.requestMethod.equalToString("patch") && id != null) {
-//    //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//
-//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
-//        logger.debug("in PATCH for /documents/ with content: {}", message)
-//        val response = exchange.responseSender
-//        val request = gson.fromJson(message, JsonObject::class.java)
-//        if (request.has("document")) {
-//            val document = request.getAsJsonPrimitive("document").asString
-//            val result = abcManager.updateABCDocument(exchange.securityContext.authenticatedAccount, id, document).block()
-//            if (result != null) {
-//                response.send(gson.toJson(mapOf(Pair("result", "success"))))
-//            } else {
-//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//            }
-//        }
-//    }
-}
-
-val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
-    TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//} else if (exchange.requestMethod.equalToString("delete") && id != null) {
-//    //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//    logger.debug("in DELETE for /documents/ with content: {}", id)
-//    val response = exchange.responseSender
-//    val result = abcManager.removeABCDocument(exchange.securityContext.authenticatedAccount, id).block()
-//    if (result != null && result) {
-//        response.send(gson.toJson(mapOf(Pair("result", "success"))))
-//    } else {
-//        response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//    }
-//}
-//})
-}
-
 @Component(WebPlugin::class)
 class ABCWebPlugin : WebPlugin {
     override val rootPath: String = abcBasePath
@@ -129,5 +42,92 @@ class ABCWebPlugin : WebPlugin {
     }
 
     private fun start() {
+    }
+
+    val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
+        TODO()
+//    if (exchange.requestMethod.equalToString("get")) {
+//        //TODO move to blocking thread
+//        logger.debug("in GET for /documents/")
+//        val response = exchange.responseSender
+//        val allDocuments = abcManager.allABCDocumentDetails(exchange.securityContext.authenticatedAccount)
+//        exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+//        response.send(gson.toJson(allDocuments))
+    }
+
+    val postDocumentEndPoint = JsonEndPoint("/documents", "post") {
+        TODO()
+//} else if (exchange.requestMethod.equalToString("post")) {
+        //TODO move to blocking thread
+//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange?, message: String? ->
+//        logger.debug("in POST for /documents/ with content: {}", message)
+//        val response = exchange!!.responseSender
+//        val request = gson.fromJson(message, JsonObject::class.java)
+//        if (request.has("document")) {
+//            val document = request.getAsJsonPrimitive("document").asString
+//            val result = abcManager.createABCDocument(exchange.securityContext.authenticatedAccount, document).block()
+//            if (result != null) {
+//                response.send(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
+//            } else {
+//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
+//            }
+//        }
+//    }
+//}
+//})
+    }
+
+    val getSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "get") {
+        TODO()
+//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
+//    if (exchange.requestMethod.equalToString("get") && id != null) {
+//        //TODO move to blocking thread
+//        exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+//        logger.debug("in GET for /documents/$id/")
+//        val response = exchange.responseSender
+//        val document = abcManager.fetchABCDocument(exchange.securityContext.authenticatedAccount, id)
+//        response.send(gson.toJson(document))
+    }
+
+    val patchSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "patch") {
+        TODO()
+//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
+//} else if (exchange.requestMethod.equalToString("patch") && id != null) {
+//    //TODO move to blocking thread
+//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+//
+//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
+//        logger.debug("in PATCH for /documents/ with content: {}", message)
+//        val response = exchange.responseSender
+//        val request = gson.fromJson(message, JsonObject::class.java)
+//        if (request.has("document")) {
+//            val document = request.getAsJsonPrimitive("document").asString
+//            val result = abcManager.updateABCDocument(exchange.securityContext.authenticatedAccount, id, document).block()
+//            if (result != null) {
+//                response.send(gson.toJson(mapOf(Pair("result", "success"))))
+//            } else {
+//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
+//            }
+//        }
+//    }
+    }
+
+    val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
+        TODO()
+//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
+//} else if (exchange.requestMethod.equalToString("delete") && id != null) {
+//    //TODO move to blocking thread
+//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
+//    logger.debug("in DELETE for /documents/ with content: {}", id)
+//    val response = exchange.responseSender
+//    val result = abcManager.removeABCDocument(exchange.securityContext.authenticatedAccount, id).block()
+//    if (result != null && result) {
+//        response.send(gson.toJson(mapOf(Pair("result", "success"))))
+//    } else {
+//        response.send(gson.toJson(mapOf(Pair("result", "error"))))
+//    }
+//}
+//})
     }
 }
