@@ -7,9 +7,10 @@ package org.libraryweasel.music.abc
 import com.google.gson.Gson
 import io.undertow.Handlers
 import io.undertow.server.HttpHandler
-import io.undertow.server.handlers.resource.ClassPathResourceManager
 import org.libraryweasel.http.JsonEndPoint
+import org.libraryweasel.http.StaticResources
 import org.libraryweasel.http.addJsonEndPoint
+import org.libraryweasel.http.addStaticResources
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
@@ -37,7 +38,7 @@ class ABCWebPlugin : WebPlugin {
         pathHandler.addJsonEndPoint(patchSingleDocumentEndPoint)
         pathHandler.addJsonEndPoint(deleteSingleDocumentEndPoint)
 
-        pathHandler.add("/*", Handlers.resource(ClassPathResourceManager(this.javaClass.classLoader, "/public/")))
+        pathHandler.addStaticResources(StaticResources("/*", this.javaClass.classLoader, "/public/"))
         return pathHandler
     }
 
