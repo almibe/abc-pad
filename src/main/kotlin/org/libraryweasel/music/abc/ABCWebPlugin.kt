@@ -5,6 +5,7 @@
 package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.undertow.Handlers
 import io.undertow.server.HttpHandler
 import org.libraryweasel.http.*
@@ -45,43 +46,44 @@ class ABCWebPlugin : WebPlugin {
     val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
         //TODO move to blocking thread
         logger.debug("in GET for /documents/")
-        val allDocuments = abcManager.allABCDocumentDetails(it.account)
+        val allDocuments = abcManager.allABCDocumentDetails(it.account).collectList().block()
         JsonEndPointResult(gson.toJsonTree(allDocuments).asJsonObject)
     }
 
     val postDocumentEndPoint = JsonEndPoint("/documents", "post") {
-        TODO()
-//} else if (exchange.requestMethod.equalToString("post")) {
         //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange?, message: String? ->
-//        logger.debug("in POST for /documents/ with content: {}", message)
-//        val response = exchange!!.responseSender
-//        val request = gson.fromJson(message, JsonObject::class.java)
-//        if (request.has("document")) {
-//            val document = request.getAsJsonPrimitive("document").asString
-//            val result = abcManager.createABCDocument(exchange.securityContext.authenticatedAccount, document).block()
-//            if (result != null) {
-//                response.send(gson.toJson(mapOf(Pair("result", "success")))) //TODO maybe return ID?
-//            } else {
-//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//            }
-//        }
-//    }
-//}
-//})
+        logger.debug("in POST for /documents/ with content: {}", it.requestBody)
+        if (it.requestBody != null && it.requestBody!!.has("document")) {
+            val document = it.requestBody!!.getAsJsonPrimitive("document").asString
+            val result = abcManager.createABCDocument(it.account, document).block()
+            if (result != null) {
+                val result = JsonObject()
+                result.addProperty("result", "success") //TODO maybe return ID or full document?
+                JsonEndPointResult(result)
+            } else {
+                val result = JsonObject()
+                result.addProperty("result", "error")
+                JsonEndPointResult(result)
+            }
+        } else {
+            val result = JsonObject()
+            result.addProperty("result", "error")
+            JsonEndPointResult(result)
+        }
     }
 
     val getSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "get") {
-        TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//    if (exchange.requestMethod.equalToString("get") && id != null) {
-//        //TODO move to blocking thread
-//        exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//        logger.debug("in GET for /documents/$id/")
-//        val response = exchange.responseSender
-//        val document = abcManager.fetchABCDocument(exchange.securityContext.authenticatedAccount, id)
-//        response.send(gson.toJson(document))
+        val id: Long? = it.pathParameters["id"]?.toLong()
+        logger.debug("in GET for /documents/$id/")
+        if (id != null) {
+            //TODO move to blocking thread
+            val document = abcManager.fetchABCDocument(it.account, id).block()
+            JsonEndPointResult(gson.toJsonTree(document).asJsonObject)
+        } else {
+            val result = JsonObject()
+            result.addProperty("result", "error")
+            JsonEndPointResult(result)
+        }
     }
 
     val patchSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "patch") {
