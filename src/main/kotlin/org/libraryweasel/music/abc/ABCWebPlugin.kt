@@ -111,20 +111,25 @@ class ABCWebPlugin : WebPlugin {
     }
 
     val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
-        TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//} else if (exchange.requestMethod.equalToString("delete") && id != null) {
-//    //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//    logger.debug("in DELETE for /documents/ with content: {}", id)
-//    val response = exchange.responseSender
-//    val result = abcManager.removeABCDocument(exchange.securityContext.authenticatedAccount, id).block()
-//    if (result != null && result) {
-//        response.send(gson.toJson(mapOf(Pair("result", "success"))))
-//    } else {
-//        response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//    }
-//}
-//})
+        val id: Long? = it.pathParameters["id"]?.toLong()
+        val request = it.requestBody
+        if (id != null) {
+            //TODO move to blocking thread
+            logger.debug("in DELETE for /documents/ with content: {}", id)
+            val result = abcManager.removeABCDocument(it.account, id).block()
+            if (result != null && result) {
+                val result = JsonObject()
+                result.addProperty("result", "success") //TODO maybe return ID or full document?
+                JsonEndPointResult(result)
+            } else {
+                val result = JsonObject()
+                result.addProperty("result", "error")
+                JsonEndPointResult(result)
+            }
+        } else {
+            val result = JsonObject()
+            result.addProperty("result", "error")
+            JsonEndPointResult(result)
+        }
     }
 }
