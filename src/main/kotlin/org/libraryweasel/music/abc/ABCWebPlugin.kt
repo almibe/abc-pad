@@ -87,26 +87,27 @@ class ABCWebPlugin : WebPlugin {
     }
 
     val patchSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "patch") {
-        TODO()
-//    val id: Long? = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters["id"]?.toLong()
-//} else if (exchange.requestMethod.equalToString("patch") && id != null) {
-//    //TODO move to blocking thread
-//    exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
-//
-//    exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
-//        logger.debug("in PATCH for /documents/ with content: {}", message)
-//        val response = exchange.responseSender
-//        val request = gson.fromJson(message, JsonObject::class.java)
-//        if (request.has("document")) {
-//            val document = request.getAsJsonPrimitive("document").asString
-//            val result = abcManager.updateABCDocument(exchange.securityContext.authenticatedAccount, id, document).block()
-//            if (result != null) {
-//                response.send(gson.toJson(mapOf(Pair("result", "success"))))
-//            } else {
-//                response.send(gson.toJson(mapOf(Pair("result", "error"))))
-//            }
-//        }
-//    }
+        val id: Long? = it.pathParameters["id"]?.toLong()
+        val request = it.requestBody
+        if (id != null && request != null && request.has("document")) {
+            //TODO move to blocking thread
+            logger.debug("in PATCH for /documents/ with content: {}", it.requestBody)
+            val document = request.getAsJsonPrimitive("document").asString
+            val result = abcManager.updateABCDocument(it.account, id, document).block()
+            if (result != null) {
+                val result = JsonObject()
+                result.addProperty("result", "success") //TODO maybe return ID or full document?
+                JsonEndPointResult(result)
+            } else {
+                val result = JsonObject()
+                result.addProperty("result", "error")
+                JsonEndPointResult(result)
+            }
+        } else {
+            val result = JsonObject()
+            result.addProperty("result", "error")
+            JsonEndPointResult(result)
+        }
     }
 
     val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
