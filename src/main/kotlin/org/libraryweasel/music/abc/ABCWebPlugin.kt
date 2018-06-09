@@ -44,92 +44,64 @@ class ABCWebPlugin : WebPlugin {
     }
 
     val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
-        //TODO move to blocking thread
         logger.debug("in GET for /documents/")
-        val allDocuments = abcManager.allABCDocumentDetails(it.account).collectList().block()
-        JsonEndPointResult(gson.toJsonTree(allDocuments).asJsonObject)
+        val allDocuments = abcManager.allABCDocumentDetails(it.account)
+        JsonEndPointResult(allDocuments)
     }
 
-    val postDocumentEndPoint = JsonEndPoint("/documents", "post") {
-        //TODO move to blocking thread
+    val postDocumentEndPoint = JsonEndPoint<Any>("/documents", "post") {
         logger.debug("in POST for /documents/ with content: {}", it.requestBody)
         if (it.requestBody != null && it.requestBody!!.has("document")) {
             val document = it.requestBody!!.getAsJsonPrimitive("document").asString
-            val result = abcManager.createABCDocument(it.account, document).block()
-            if (result != null) {
-                val result = JsonObject()
-                result.addProperty("result", "success") //TODO maybe return ID or full document?
-                JsonEndPointResult(result)
-            } else {
-                val result = JsonObject()
-                result.addProperty("result", "error")
-                JsonEndPointResult(result)
-            }
+            val result = abcManager.createABCDocument(it.account, document)
+            JsonEndPointResult(statusCode = 201, responseBody = result)
         } else {
             val result = JsonObject()
-            result.addProperty("result", "error")
-            JsonEndPointResult(result)
+            result.addProperty("error", "Missing document property in body.")
+            JsonEndPointResult(statusCode = 422, responseBody = result)
         }
     }
 
-    val getSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "get") {
+    val getSingleDocumentEndPoint = JsonEndPoint<Any>("/documents/{id}", "get") {
         val id: Long? = it.pathParameters["id"]?.toLong()
         logger.debug("in GET for /documents/$id/")
         if (id != null) {
-            //TODO move to blocking thread
-            val document = abcManager.fetchABCDocument(it.account, id).block()
+            val document = abcManager.fetchABCDocument(it.account, id)
             JsonEndPointResult(gson.toJsonTree(document).asJsonObject)
         } else {
             val result = JsonObject()
-            result.addProperty("result", "error")
-            JsonEndPointResult(result)
+            result.addProperty("error", "Invalid id parameter.")
+            JsonEndPointResult(statusCode = 422, responseBody = result)
         }
     }
 
-    val patchSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "patch") {
+    val patchSingleDocumentEndPoint = JsonEndPoint<Any>("/documents/{id}", "patch") {
         val id: Long? = it.pathParameters["id"]?.toLong()
         val request = it.requestBody
         if (id != null && request != null && request.has("document")) {
-            //TODO move to blocking thread
             logger.debug("in PATCH for /documents/ with content: {}", it.requestBody)
             val document = request.getAsJsonPrimitive("document").asString
-            val result = abcManager.updateABCDocument(it.account, id, document).block()
-            if (result != null) {
-                val result = JsonObject()
-                result.addProperty("result", "success") //TODO maybe return ID or full document?
-                JsonEndPointResult(result)
-            } else {
-                val result = JsonObject()
-                result.addProperty("result", "error")
-                JsonEndPointResult(result)
-            }
+            val result = abcManager.updateABCDocument(it.account, id, document)
+            JsonEndPointResult(result)
         } else {
             val result = JsonObject()
-            result.addProperty("result", "error")
-            JsonEndPointResult(result)
+            result.addProperty("error", "Invalid id or document.")
+            JsonEndPointResult(statusCode = 422, responseBody = result)
         }
     }
 
     val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
         val id: Long? = it.pathParameters["id"]?.toLong()
-        val request = it.requestBody
         if (id != null) {
-            //TODO move to blocking thread
             logger.debug("in DELETE for /documents/ with content: {}", id)
-            val result = abcManager.removeABCDocument(it.account, id).block()
-            if (result != null && result) {
-                val result = JsonObject()
-                result.addProperty("result", "success") //TODO maybe return ID or full document?
-                JsonEndPointResult(result)
-            } else {
-                val result = JsonObject()
-                result.addProperty("result", "error")
-                JsonEndPointResult(result)
-            }
+            val removed = abcManager.removeABCDocument(it.account, id)
+            val result = JsonObject()
+            result.addProperty("removed", removed)
+            JsonEndPointResult(result)
         } else {
             val result = JsonObject()
-            result.addProperty("result", "error")
-            JsonEndPointResult(result)
+            result.addProperty("error", "Invalid id parameter.")
+            JsonEndPointResult(statusCode = 422, responseBody = result)
         }
     }
 }

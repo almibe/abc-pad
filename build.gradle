@@ -20,8 +20,8 @@ dependencies {
     compile pluginDeps.slf4jApiDep.id
     compile pluginDeps.kotlinDep.id
     compile pluginDeps.gsonDep.id
-    compile pluginDeps.reactorDep.id
     compile pluginDeps.libraryWeaselUndertowDep.id
+    compile pluginDeps.libraryWeaselHttpDep.id
     compile pluginDeps.libraryWeaselXodusDep.id
     compile pluginDeps.libraryWeaselServoDep.id
 }

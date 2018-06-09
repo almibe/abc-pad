@@ -5,13 +5,11 @@
 package org.libraryweasel.music.abc.api
 
 import io.undertow.security.idm.Account
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 interface ABCManager {
-    fun allABCDocumentDetails(account: Account): Flux<ABCDocumentDetails>
-    fun fetchABCDocument(account: Account, id: Long): Mono<ABCDocument>
-    fun createABCDocument(account: Account, document: String): Mono<ABCDocument>
-    fun updateABCDocument(account: Account, id: Long, document: String): Mono<ABCDocument>
-    fun removeABCDocument(account: Account, id: Long): Mono<Boolean>
+    fun allABCDocumentDetails(account: Account): ABCDocumentDetails
+    fun fetchABCDocument(account: Account, id: Long): ABCDocument
+    fun createABCDocument(account: Account, document: String): ABCDocument
+    fun updateABCDocument(account: Account, id: Long, document: String): ABCDocument
+    fun removeABCDocument(account: Account, id: Long): Boolean
 }
