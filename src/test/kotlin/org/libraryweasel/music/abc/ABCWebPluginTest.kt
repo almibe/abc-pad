@@ -5,6 +5,41 @@
 package org.libraryweasel.music.abc
 
 import io.kotlintest.specs.StringSpec
+import jetbrains.exodus.entitystore.PersistentEntityStores
+import org.libraryweasel.xodus.api.EntityStoreInstanceManager
 
 class ABCWebPluginTest : StringSpec({
+    val webPlugin = ABCWebPlugin()
+    val persistentEntityStore = PersistentEntityStores.newInstance(createTempDir())
+    val entityStoreInstanceManager = EntityStoreInstanceManager { persistentEntityStore }
+    val abcDocumentStore = ABCXodusStore(entityStoreInstanceManager)
+    webPlugin.abcManager = abcDocumentStore
+
+    "test getAllDocumentsEndPoint with no documents" {
+
+    }
+
+    "test postDocumentEndPoint" {
+
+    }
+
+    "test getAllDocumentsEndPoint with documents" {
+
+    }
+
+    "test getSingleDocumentEndPoint" {
+
+    }
+
+    "test patchSingleDocumentEndPoint" {
+
+    }
+
+    "test deleteSingleDocumentEndPoint" {
+
+    }
+
+    "test getAllDocumentsEndPoint after deleting documents" {
+
+    }
 })
