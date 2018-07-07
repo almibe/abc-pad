@@ -16,12 +16,12 @@ group 'org.libraryweasel'
 version '0.1.0-SNAPSHOT'
 
 dependencies {
-    compile pluginDeps.undertowDep.id
+    compile pluginDeps.vertxCoreDep.id
+    compile pluginDeps.vertxWebDep.id
     compile pluginDeps.slf4jApiDep.id
     compile pluginDeps.kotlinDep.id
     compile pluginDeps.gsonDep.id
-    compile pluginDeps.libraryWeaselUndertowDep.id
-    compile pluginDeps.libraryWeaselHttpDep.id
+    compile pluginDeps.libraryWeaselWebApiDep.id
     compile pluginDeps.libraryWeaselXodusDep.id
     compile pluginDeps.libraryWeaselServoDep.id
 }

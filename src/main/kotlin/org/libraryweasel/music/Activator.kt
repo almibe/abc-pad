@@ -6,6 +6,7 @@ package org.libraryweasel.music
 
 import org.apache.felix.dm.DependencyActivatorBase
 import org.apache.felix.dm.DependencyManager
+import org.libraryweasel.music.abc.ABCStaticFiles
 import org.libraryweasel.music.abc.ABCWebPlugin
 import org.libraryweasel.music.abc.ABCXodusStore
 import org.libraryweasel.servo.Component
@@ -20,14 +21,15 @@ class Activator : DependencyActivatorBase() {
         registrar.register(NewABCEditorEntryPoint::class.java)
         registrar.register(ABCWebPlugin::class.java)
         registrar.register(ABCXodusStore::class.java)
+        registrar.register(ABCStaticFiles::class.java)
     }
 
     override fun destroy(context: BundleContext, manager: DependencyManager) {
     }
 }
 
-val abcBasePath = "/music/abc/"
-val kitName = "Music"
+const val abcBasePath = "/music/abc/"
+const val kitName = "Music"
 
 @Component(WebEntryPoint::class)
 class LoadABCEditorEntryPoint : WebEntryPoint {

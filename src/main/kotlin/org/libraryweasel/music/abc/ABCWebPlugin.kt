@@ -6,18 +6,16 @@ package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import io.undertow.Handlers
-import io.undertow.server.HttpHandler
-import org.libraryweasel.http.*
+import io.vertx.ext.web.Route
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
-import org.libraryweasel.web.api.WebPlugin
+import org.libraryweasel.web.api.GatewayRoute
 import org.slf4j.LoggerFactory
 
-@Component(WebPlugin::class)
-class ABCWebPlugin : WebPlugin {
+@Component(GatewayRoute::class)
+class ABCWebPlugin : GatewayRoute {
     override val rootPath: String = abcBasePath
     @Service @Volatile
     lateinit var abcManager: ABCManager
@@ -25,22 +23,14 @@ class ABCWebPlugin : WebPlugin {
     val logger = LoggerFactory.getLogger(ABCWebPlugin::class.java)
     val gson = Gson()
 
-    override val handler: HttpHandler = createHandler()
-
-    private fun createHandler(): HttpHandler {
-        val pathHandler =  Handlers.pathTemplate()
-
-        pathHandler.addJsonEndPoint(getAllDocumentsEndPoint)
-        pathHandler.addJsonEndPoint(postDocumentEndPoint)
-        pathHandler.addJsonEndPoint(getSingleDocumentEndPoint)
-        pathHandler.addJsonEndPoint(patchSingleDocumentEndPoint)
-        pathHandler.addJsonEndPoint(deleteSingleDocumentEndPoint)
-
-        pathHandler.addStaticResources(StaticResources("/*", this.javaClass.classLoader, "/public/"))
-        return pathHandler
-    }
-
-    private fun start() {
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        handler.addJsonEndPoint(getAllDocumentsEndPoint)
+//        handler.addJsonEndPoint(postDocumentEndPoint)
+//        handler.addJsonEndPoint(getSingleDocumentEndPoint)
+//        handler.addJsonEndPoint(patchSingleDocumentEndPoint)
+//        handler.addJsonEndPoint(deleteSingleDocumentEndPoint)
+//        handler.addStaticResources(StaticResources("$rootPath/*", this.javaClass.classLoader, "/public/"))
     }
 
     val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {

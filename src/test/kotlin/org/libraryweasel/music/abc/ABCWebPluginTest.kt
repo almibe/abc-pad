@@ -16,7 +16,9 @@ class ABCWebPluginTest : StringSpec({
     webPlugin.abcManager = abcDocumentStore
 
     "test getAllDocumentsEndPoint with no documents" {
-
+//        val input = JsonEndPointInput()
+//        val result = webPlugin.getAllDocumentsEndPoint.handler(input)
+//        result.statusCode shouldBe 200
     }
 
     "test postDocumentEndPoint" {

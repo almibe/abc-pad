@@ -4,7 +4,7 @@
 
 package org.libraryweasel.music.abc
 
-import io.undertow.security.idm.Account
+import io.vertx.ext.auth.User
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.StoreTransaction
 import org.libraryweasel.music.abc.api.ABCDocument
@@ -16,20 +16,20 @@ import org.libraryweasel.servo.Service
 import org.libraryweasel.xodus.api.EntityStoreInstanceManager
 
 @Component(ABCManager::class)
-class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
+class ABCXodusStore : ABCManager {
     @Service @Volatile
-    private var entityStore: EntityStoreInstanceManager = storeArg!!
+    private lateinit var entityStore: EntityStoreInstanceManager
 
     private val documentClass = "music.abc.Document"
 
     private fun start() {
     }
 
-    private fun username(account: Account) : String = account.principal.name
+    private fun username(user: User) : String = user.principal.name
 
-    override fun allABCDocumentDetails(account: Account): ABCDocumentDetails {
+    override fun allABCDocumentDetails(user: User): ABCDocumentDetails {
         return entityStore.instance.computeInReadonlyTransaction { txn ->
-            val results = txn.find(documentClass, "username", username(account))
+            val results = txn.find(documentClass, "username", username(user))
             val documentDetails = results.map { it ->
                 ABCDocumentDetail(it.id.localId, it.getProperty("title") as String, it.getProperty("composer") as String)
             }
@@ -37,9 +37,9 @@ class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
         }
     }
 
-    override fun fetchABCDocument(account: Account, id: Long): ABCDocument {
+    override fun fetchABCDocument(user: User, id: Long): ABCDocument {
         return entityStore.instance.computeInReadonlyTransaction { txn ->
-            val entity = fetchABCDocumentEntity(txn, account, id)
+            val entity = fetchABCDocumentEntity(txn, user, id)
             if (entity != null) {
                 ABCDocument(id, entity.getProperty("document") as String)
             } else {
@@ -48,21 +48,21 @@ class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
         }
     }
 
-    override fun createABCDocument(account: Account, document: String): ABCDocument {
+    override fun createABCDocument(user: User, document: String): ABCDocument {
         return entityStore.instance.computeInTransaction { txn ->
             val abcDocument = txn.newEntity(documentClass)
             abcDocument.setProperty("title", documentToTitle(document))
             abcDocument.setProperty("composer", documentToComposer(document))
             abcDocument.setProperty("document", document)
-            abcDocument.setProperty("username", username(account))
+            abcDocument.setProperty("username", username(user))
             txn.saveEntity(abcDocument)
             ABCDocument(abcDocument.id.localId, document)
         }
     }
 
-    override fun updateABCDocument(account: Account, id: Long, document: String): ABCDocument {
+    override fun updateABCDocument(user: User, id: Long, document: String): ABCDocument {
         return entityStore.instance.computeInTransaction { txn ->
-            val entity = fetchABCDocumentEntity(txn, account, id)
+            val entity = fetchABCDocumentEntity(txn, user, id)
             if (entity != null) {
                 entity.setProperty("title", documentToTitle(document))
                 entity.setProperty("composer", documentToComposer(document))
@@ -75,9 +75,9 @@ class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
         }
     }
 
-    override fun removeABCDocument(account: Account, id: Long): Boolean {
+    override fun removeABCDocument(user: User, id: Long): Boolean {
         return entityStore.instance.computeInTransaction { txn ->
-            val result = fetchABCDocumentEntity(txn, account, id)
+            val result = fetchABCDocumentEntity(txn, user, id)
             if (result != null) {
                 result.delete()
                 true
@@ -87,9 +87,9 @@ class ABCXodusStore(storeArg: EntityStoreInstanceManager? = null) : ABCManager {
         }
     }
 
-    private fun fetchABCDocumentEntity(txn: StoreTransaction, account: Account, id: Long): Entity? {
+    private fun fetchABCDocumentEntity(txn: StoreTransaction, user: User, id: Long): Entity? {
         val results = txn.findIds(documentClass, id, id)
-        return if (!results.isEmpty && results.first?.getProperty("username") as String == username(account)) {
+        return if (!results.isEmpty && results.first?.getProperty("username") as String == username(user)) {
             results.first
         } else {
             null
