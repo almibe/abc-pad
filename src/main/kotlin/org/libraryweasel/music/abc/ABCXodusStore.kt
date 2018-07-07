@@ -25,7 +25,7 @@ class ABCXodusStore : ABCManager {
     private fun start() {
     }
 
-    private fun username(user: User) : String = user.principal.name
+    private fun username(user: User) : String = user.principal().getString("username")
 
     override fun allABCDocumentDetails(user: User): ABCDocumentDetails {
         return entityStore.instance.computeInReadonlyTransaction { txn ->
