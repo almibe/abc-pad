@@ -45,21 +45,24 @@ class PostDocumentRoute : EndPointRoute() {
     override val httpMethod: HttpMethod = HttpMethod.POST
     override val rootPath: String = "/documents"
     override fun handler(routingContext: RoutingContext) {
-        logger.debug("in POST for /documents/ with content: {}", it.requestBody)
-        if (it.requestBody != null && it.requestBody!!.has("document")) {
-            val document = it.requestBody!!.getAsJsonPrimitive("document").asString
-            val result = abcManager.createABCDocument(it.account, document)
-            JsonEndPointResult(statusCode = 201, responseBody = result)
+        logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
+        if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
+            val document = routingContext.bodyAsString
+            val result = abcManager.createABCDocument(routingContext.user(), document)
+            routingContext.response().statusCode = 201
+            routingContext.response().end(gson.toJson(result))
         } else {
             val result = JsonObject()
             result.addProperty("error", "Missing document property in body.")
-            JsonEndPointResult(statusCode = 422, responseBody = result)
+            routingContext.response().statusCode = 422
+            routingContext.response().end(gson.toJson(result))
         }
     }
 }
 
 @Component(BlankRoute::class)
 class getSingleDocumentEndPoint : EndPointRoute() {
+    @Service @Volatile lateinit var abcManager: ABCManager
     val id: Long? = it.pathParameters["id"]?.toLong()
     logger.debug("in GET for /documents/$id/")
     if (id != null) {
@@ -80,11 +83,7 @@ class patchSingleDocumentEndPoint : EndPointRoute() {
     override val httpMethod: HttpMethod = HttpMethod.
             override val rootPath: String = "/documents/{id}"
     override fun handler(routingContext: RoutingContext) {
-
-
     }
-
-
     val id: Long? = it.pathParameters["id"]?.toLong()
     val request = it.requestBody
     if (id != null && request != null && request.has("document")) {
