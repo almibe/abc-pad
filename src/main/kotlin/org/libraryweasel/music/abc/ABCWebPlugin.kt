@@ -15,12 +15,17 @@ import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
 import org.libraryweasel.web.api.BlankRoute
 import org.libraryweasel.web.api.EndPointRoute
+import org.libraryweasel.web.api.StaticFiles
 import org.slf4j.LoggerFactory
 
 val logger = LoggerFactory.getLogger(AllDocumentsRoute::class.java)
 val gson = Gson()
 
-//        handler.addStaticResources(StaticResources("$rootPath/*", this.javaClass.classLoader, "/public/"))
+@Component(StaticFiles::class)
+class StaticResources: StaticFiles {
+    override val classLoader: ClassLoader = this.javaClass.classLoader
+    override val rootPath: String = "/documents"
+}
 
 @Component(BlankRoute::class)
 class AllDocumentsRoute : EndPointRoute() {
@@ -29,18 +34,17 @@ class AllDocumentsRoute : EndPointRoute() {
     override val rootPath: String = "/documents"
     override fun handler(routingContext: RoutingContext) {
         logger.debug("in GET for /documents/")
-        val allDocuments = abcManager.allABCDocumentDetails(it.account)
-        JsonEndPointResult(allDocuments)
+        val allDocuments = abcManager.allABCDocumentDetails(routingContext.user())
+        routingContext.response().end(gson.toJson(allDocuments))
     }
 }
 
-    val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
-        logger.debug("in GET for /documents/")
-        val allDocuments = abcManager.allABCDocumentDetails(it.account)
-        JsonEndPointResult(allDocuments)
-    }
-
-    val postDocumentEndPoint = JsonEndPoint<Any>("/documents", "post") {
+@Component(BlankRoute::class)
+class PostDocumentRoute : EndPointRoute() {
+    @Service @Volatile lateinit var abcManager: ABCManager
+    override val httpMethod: HttpMethod = HttpMethod.POST
+    override val rootPath: String = "/documents"
+    override fun handler(routingContext: RoutingContext) {
         logger.debug("in POST for /documents/ with content: {}", it.requestBody)
         if (it.requestBody != null && it.requestBody!!.has("document")) {
             val document = it.requestBody!!.getAsJsonPrimitive("document").asString
@@ -52,36 +56,57 @@ class AllDocumentsRoute : EndPointRoute() {
             JsonEndPointResult(statusCode = 422, responseBody = result)
         }
     }
+}
 
-    val getSingleDocumentEndPoint = JsonEndPoint<Any>("/documents/{id}", "get") {
-        val id: Long? = it.pathParameters["id"]?.toLong()
-        logger.debug("in GET for /documents/$id/")
-        if (id != null) {
-            val document = abcManager.fetchABCDocument(it.account, id)
-            JsonEndPointResult(gson.toJsonTree(document).asJsonObject)
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Invalid id parameter.")
-            JsonEndPointResult(statusCode = 422, responseBody = result)
-        }
+@Component(BlankRoute::class)
+class getSingleDocumentEndPoint : EndPointRoute() {
+    val id: Long? = it.pathParameters["id"]?.toLong()
+    logger.debug("in GET for /documents/$id/")
+    if (id != null) {
+        val document = abcManager.fetchABCDocument(it.account, id)
+        JsonEndPointResult(gson.toJsonTree(document).asJsonObject)
+    } else {
+        val result = JsonObject()
+        result.addProperty("error", "Invalid id parameter.")
+        JsonEndPointResult(statusCode = 422, responseBody = result)
+    }
+}
+
+
+
+@Component(BlankRoute::class)
+class patchSingleDocumentEndPoint : EndPointRoute() {
+    @Service @Volatile lateinit var abcManager: ABCManager
+    override val httpMethod: HttpMethod = HttpMethod.
+            override val rootPath: String = "/documents/{id}"
+    override fun handler(routingContext: RoutingContext) {
+
+
     }
 
-    val patchSingleDocumentEndPoint = JsonEndPoint<Any>("/documents/{id}", "patch") {
-        val id: Long? = it.pathParameters["id"]?.toLong()
-        val request = it.requestBody
-        if (id != null && request != null && request.has("document")) {
-            logger.debug("in PATCH for /documents/ with content: {}", it.requestBody)
-            val document = request.getAsJsonPrimitive("document").asString
-            val result = abcManager.updateABCDocument(it.account, id, document)
-            JsonEndPointResult(result)
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Invalid id or document.")
-            JsonEndPointResult(statusCode = 422, responseBody = result)
-        }
+
+    val id: Long? = it.pathParameters["id"]?.toLong()
+    val request = it.requestBody
+    if (id != null && request != null && request.has("document")) {
+        logger.debug("in PATCH for /documents/ with content: {}", it.requestBody)
+        val document = request.getAsJsonPrimitive("document").asString
+        val result = abcManager.updateABCDocument(it.account, id, document)
+        JsonEndPointResult(result)
+    } else {
+        val result = JsonObject()
+        result.addProperty("error", "Invalid id or document.")
+        JsonEndPointResult(statusCode = 422, responseBody = result)
     }
 
-    val deleteSingleDocumentEndPoint = JsonEndPoint("/documents/{id}", "delete") {
+}
+
+@Component(BlankRoute::class)
+class deleteSingleDocumentEndPoint : EndPointRoute() {
+    @Service @Volatile lateinit var abcManager: ABCManager
+    override val httpMethod: HttpMethod = HttpMethod.
+            override val rootPath: String = "/documents/{id}"
+    override fun handler(routingContext: RoutingContext) {
+
         val id: Long? = it.pathParameters["id"]?.toLong()
         if (id != null) {
             logger.debug("in DELETE for /documents/ with content: {}", id)
