@@ -6,9 +6,7 @@ package org.libraryweasel.music
 
 import org.apache.felix.dm.DependencyActivatorBase
 import org.apache.felix.dm.DependencyManager
-import org.libraryweasel.music.abc.ABCStaticFiles
-import org.libraryweasel.music.abc.ABCWebPlugin
-import org.libraryweasel.music.abc.ABCXodusStore
+import org.libraryweasel.music.abc.*
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.LibraryWeaselComponentRegistrar
 import org.libraryweasel.web.api.WebEntryPoint
@@ -19,7 +17,12 @@ class Activator : DependencyActivatorBase() {
         val registrar = LibraryWeaselComponentRegistrar(manager)
         registrar.register(LoadABCEditorEntryPoint::class.java)
         registrar.register(NewABCEditorEntryPoint::class.java)
-        registrar.register(ABCWebPlugin::class.java)
+        registrar.register(GetAllDocumentsRoute::class.java)
+        registrar.register(PostDocumentRoute::class.java)
+        registrar.register(DeleteSingleDocumentEndPoint::class.java)
+        registrar.register(GetSingleDocumentEndPoint::class.java)
+        registrar.register(PatchSingleDocumentEndPoint::class.java)
+        registrar.register(DeleteSingleDocumentEndPoint::class.java)
         registrar.register(ABCXodusStore::class.java)
         registrar.register(ABCStaticFiles::class.java)
     }

@@ -9,23 +9,24 @@ import com.google.gson.JsonObject
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.RoutingContext
 import org.libraryweasel.music.abc.api.ABCManager
+import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
 import org.libraryweasel.web.api.EndPointRoute
 import org.libraryweasel.web.api.StaticFiles
 import org.slf4j.LoggerFactory
 
-val logger = LoggerFactory.getLogger(AllDocumentsRoute::class.java)
+val logger = LoggerFactory.getLogger(ABCStaticFiles::class.java)
 val gson = Gson()
 
 @Component(StaticFiles::class)
-class StaticResources: StaticFiles {
+class ABCStaticFiles: StaticFiles {
     override val classLoader: ClassLoader = this.javaClass.classLoader
-    override val rootPath: String = "/documents"
+    override val rootPath: String = abcBasePath
 }
 
 @Component(EndPointRoute::class)
-class AllDocumentsRoute : EndPointRoute() {
+class GetAllDocumentsRoute : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
     override val rootPath: String = "/documents"
