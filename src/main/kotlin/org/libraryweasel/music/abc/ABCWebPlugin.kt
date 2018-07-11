@@ -6,32 +6,33 @@ package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Route
+import io.vertx.ext.web.RoutingContext
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
-import org.libraryweasel.web.api.GatewayRoute
+import org.libraryweasel.web.api.BlankRoute
+import org.libraryweasel.web.api.EndPointRoute
 import org.slf4j.LoggerFactory
 
-@Component(GatewayRoute::class)
-class ABCWebPlugin : GatewayRoute {
-    override val rootPath: String = abcBasePath
-    @Service @Volatile
-    lateinit var abcManager: ABCManager
+val logger = LoggerFactory.getLogger(AllDocumentsRoute::class.java)
+val gson = Gson()
 
-    val logger = LoggerFactory.getLogger(ABCWebPlugin::class.java)
-    val gson = Gson()
-
-    override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        handler.addJsonEndPoint(getAllDocumentsEndPoint)
-//        handler.addJsonEndPoint(postDocumentEndPoint)
-//        handler.addJsonEndPoint(getSingleDocumentEndPoint)
-//        handler.addJsonEndPoint(patchSingleDocumentEndPoint)
-//        handler.addJsonEndPoint(deleteSingleDocumentEndPoint)
 //        handler.addStaticResources(StaticResources("$rootPath/*", this.javaClass.classLoader, "/public/"))
+
+@Component(BlankRoute::class)
+class AllDocumentsRoute : EndPointRoute() {
+    @Service @Volatile lateinit var abcManager: ABCManager
+    override val httpMethod: HttpMethod = HttpMethod.GET
+    override val rootPath: String = "/documents"
+    override fun handler(routingContext: RoutingContext) {
+        logger.debug("in GET for /documents/")
+        val allDocuments = abcManager.allABCDocumentDetails(it.account)
+        JsonEndPointResult(allDocuments)
     }
+}
 
     val getAllDocumentsEndPoint = JsonEndPoint("/documents", "get") {
         logger.debug("in GET for /documents/")
