@@ -18,7 +18,7 @@ import org.libraryweasel.xodus.api.EntityStoreInstanceManager
 @Component(ABCManager::class)
 class ABCXodusStore : ABCManager {
     @Service @Volatile
-    private lateinit var entityStore: EntityStoreInstanceManager
+    lateinit var entityStore: EntityStoreInstanceManager
 
     private val documentClass = "music.abc.Document"
 

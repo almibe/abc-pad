@@ -9,11 +9,11 @@ import jetbrains.exodus.entitystore.PersistentEntityStores
 import org.libraryweasel.xodus.api.EntityStoreInstanceManager
 
 class ABCWebPluginTest : StringSpec({
-    val webPlugin = ABCWebPlugin()
+    //val webPlugin = ABCWebPlugin()
     val persistentEntityStore = PersistentEntityStores.newInstance(createTempDir())
     val entityStoreInstanceManager = EntityStoreInstanceManager { persistentEntityStore }
-    val abcDocumentStore = ABCXodusStore(entityStoreInstanceManager)
-    webPlugin.abcManager = abcDocumentStore
+    //val abcDocumentStore = ABCXodusStore(entityStoreInstanceManager)
+    //webPlugin.abcManager = abcDocumentStore
 
     "test getAllDocumentsEndPoint with no documents" {
 //        val input = JsonEndPointInput()
