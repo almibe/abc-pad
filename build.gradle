@@ -38,7 +38,7 @@ task parcel(type: Exec) {
 
 task copyParcel(type: Copy) {
     from 'parcel/dist'
-    into 'build/resources/main/public'
+    into 'build/resources/main/webroot'
 }
 
 tasks.jar.dependsOn(copyParcel)
