@@ -29,7 +29,7 @@ class ABCStaticFiles: StaticFiles {
 class GetAllDocumentsRoute : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
-    override val rootPath: String = "/documents"
+    override val rootPath: String = abcBasePath + "documents"
     override fun handler(routingContext: RoutingContext) {
         logger.debug("in GET for /documents/")
         val allDocuments = abcManager.allABCDocumentDetails(routingContext.user())
@@ -41,7 +41,7 @@ class GetAllDocumentsRoute : EndPointRoute() {
 class PostDocumentRoute : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.POST
-    override val rootPath: String = "/documents"
+    override val rootPath: String = abcBasePath + "documents"
     override fun handler(routingContext: RoutingContext) {
         logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
         if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
@@ -62,7 +62,7 @@ class PostDocumentRoute : EndPointRoute() {
 class GetSingleDocumentEndPoint : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
-    override val rootPath: String = "/documents/:id"
+    override val rootPath: String = abcBasePath + "documents/:id"
     override fun handler(routingContext: RoutingContext) {
         val id: Long? = routingContext.get("id")
         logger.debug("in GET for /documents/$id/")
@@ -82,7 +82,7 @@ class GetSingleDocumentEndPoint : EndPointRoute() {
 class PatchSingleDocumentEndPoint : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.PATCH
-    override val rootPath: String = "/documents/:id"
+    override val rootPath: String = abcBasePath + "documents/:id"
     override fun handler(routingContext: RoutingContext) {
         val id: Long? = routingContext.get("id")
         val request = routingContext.bodyAsJson
@@ -104,7 +104,7 @@ class PatchSingleDocumentEndPoint : EndPointRoute() {
 class DeleteSingleDocumentEndPoint : EndPointRoute() {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.DELETE
-    override val rootPath: String = "/documents/:id"
+    override val rootPath: String = abcBasePath + "documents/:id"
     override fun handler(routingContext: RoutingContext) {
         val id: Long? = routingContext.get("id")
         if (id != null) {
