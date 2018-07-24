@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Route
-import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.StaticHandler
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
@@ -48,14 +47,16 @@ class GetAllDocumentsRoute : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
     override val rootPath: String = abcBasePath + "documents"
-    override fun handler(routingContext: RoutingContext) {
-        logger.debug("in GET for /documents/")
-        val allDocuments = abcManager.allABCDocumentDetails(routingContext.user())
-        routingContext.response().end(gson.toJson(allDocuments))
-    }
 
     override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        route.produces("application/json")
+        route.handler {routingContext ->
+            logger.debug("in GET for /documents/")
+            val allDocuments = abcManager.allABCDocumentDetails(routingContext.user())
+            routingContext.response()
+                .putHeader("content-type", "application/json")
+                .end(gson.toJson(allDocuments))
+        }
     }
 }
 
@@ -64,25 +65,28 @@ class PostDocumentRoute : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.POST
     override val rootPath: String = abcBasePath + "documents"
-    override fun handler(routingContext: RoutingContext) {
-        logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
-        if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
-            val document = routingContext.bodyAsString
-            val result = abcManager.createABCDocument(routingContext.user(), document)
-            routingContext.response().statusCode = 201
-            routingContext.response().end(gson.toJson(result))
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Missing document property in body.")
-            routingContext.response().statusCode = 422
-            routingContext.response().end(gson.toJson(result))
-        }
-    }
 
     override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        route.produces("application/json")
+        route.handler { routingContext ->
+            logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
+            if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
+                val document = routingContext.bodyAsString
+                val result = abcManager.createABCDocument(routingContext.user(), document)
+                routingContext.response().statusCode = 201
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(gson.toJson(result))
+            } else {
+                val result = JsonObject()
+                result.addProperty("error", "Missing document property in body.")
+                routingContext.response().statusCode = 422
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(gson.toJson(result))
+            }
+        }
     }
-
 }
 
 @Component(WebRoute::class)
@@ -90,22 +94,26 @@ class GetSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
     override val rootPath: String = abcBasePath + "documents/:id"
-    override fun handler(routingContext: RoutingContext) {
-        val id: Long? = routingContext.get("id")
-        logger.debug("in GET for /documents/$id/")
-        if (id != null) {
-            val document = abcManager.fetchABCDocument(routingContext.user(), id)
-            routingContext.response().end(gson.toJson(document))
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Invalid id parameter.")
-            routingContext.response().statusCode = 422
-            routingContext.response().end(result.toString())
-        }
-    }
 
     override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        route.produces("application/json")
+        route.handler { routingContext ->
+            val id: Long? = routingContext.get("id")
+            logger.debug("in GET for /documents/$id/")
+            if (id != null) {
+                val document = abcManager.fetchABCDocument(routingContext.user(), id)
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(gson.toJson(document))
+            } else {
+                val result = JsonObject()
+                result.addProperty("error", "Invalid id parameter.")
+                routingContext.response().statusCode = 422
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(result.toString())
+            }
+        }
     }
 
 }
@@ -115,26 +123,29 @@ class PatchSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.PATCH
     override val rootPath: String = abcBasePath + "documents/:id"
-    override fun handler(routingContext: RoutingContext) {
-        val id: Long? = routingContext.get("id")
-        val request = routingContext.bodyAsJson
-        if (id != null && request != null && request.containsKey("document")) {
-            logger.debug("in PATCH for /documents/ with content: {}", routingContext.bodyAsString)
-            val document = request.getString("document")
-            val result = abcManager.updateABCDocument(routingContext.user(), id, document)
-            routingContext.response().end(gson.toJson(result))
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Invalid id or document.")
-            routingContext.response().statusCode = 422
-            routingContext.response().end(result.toString())
-        }
-    }
 
     override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        route.produces("application/json")
+        route.handler { routingContext ->
+            val id: Long? = routingContext.get("id")
+            val request = routingContext.bodyAsJson
+            if (id != null && request != null && request.containsKey("document")) {
+                logger.debug("in PATCH for /documents/ with content: {}", routingContext.bodyAsString)
+                val document = request.getString("document")
+                val result = abcManager.updateABCDocument(routingContext.user(), id, document)
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(gson.toJson(result))
+            } else {
+                val result = JsonObject()
+                result.addProperty("error", "Invalid id or document.")
+                routingContext.response().statusCode = 422
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(result.toString())
+            }
+        }
     }
-
 }
 
 @Component(WebRoute::class)
@@ -142,23 +153,26 @@ class DeleteSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.DELETE
     override val rootPath: String = abcBasePath + "documents/:id"
-    override fun handler(routingContext: RoutingContext) {
-        val id: Long? = routingContext.get("id")
-        if (id != null) {
-            logger.debug("in DELETE for /documents/ with content: {}", id)
-            val removed = abcManager.removeABCDocument(routingContext.user(), id)
-            val result = JsonObject()
-            result.addProperty("removed", removed)
-            routingContext.response().end(gson.toJson(result))
-        } else {
-            val result = JsonObject()
-            result.addProperty("error", "Invalid id parameter.")
-            routingContext.response().statusCode = 422
-            routingContext.response().end(result.toString())
-        }
-    }
 
     override fun initRoute(route: Route) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        route.handler { routingContext ->
+            val id: Long? = routingContext.get("id")
+            if (id != null) {
+                logger.debug("in DELETE for /documents/ with content: {}", id)
+                val removed = abcManager.removeABCDocument(routingContext.user(), id)
+                val result = JsonObject()
+                result.addProperty("removed", removed)
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(gson.toJson(result))
+            } else {
+                val result = JsonObject()
+                result.addProperty("error", "Invalid id parameter.")
+                routingContext.response().statusCode = 422
+                routingContext.response()
+                    .putHeader("content-type", "application/json")
+                    .end(result.toString())
+            }
+        }
     }
 }
