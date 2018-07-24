@@ -7,26 +7,44 @@ package org.libraryweasel.music.abc
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.vertx.core.http.HttpMethod
+import io.vertx.ext.web.Route
 import io.vertx.ext.web.RoutingContext
+import io.vertx.ext.web.handler.StaticHandler
 import org.libraryweasel.music.abc.api.ABCManager
 import org.libraryweasel.music.abcBasePath
 import org.libraryweasel.servo.Component
 import org.libraryweasel.servo.Service
-import org.libraryweasel.web.api.EndPointRoute
-import org.libraryweasel.web.api.StaticFiles
+import org.libraryweasel.web.api.WebRoute
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val logger = LoggerFactory.getLogger(ABCStaticFiles::class.java)
+val logger: Logger = LoggerFactory.getLogger(ABCLogger::class.java)
 val gson = Gson()
 
-@Component(StaticFiles::class)
-class ABCStaticFiles: StaticFiles {
-    override val classLoader: ClassLoader = this.javaClass.classLoader
-    override val rootPath: String = abcBasePath
+object ABCLogger
+
+@Component(WebRoute::class)
+class ABCStaticResources: WebRoute {
+    override val httpMethod: HttpMethod = HttpMethod.GET
+    override val rootPath: String = "${abcBasePath}dist/*"
+
+    override fun initRoute(route: Route) {
+        route.handler(StaticHandler.create("webroot/dist", this.javaClass.classLoader))
+    }
 }
 
-@Component(EndPointRoute::class)
-class GetAllDocumentsRoute : EndPointRoute() {
+@Component(WebRoute::class)
+class ABCStaticIndex: WebRoute {
+    override val httpMethod: HttpMethod = HttpMethod.GET
+    override val rootPath: String = abcBasePath
+
+    override fun initRoute(route: Route) {
+        route.handler(StaticHandler.create("webroot", this.javaClass.classLoader))
+    }
+}
+
+@Component(WebRoute::class)
+class GetAllDocumentsRoute : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
     override val rootPath: String = abcBasePath + "documents"
@@ -35,10 +53,14 @@ class GetAllDocumentsRoute : EndPointRoute() {
         val allDocuments = abcManager.allABCDocumentDetails(routingContext.user())
         routingContext.response().end(gson.toJson(allDocuments))
     }
+
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
-@Component(EndPointRoute::class)
-class PostDocumentRoute : EndPointRoute() {
+@Component(WebRoute::class)
+class PostDocumentRoute : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.POST
     override val rootPath: String = abcBasePath + "documents"
@@ -56,10 +78,15 @@ class PostDocumentRoute : EndPointRoute() {
             routingContext.response().end(gson.toJson(result))
         }
     }
+
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
 
-@Component(EndPointRoute::class)
-class GetSingleDocumentEndPoint : EndPointRoute() {
+@Component(WebRoute::class)
+class GetSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.GET
     override val rootPath: String = abcBasePath + "documents/:id"
@@ -76,10 +103,15 @@ class GetSingleDocumentEndPoint : EndPointRoute() {
             routingContext.response().end(result.toString())
         }
     }
+
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
 
-@Component(EndPointRoute::class)
-class PatchSingleDocumentEndPoint : EndPointRoute() {
+@Component(WebRoute::class)
+class PatchSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.PATCH
     override val rootPath: String = abcBasePath + "documents/:id"
@@ -98,10 +130,15 @@ class PatchSingleDocumentEndPoint : EndPointRoute() {
             routingContext.response().end(result.toString())
         }
     }
+
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
 
-@Component(EndPointRoute::class)
-class DeleteSingleDocumentEndPoint : EndPointRoute() {
+@Component(WebRoute::class)
+class DeleteSingleDocumentEndPoint : WebRoute {
     @Service @Volatile lateinit var abcManager: ABCManager
     override val httpMethod: HttpMethod = HttpMethod.DELETE
     override val rootPath: String = abcBasePath + "documents/:id"
@@ -119,5 +156,9 @@ class DeleteSingleDocumentEndPoint : EndPointRoute() {
             routingContext.response().statusCode = 422
             routingContext.response().end(result.toString())
         }
+    }
+
+    override fun initRoute(route: Route) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
