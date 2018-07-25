@@ -43,4 +43,4 @@ const view = (state, actions) =>
     <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad} documentList={state.documentList}></LoadDialog>
   </main>
 
-const application = app(state, actions, view, document.getElementById('app'))
+const application = app(state, actions, view, document.body)
