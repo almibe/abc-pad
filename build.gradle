@@ -32,15 +32,15 @@ bundle {
 }
 
 //JS Code
-task webpack(type: Exec) {
-    workingDir "webpack"
+task parcel(type: Exec) {
+    workingDir "parcel"
     commandLine "npm", "run", "build"
 }
 
-task copyWebpack(type: Copy) {
-    from 'webpack/dist'
+task copyParcel(type: Copy) {
+    from 'parcel/dist'
     into 'build/resources/main/webroot'
 }
 
-tasks.jar.dependsOn(copyWebpack)
-tasks.copyWebpack.dependsOn(webpack)
+tasks.jar.dependsOn(copyParcel)
+tasks.copyParcel.dependsOn(parcel)
