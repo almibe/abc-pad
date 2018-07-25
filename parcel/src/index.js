@@ -4,6 +4,7 @@ import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
 import 'bulma/bulma.sass'
 import 'abcjs/abcjs-midi.css'
+import 'font-awesome/css/font-awesome.css'
 import './main.css'
 import controllers from './controllers.js'
 
@@ -43,4 +44,4 @@ const view = (state, actions) =>
     <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad} documentList={state.documentList}></LoadDialog>
   </main>
 
-const application = app(state, actions, view, document.body)
+const application = app(state, actions, view, document.getElementById('app'))
