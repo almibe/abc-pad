@@ -4,7 +4,6 @@ import { ABCEditor } from './components/ABCEditor.js'
 import { LoadDialog } from './components/LoadDialog.js'
 import 'bulma/bulma.sass'
 import 'abcjs/abcjs-midi.css'
-import 'font-awesome/css/font-awesome.css'
 import './main.css'
 import controllers from './controllers.js'
 
