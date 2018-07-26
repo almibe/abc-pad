@@ -25,17 +25,7 @@ object ABCLogger
 @Component(WebRoute::class)
 class ABCStaticResources: WebRoute {
     override val httpMethod: HttpMethod = HttpMethod.GET
-    override val rootPath: String = "${abcBasePath}dist/*"
-
-    override fun initRoute(route: Route) {
-        route.handler(StaticHandler.create("webroot/dist", this.javaClass.classLoader))
-    }
-}
-
-@Component(WebRoute::class)
-class ABCStaticIndex: WebRoute {
-    override val httpMethod: HttpMethod = HttpMethod.GET
-    override val rootPath: String = abcBasePath
+    override val rootPath: String = "$abcBasePath*"
 
     override fun initRoute(route: Route) {
         route.handler(StaticHandler.create("webroot", this.javaClass.classLoader))

@@ -25,7 +25,6 @@ class Activator : DependencyActivatorBase() {
         registrar.register(DeleteSingleDocumentEndPoint::class.java)
         registrar.register(ABCXodusStore::class.java)
         registrar.register(ABCStaticResources::class.java)
-        registrar.register(ABCStaticIndex::class.java)
     }
 
     override fun destroy(context: BundleContext, manager: DependencyManager) {
