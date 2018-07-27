@@ -25,13 +25,31 @@ const controllers  = {
     }
   },
   loadDocumentList: function() {
-    //TODO make axios call
+    axios.get('documents/')
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
   },
   deleteDocument: function(id) {
-    //TODO make axios call
+    axios.delete('documents/'+id)
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
   },
   loadDocument: function(id) {
-    //TODO make axios call
+    axios.get('documents/'+id)
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
   }
 }
 
