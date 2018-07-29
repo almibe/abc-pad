@@ -24,10 +24,11 @@ const controllers  = {
       });
     }
   },
-  loadDocumentList: function() {
+  loadDocumentList: function(actions) {
     axios.get('documents/')
     .then(function (response) {
       console.log(response); //TODO present feedback to user
+      actions.setDocumentList(response.data.documents)
     })
     .catch(function (error) {
       console.log(error); //TODO present feedback to user

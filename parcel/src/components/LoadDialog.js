@@ -1,6 +1,6 @@
 import { h } from 'hyperapp'
 
-export const LoadDialog = ({dialogState, hideLoad, documentList}) =>
+export const LoadDialog = ({dialogState, hideLoad, documentList, loadDocument}) =>
   <div class={`modal ${dialogState}`}>
     <div class="modal-background" onclick={() => hideLoad()}></div>
     <div class="modal-card">
@@ -15,6 +15,11 @@ export const LoadDialog = ({dialogState, hideLoad, documentList}) =>
         {documentList.length > 0 &&
           <p>Documents</p>
         }
+        <ul>
+        {documentList.map(({ id, title, composer }) => (
+          <li> <a onclick={() => loadDocument(id)}>{composer} - {title}</a> </li>
+        ))}
+        </ul>
       </section>
     </div>
   </div>

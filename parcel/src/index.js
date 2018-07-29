@@ -26,8 +26,12 @@ const actions = {
   loadDocument: ({ id }) => state => {
     controllers.loadDocument(id)
   },
-  showLoad: function(state) {
+  showLoad: (value) => (state, actions) => {
+    controllers.loadDocumentList(actions)
     return {dialogState: "is-active"}
+  },
+  setDocumentList: value => {
+    return { documentList: value }
   },
   hideLoad: function(state) {
     return {dialogState: ""}
@@ -41,7 +45,12 @@ const view = (state, actions) =>
   <main>
     <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
     <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
-    <LoadDialog dialogState={state.dialogState} hideLoad={actions.hideLoad} documentList={state.documentList}></LoadDialog>
+    <LoadDialog
+      dialogState={state.dialogState}
+      hideLoad={actions.hideLoad}
+      documentList={state.documentList}
+      loadDocument={actions.loadDocument}>
+    </LoadDialog>
   </main>
 
 const application = app(state, actions, view, document.getElementById('app'))
