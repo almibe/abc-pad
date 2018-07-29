@@ -1,7 +1,4 @@
-import { h } from 'hyperapp'
-import abcjs from 'abcjs/midi'
-
-export const ABCEditor = ({ document, setText }) => (
+<abc-editor>
   <div class="container" oncreate={element => init()}>
     <div class="columns">
       <div class="column">
@@ -14,14 +11,18 @@ export const ABCEditor = ({ document, setText }) => (
       </div>
     </div>
   </div>
-)
 
-function init() {
-  new abcjs.Editor('abcEditor', {
-    canvas_id: 'canvas',
-    generate_midi: true,
-    midi_id: "midi",
-    generate_warnings: true,
-    warnings_id: 'warnings'
-  })
-}
+  import { h } from 'hyperapp'
+  import abcjs from 'abcjs/midi'
+
+  function init() {
+    new abcjs.Editor('abcEditor', {
+      canvas_id: 'canvas',
+      generate_midi: true,
+      midi_id: "midi",
+      generate_warnings: true,
+      warnings_id: 'warnings'
+    })
+  }
+</abc-editor>
+

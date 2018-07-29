@@ -1,6 +1,4 @@
-import { h } from 'hyperapp'
-
-export const Header = ({saveDocument, showLoad, status}) => (
+<editor-header>
   <div class="container header">
     <div class="container">
       <div class="columns">
@@ -21,4 +19,6 @@ export const Header = ({saveDocument, showLoad, status}) => (
       </div>
     </div>
   </div>
-)
+
+  import riot from 'riot'
+</editor-header>

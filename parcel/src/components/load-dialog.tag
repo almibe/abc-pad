@@ -23,3 +23,11 @@ export const LoadDialog = ({dialogState, hideLoad, documentList, loadDocument}) 
       </section>
     </div>
   </div>
+
+    showLoad: (value) => (state, actions) => {
+      controllers.loadDocumentList(actions)
+      return {dialogState: "is-active"}
+    },
+    hideLoad: function(state) {
+      return {dialogState: ""}
+    },
