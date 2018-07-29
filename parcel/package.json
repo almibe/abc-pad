@@ -4,8 +4,7 @@
   "description": "library-weasel-music",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html --public-url ./",
+    "build": "riot src/components build/tags.js && parcel build index.html --public-url ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,10 +18,9 @@
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
     "font-awesome": "^4.7.0",
-    "hyperapp": "^1.2.5"
+    "riot": "^3.11.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-react-jsx": "^6.24.1"
+    "babel-core": "^6.26.3"
   }
 }
