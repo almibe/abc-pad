@@ -1,6 +1,4 @@
-import { h } from 'hyperapp'
-
-export const LoadDialog = ({dialogState, hideLoad, documentList, loadDocument}) =>
+<load-dialog>
   <div class={`modal ${dialogState}`}>
     <div class="modal-background" onclick={() => hideLoad()}></div>
     <div class="modal-card">
@@ -24,10 +22,13 @@ export const LoadDialog = ({dialogState, hideLoad, documentList, loadDocument}) 
     </div>
   </div>
 
-    showLoad: (value) => (state, actions) => {
-      controllers.loadDocumentList(actions)
-      return {dialogState: "is-active"}
-    },
-    hideLoad: function(state) {
-      return {dialogState: ""}
-    },
+  import riot from 'riot'
+
+  showLoad() {
+    controllers.loadDocumentList(actions)
+    return {dialogState: "is-active"}
+  }
+  hideLoad() {
+    return {dialogState: ""}
+  }
+</load-dialog>

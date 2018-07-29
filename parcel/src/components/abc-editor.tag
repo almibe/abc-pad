@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  import { h } from 'hyperapp'
+  import riot from 'riot'
   import abcjs from 'abcjs/midi'
 
   function init() {
