@@ -18,7 +18,9 @@
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
     "font-awesome": "^4.7.0",
-    "riot": "^3.11.1"
+    "riot": "^3.11.1",
+    "rxjs": "^6.2.2",
+    "rxjs-compat": "^6.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3"
