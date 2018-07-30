@@ -1,4 +1,16 @@
 import axios from 'axios'
+import Observable from 'rxjs'
+
+export function init() {
+  const saveButton = document.getElementById('save')
+  const showLoadButton = document.getElementById('showLoad')
+
+  const saveClick$ = Observable.fromEvent(saveButton, 'click')
+  const loadClick$ = Observable.fromEvent(showLoadButton, 'click')
+
+
+}
+
 
 const controllers  = {
   saveDocument: function(state) {
@@ -54,4 +66,3 @@ const controllers  = {
   }
 }
 
-export default controllers;

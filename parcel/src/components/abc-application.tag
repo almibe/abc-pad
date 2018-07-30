@@ -1,13 +1,13 @@
 <abc-application>
   <main>
-    <Header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></Header>
-    <ABCEditor document={state.document} setText={actions.setText}></ABCEditor>
-    <LoadDialog
+    <editor-header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></editor-header>
+    <abc-editor document={state.document} setText={actions.setText}></abc-editor>
+    <load-dialog
       dialogState={state.dialogState}
       hideLoad={actions.hideLoad}
       documentList={state.documentList}
       loadDocument={actions.loadDocument}>
-    </LoadDialog>
+    </load-document>
   </main>
 
   import riot from 'riot'
@@ -19,5 +19,9 @@
   this.documentList = []
   this.status = ''
   var self = this
+
+  this.on('mount', function() {
+    controllers.init()
+  })
 
 </abc-application>

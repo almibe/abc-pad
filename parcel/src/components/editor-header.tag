@@ -6,10 +6,10 @@
           <h1 class="title">ABC Editor</h1>
           <div class="field is-grouped">
             <div class="control">
-              <button class="button" id="save" onclick={() => saveDocument()}>Save</button>
+              <button class="button" id="save">Save</button>
             </div>
             <div class="control">
-              <button class="button" id="showLoad" onclick={() => showLoad()}>Manage Documents</button>
+              <button class="button" id="showLoad">Manage Documents</button>
             </div>
           </div>
         </div>
