@@ -19,6 +19,4 @@
       </div>
     </div>
   </div>
-
-  import riot from 'riot'
 </editor-header>

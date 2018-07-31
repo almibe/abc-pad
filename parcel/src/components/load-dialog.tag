@@ -21,6 +21,4 @@
       </section>
     </div>
   </div>
-
-  import riot from 'riot'
 </load-dialog>

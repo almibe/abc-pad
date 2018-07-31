@@ -10,18 +10,10 @@
     </load-document>
   </main>
 
-  import riot from 'riot'
-  import controllers from './controllers.js'
-
   this.documentId = -1
   this.dialogState = ''
   this.document = 'T: Untitled\nC: Unknown\nK: '
   this.documentList = []
   this.status = ''
   var self = this
-
-  this.on('mount', function() {
-    controllers.init()
-  })
-
 </abc-application>

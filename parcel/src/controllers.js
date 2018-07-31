@@ -1,7 +1,5 @@
 import axios from 'axios'
-import { Observable, BehaviorSubject } from 'rxjs'
-import { ajax } from 'rxjs/ajax';
-import { map } from 'rxjs/operators';
+import riot from 'riot'
 
 export function init() {
   //Behaviors

@@ -12,7 +12,6 @@
     </div>
   </div>
 
-  import riot from 'riot'
   import abcjs from 'abcjs/midi'
 
   this.on('mount', function() {
@@ -23,6 +22,6 @@
       generate_warnings: true,
       warnings_id: 'warnings'
     })
-  }
+  })
 
 </abc-editor>
