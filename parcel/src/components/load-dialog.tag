@@ -23,12 +23,4 @@
   </div>
 
   import riot from 'riot'
-
-  showLoad() {
-    controllers.loadDocumentList(actions)
-    return {dialogState: "is-active"}
-  }
-  hideLoad() {
-    return {dialogState: ""}
-  }
 </load-dialog>

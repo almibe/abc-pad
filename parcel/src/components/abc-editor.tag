@@ -15,7 +15,7 @@
   import riot from 'riot'
   import abcjs from 'abcjs/midi'
 
-  function init() {
+  this.on('mount', function() {
     new abcjs.Editor('abcEditor', {
       canvas_id: 'canvas',
       generate_midi: true,
@@ -24,5 +24,5 @@
       warnings_id: 'warnings'
     })
   }
-</abc-editor>
 
+</abc-editor>
