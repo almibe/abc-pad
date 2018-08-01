@@ -32,15 +32,15 @@ bundle {
 }
 
 //JS Code
-task parcel(type: Exec) {
-    workingDir "parcel"
+task vue(type: Exec) {
+    workingDir "vue"
     commandLine "npm", "run", "build"
 }
 
-task copyParcel(type: Copy) {
-    from 'parcel/dist'
+task copyVue(type: Copy) {
+    from 'vue/dist'
     into 'build/resources/main/webroot'
 }
 
-tasks.jar.dependsOn(copyParcel)
-tasks.copyParcel.dependsOn(parcel)
+tasks.jar.dependsOn(copyVue)
+tasks.copyVue.dependsOn(vue)
