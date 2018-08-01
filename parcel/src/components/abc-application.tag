@@ -1,19 +1,14 @@
 <abc-application>
   <main>
-    <editor-header saveDocument={actions.saveDocument} showLoad={actions.showLoad}></editor-header>
-    <abc-editor document={state.document} setText={actions.setText}></abc-editor>
-    <load-dialog
-      dialogState={state.dialogState}
-      hideLoad={actions.hideLoad}
-      documentList={state.documentList}
-      loadDocument={actions.loadDocument}>
-    </load-document>
+    <editor-header></editor-header>
+    <abc-editor></abc-editor>
+   <!-- <load-dialog></load-document> -->
   </main>
+  import riot from 'riot'
 
-  this.documentId = -1
-  this.dialogState = ''
-  this.document = 'T: Untitled\nC: Unknown\nK: '
-  this.documentList = []
-  this.status = ''
-  var self = this
+//  this.documentId = -1
+//  this.dialogState = ''
+//  this.documentList = []
+//  this.status = ''
+//  var self = this
 </abc-application>

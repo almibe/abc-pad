@@ -1,8 +1,8 @@
 <abc-editor>
-  <div class="container" oncreate={element => init()}>
+  <div class="container">
     <div class="columns">
       <div class="column">
-        <textarea id="abcEditor" class="textarea code" rows="20" value={document} oninput={e => setText(e.target.value)}></textarea>
+        <textarea id="abcEditor" class="textarea code" rows="20" value={defaultValue}></textarea>
         <div id="warnings"></div>
         <div id="midi"></div>
       </div>
@@ -13,6 +13,8 @@
   </div>
 
   import abcjs from 'abcjs/midi'
+
+  this.defaultValue = 'T: Untitled\nC: Unknown\nK: '
 
   this.on('mount', function() {
     new abcjs.Editor('abcEditor', {
