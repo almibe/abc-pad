@@ -12,7 +12,7 @@ export function init() {
   //DOM Elements
   const saveButton = document.getElementById('save')
   const showLoadButton = document.getElementById('showLoad')
-  const documentEditor = document.getElementById('abcEditor')
+
 
   //Observables
   const saveClick = Observable.fromEvent(saveButton, 'click')
@@ -21,33 +21,6 @@ export function init() {
   saveClick.pipe(
     map(x => documentId),
     switchMap(documentId => {
-      if (documentIdValue > 0) {
-        return Observable.create(observer => {
-          axios.patch('documents/'+documentIdValue, {
-            document: documentEditor.value
-          })
-          .then(function (response) {
-            console.log(response)
-            status.next("Saved document " + documentIdValue)
-          })
-          .catch(function (error) {
-            console.log(error)
-            staus.next("Error saving document " + documentIdValue)
-          });
-        })
-      } else {
-        return Observable.create(observer => {
-          axios.post('documents/', {
-            document: documentEditor.value
-          })
-          .then(function (response) {
-            console.log(response); //TODO present feedback to user
-          })
-          .catch(function (error) {
-            console.log(error); //TODO present feedback to user
-          });
-        })
-      }
     })
   )
 
