@@ -15,5 +15,4 @@
 
   hideLoad() {
   }
-
 </load-dialog>

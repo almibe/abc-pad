@@ -2,7 +2,7 @@
   <main>
     <editor-header></editor-header>
     <abc-editor></abc-editor>
-    <load-dialog></load-document>
+    <manager-dialog></manager-document>
   </main>
   import riot from 'riot'
 
