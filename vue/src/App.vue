@@ -24,7 +24,7 @@
     <div class="container">
       <div class="columns">
         <div class="column">
-          <textarea id="abcEditor" class="textarea code" rows="20" value={{defaultValue}}></textarea>
+          <textarea id="abcEditor" class="textarea code" rows="20" ></textarea>
           <div id="warnings"></div>
           <div id="midi"></div>
         </div>
@@ -42,7 +42,7 @@
     name: 'app',
     data () {
       return {
-        defaultValue: 'T: Untitled\nC: Unknown\nK: '
+        //defaultValue: 'T: Untitled\nC: Unknown\nK: '
       }
     }
   }

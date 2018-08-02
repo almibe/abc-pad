@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "abcjs": "^5.2.0",
+    "bulma": "^0.7.1",
     "vue": "^2.5.11"
   },
   "browserslist": [
@@ -26,6 +27,8 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.1.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",

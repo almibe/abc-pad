@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import abcjs from 'abcjs/midi'
+import './main.css'
+import 'abcjs/abcjs-midi.css'
+require('./main.scss')
+//import 'font-awesome/css/font-awesome.css'
 
 new Vue({
   el: '#app',
