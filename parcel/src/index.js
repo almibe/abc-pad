@@ -20,22 +20,20 @@ bus.on('save request', () => {
       document: documentEditor.value
     })
     .then((response) => {
-      console.log(response)
-      status.next("Saved document " + documentId)
+      bus.trigger('save result', {status: "Saved document " + documentId})
     })
     .catch((error) => {
-      console.log(error)
-      staus.next("Error saving document " + documentId)
+      bus.trigger('save result', {status: "Error saving document " + documentId})
     });
   } else {
     axios.post('documents/', {
       document: documentEditor.value
     })
     .then((response) => {
-      console.log(response); //TODO present feedback to user
+      bus.trigger('save result', {status: "Saved document " + response.data.id})
     })
     .catch((error) => {
-      console.log(error); //TODO present feedback to user
+      bus.trigger('save result', {status: "Error saving document."})
     });
   }
 })
