@@ -32,15 +32,15 @@ bundle {
 }
 
 //JS Code
-task vue(type: Exec) {
-    workingDir "vue"
+task webpack(type: Exec) {
+    workingDir "webpack"
     commandLine "npm", "run", "build"
 }
 
-task copyVue(type: Copy) {
-    from 'vue/dist'
+task copyWebpack(type: Copy) {
+    from 'webpack/dist'
     into 'build/resources/main/webroot'
 }
 
-tasks.jar.dependsOn(copyVue)
-tasks.copyVue.dependsOn(vue)
+tasks.jar.dependsOn(copyWebpack)
+tasks.copyWebpack.dependsOn(webpack)
