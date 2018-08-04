@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "abcjs": "^5.2.0",
-    "bulma": "^0.7.1"
+    "bulma": "^0.7.1",
+    "font-awesome": "^4.7.0"
   }
 }
