@@ -1,26 +1,25 @@
 {
   "name": "library-weasel-music",
-  "version": "0.1.0-SNAPSHOT",
-  "description": "library-weasel-music",
+  "version": "0.1.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "riot src/components build/tags.js && parcel build index.html --public-url ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "url": "https://github.com/almibe/library-weasel-music"
+    "type": "git",
+    "url": "git+https://github.com/almibe/library-weasel-music.git"
   },
-  "keywords": [],
-  "author": "almibe",
+  "author": "https://github.com/almibe",
   "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/almibe/library-weasel-music/issues"
+  },
+  "homepage": "https://github.com/almibe/library-weasel-music#readme",
   "dependencies": {
-    "abcjs": "^5.1.2",
+    "abcjs": "^5.2.0",
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
-    "font-awesome": "^4.7.0",
-    "riot": "^3.11.1"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.3"
+    "hyperapp": "^1.2.8"
   }
 }
