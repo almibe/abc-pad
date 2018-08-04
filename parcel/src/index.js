@@ -101,8 +101,11 @@ const view = (state, actions) => (
               <div class="control">
                 <button class="button" id="showManager" onclick={ actions.managerOnClick } >Manage Documents</button>
               </div>
-              <div id="status">
+              <div id="status" class="control is-expanded">
                 {state.status}
+              </div>
+              <div class="control">
+                <button class="button" id="deleteDocument" onclick={ actions.deleteDocument } >Delete</button>
               </div>
             </div>
           </div>
