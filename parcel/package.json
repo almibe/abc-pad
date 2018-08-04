@@ -21,9 +21,11 @@
     "abcjs": "^5.2.0",
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
+    "font-awesome": "^4.7.0",
     "hyperapp": "^1.2.8"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "cross-env": "^5.2.0",
     "node-sass": "^4.9.2"
