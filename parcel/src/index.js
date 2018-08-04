@@ -1,6 +1,7 @@
 import { h, app } from 'hyperapp'
 import abcjs from 'abcjs/midi'
 import axios from 'axios'
+import page from 'page'
 import 'bulma/css/bulma.css'
 import './main.css'
 import 'abcjs/abcjs-midi.css'
@@ -8,6 +9,7 @@ import 'font-awesome/css/font-awesome.css'
 
 const state = {
   documentId: -1,
+  documents: [],
   saveButtonDisabled: false,
   status: '',
   defaultText: 'T: Untitled\nC: Unknown\nK: ',
@@ -43,17 +45,15 @@ const actions = {
     status: value
   }),
   managerOnClick: value => (state, actions) => {
+    actions.loadDocumentList()
     actions.showLoad()
   },
   showLoad: value => (state, actions) => {
-    //controllers.loadDocumentList(actions)
     return {dialogState: "is-active"}
   },
   hideLoad: value => (state, actions) => {
     return {dialogState: ""}
   },
-
-
   loadDocumentList: value => (state, actions) => {
     axios.get('documents/')
     .then(function (response) {
@@ -64,6 +64,9 @@ const actions = {
       console.log(error); //TODO present feedback to user
     });
   },
+  setDocumentList: value => (state, actions) => ({
+    documents: value
+  }),
   deleteDocument: value => (state, actions) => {
     axios.delete('documents/'+value)
     .then(function (response) {
@@ -128,8 +131,12 @@ const view = (state, actions) => (
           <button class="delete" aria-label="close" onclick={actions.hideLoad}></button>
         </header>
         <section class="modal-card-body">
-          <ul>
-          </ul>
+            <span hidden={state.documents.length > 0}>No Documents</span>
+          <ol>
+            {state.documents.map(({id, title, composer}) => (
+              <li value={id}><a onclick={actions.loadDocument(id)} {composer} - {title}</a></li>
+            ))}
+          </ol>
         </section>
       </div>
     </div>
