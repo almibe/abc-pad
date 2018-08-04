@@ -10,7 +10,8 @@ const state = {
   documentId: -1,
   saveButtonDisabled: false,
   status: '',
-  defaultText: 'T: Untitled\nC: Unknown\nK: '
+  defaultText: 'T: Untitled\nC: Unknown\nK: ',
+  dialogState: ''
 }
 
 const actions = {
@@ -42,9 +43,45 @@ const actions = {
     status: value
   }),
   managerOnClick: value => (state, actions) => {
-    console.log("in managerOnClick")
+    actions.showLoad()
+  },
+  showLoad: value => (state, actions) => {
+    //controllers.loadDocumentList(actions)
+    return {dialogState: "is-active"}
+  },
+  hideLoad: value => (state, actions) => {
+    return {dialogState: ""}
   },
 
+
+  loadDocumentList: value => (state, actions) => {
+    axios.get('documents/')
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+      actions.setDocumentList(response.data.documents)
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
+  },
+  deleteDocument: value => (state, actions) => {
+    axios.delete('documents/'+value)
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
+  },
+  loadDocument: value => (state, actions) => {
+    axios.get('documents/'+value)
+    .then(function (response) {
+      console.log(response); //TODO present feedback to user
+    })
+    .catch(function (error) {
+      console.log(error); //TODO present feedback to user
+    });
+  }
 }
 
 const view = (state, actions) => (
@@ -83,7 +120,7 @@ const view = (state, actions) => (
       </div>
     </div>
 
-    <div class="modal">
+    <div class={"modal " + state.dialogState}>
       <div class="modal-background" onclick={actions.hideLoad}></div>
       <div class="modal-card">
         <header class="modal-card-head">
