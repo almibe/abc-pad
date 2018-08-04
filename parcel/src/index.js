@@ -5,15 +5,41 @@ import './main.css'
 import 'abcjs/abcjs-midi.css'
 import 'font-awesome/css/font-awesome.css'
 
+const abcEditor = document.getElementById('abcEditor')
+
 const state = {
   documentId: -1,
   saveButtonDisabled: false,
-  status: ""
+  status: '',
+  defaultText: 'T: Untitled\nC: Unknown\nK: '
 }
 
 const actions = {
   saveOnClick: value => (state, actions) => {
-    console.log("in saveOnClick")
+    if (state.documentId > 0) {
+      axios.patch('documents/'+state.documentId, {
+        document: abcEditor.value
+      })
+      .then((response) => {
+        actions.updateStatus("Saved document " + state.documentId})
+      })
+      .catch((error) => {
+        actions.updateStatus("Error saving document " + state.documentId})
+      });
+    } else {
+      axios.post('documents/', {
+        document: abcEditor.value
+      })
+      .then((response) => {
+        actions.updateStatus("Saved new document " + response.data.id})
+      })
+      .catch((error) => {
+        actions.updateStatus("Error saving new document."})
+      });
+    }
+  },
+  updateStatus: value => (state, actions) => {
+    return { status: value }
   },
   managerOnClick: value => (state, actions) => {
     console.log("in managerOnClick")
@@ -46,7 +72,7 @@ const view = (state, actions) => (
     <div class="container" oncreate={ () => mounted() }>
       <div class="columns">
         <div class="column">
-          <textarea id="abcEditor" class="textarea code" rows="20" ></textarea>
+          <textarea id="abcEditor" class="textarea code" rows="20" >{state.defaultText}</textarea>
           <div id="warnings"></div>
           <div id="midi"></div>
         </div>
