@@ -1,11 +1,10 @@
 import { h, app } from 'hyperapp'
 import abcjs from 'abcjs/midi'
+import axios from 'axios'
 import 'bulma/css/bulma.css'
 import './main.css'
 import 'abcjs/abcjs-midi.css'
 import 'font-awesome/css/font-awesome.css'
-
-const abcEditor = document.getElementById('abcEditor')
 
 const state = {
   documentId: -1,
@@ -16,31 +15,32 @@ const state = {
 
 const actions = {
   saveOnClick: value => (state, actions) => {
+    const abcEditor = document.getElementById('abcEditor')
     if (state.documentId > 0) {
       axios.patch('documents/'+state.documentId, {
         document: abcEditor.value
       })
       .then((response) => {
-        actions.updateStatus("Saved document " + state.documentId})
+        actions.updateStatus("Saved document " + state.documentId)
       })
       .catch((error) => {
-        actions.updateStatus("Error saving document " + state.documentId})
+        actions.updateStatus("Error saving document " + state.documentId)
       });
     } else {
       axios.post('documents/', {
         document: abcEditor.value
       })
       .then((response) => {
-        actions.updateStatus("Saved new document " + response.data.id})
+        actions.updateStatus("Saved new document " + response.data.id)
       })
       .catch((error) => {
-        actions.updateStatus("Error saving new document."})
+        actions.updateStatus("Error saving new document.")
       });
     }
   },
-  updateStatus: value => (state, actions) => {
-    return { status: value }
-  },
+  updateStatus: value => (state, actions) => ({
+    status: value
+  }),
   managerOnClick: value => (state, actions) => {
     console.log("in managerOnClick")
   }
