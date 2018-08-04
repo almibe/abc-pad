@@ -43,7 +43,8 @@ const actions = {
   }),
   managerOnClick: value => (state, actions) => {
     console.log("in managerOnClick")
-  }
+  },
+
 }
 
 const view = (state, actions) => (
@@ -79,6 +80,20 @@ const view = (state, actions) => (
         <div class="column">
           <div id="canvas"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div class="modal-background" onclick={actions.hideLoad}></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Manage Documents</p>
+          <button class="delete" aria-label="close" onclick={actions.hideLoad}></button>
+        </header>
+        <section class="modal-card-body">
+          <ul>
+          </ul>
+        </section>
       </div>
     </div>
   </div>
