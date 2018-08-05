@@ -20,14 +20,22 @@ class ABCXodusStoreTest : StringSpec({
         override fun clearCache(): User { TODO("not implemented") }
         override fun setAuthProvider(authProvider: AuthProvider?) { TODO("not implemented") }
         override fun isAuthorized(authority: String?, resultHandler: Handler<AsyncResult<Boolean>>?): User { TODO("not implemented") }
-        override fun principal(): JsonObject { TODO("not implemented") }
+        override fun principal(): JsonObject {
+            val jsonObject = JsonObject()
+            jsonObject.put("username", "account")
+            return jsonObject
+        }
     }
 
     val account2 = object : User {
         override fun clearCache(): User { TODO("not implemented") }
         override fun setAuthProvider(authProvider: AuthProvider?) { TODO("not implemented") }
         override fun isAuthorized(authority: String?, resultHandler: Handler<AsyncResult<Boolean>>?): User { TODO("not implemented") }
-        override fun principal(): JsonObject { TODO("not implemented") }
+        override fun principal(): JsonObject {
+            val jsonObject = JsonObject()
+            jsonObject.put("username", "account2")
+            return jsonObject
+        }
     }
 
     val persistentEntityStore = PersistentEntityStores.newInstance(createTempDir())
