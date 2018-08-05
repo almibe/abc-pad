@@ -6,6 +6,7 @@ package org.libraryweasel.music.abc
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.handler.StaticHandler
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory
 
 val logger: Logger = LoggerFactory.getLogger(ABCLogger::class.java)
 val gson = Gson()
+val jsonParser = JsonParser()
 
 object ABCLogger
 
@@ -60,8 +62,9 @@ class PostDocumentRoute : WebRoute {
         route.produces("application/json")
         route.handler { routingContext ->
             logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
-            if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
-                val document = routingContext.bodyAsJson.getString("document").replace("\\n", "\n")
+            if (routingContext.request() != null) {
+                val jsonObject = jsonParser.parse(routingContext.bodyAsString).asJsonObject
+                val document = jsonObject.get("document").asString
                 val result = abcManager.createABCDocument(routingContext.user(), document)
                 routingContext.response().statusCode = 201
                 routingContext.response()
@@ -118,10 +121,11 @@ class PatchSingleDocumentEndPoint : WebRoute {
         route.produces("application/json")
         route.handler { routingContext ->
             val id: Long? = routingContext.get("id")
-            val request = routingContext.bodyAsJson
-            if (id != null && request != null && request.containsKey("document")) {
+            val request = routingContext.bodyAsString
+            if (id != null && request != null) {
+                val jsonObject = jsonParser.parse(request).asJsonObject
                 logger.debug("in PATCH for /documents/ with content: {}", routingContext.bodyAsString)
-                val document = request.getString("document").replace("\\n", "\n")
+                val document = jsonObject.get("document").asString
                 val result = abcManager.updateABCDocument(routingContext.user(), id, document)
                 routingContext.response()
                     .putHeader("content-type", "application/json")
