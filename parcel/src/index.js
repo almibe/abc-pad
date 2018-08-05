@@ -34,6 +34,7 @@ const actions = {
         document: abcEditor.value
       })
       .then((response) => {
+        actions.setDocumentId(response.data.id)
         actions.updateStatus("Saved new document " + response.data.id)
       })
       .catch((error) => {
@@ -41,6 +42,9 @@ const actions = {
       });
     }
   },
+  setDocumentId: value => (state, actions) => ({
+    documentId: value
+  }),
   updateStatus: value => (state, actions) => ({
     status: value
   }),
