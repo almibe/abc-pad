@@ -61,7 +61,7 @@ class PostDocumentRoute : WebRoute {
         route.handler { routingContext ->
             logger.debug("in POST for /documents/ with content: {}", routingContext.bodyAsString)
             if (routingContext.request() != null && routingContext.bodyAsJson.getString("document").isNotEmpty()) {
-                val document = routingContext.bodyAsString
+                val document = routingContext.bodyAsJson.getString("document").replace("\\n", "\n")
                 val result = abcManager.createABCDocument(routingContext.user(), document)
                 routingContext.response().statusCode = 201
                 routingContext.response()
@@ -121,7 +121,7 @@ class PatchSingleDocumentEndPoint : WebRoute {
             val request = routingContext.bodyAsJson
             if (id != null && request != null && request.containsKey("document")) {
                 logger.debug("in PATCH for /documents/ with content: {}", routingContext.bodyAsString)
-                val document = request.getString("document")
+                val document = request.getString("document").replace("\\n", "\n")
                 val result = abcManager.updateABCDocument(routingContext.user(), id, document)
                 routingContext.response()
                     .putHeader("content-type", "application/json")

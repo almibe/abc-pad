@@ -96,9 +96,9 @@ class ABCXodusStore : ABCManager {
         }
     }
 
-    private fun documentToTitle(document: String): String =
+    fun documentToTitle(document: String): String =
             document.lines().find { it.trim().startsWith("T:") }?.substring(2)?.trim() ?: "untitled"
 
-    private fun documentToComposer(document: String): String =
+    fun documentToComposer(document: String): String =
             document.lines().find { it.trim().startsWith("C:") }?.substring(2)?.trim() ?: "unknown"
 }

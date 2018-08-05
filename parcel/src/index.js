@@ -134,10 +134,10 @@ const view = (state, actions) => (
           <button class="delete" aria-label="close" onclick={actions.hideLoad}></button>
         </header>
         <section class="modal-card-body">
-            <span hidden={state.documents.length > 0}>No Documents</span>
-          <ol>
+          <span hidden={state.documents.length > 0}>No Documents</span>
+          <ol class="documentList">
             {state.documents.map(({id, title, composer}) => (
-              <li value={id}><a onclick={actions.loadDocument(id)} {composer} - {title}</a></li>
+              <li value={id}><a onclick={() => actions.loadDocument(id)}>{composer} - {title}</a></li>
             ))}
           </ol>
         </section>

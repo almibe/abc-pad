@@ -112,4 +112,12 @@ class ABCXodusStoreTest : StringSpec({
         docDetails.composer shouldBe "unknown"
         docDetails.title shouldBe "untitled"
     }
+
+    "test extracting title and composer" {
+        val title = abcDocumentStore.documentToTitle("T: A Rainbow in Curved Air\nC: Terry Riley")
+        val composer = abcDocumentStore.documentToComposer("T: A Rainbow in Curved Air\nC: Terry Riley")
+
+        title shouldBe "A Rainbow in Curved Air"
+        composer shouldBe "Terry Riley"
+    }
 })
