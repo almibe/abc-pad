@@ -1,8 +1,8 @@
 {
   "name": "chamber",
   "productName": "chamber",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -11,9 +11,17 @@
     "publish": "electron-forge publish",
     "lint": "eslint src --color"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/almibe/chamber.git"
+  },
+  "bugs": {
+    "url": "https://github.com/almibe/chamber/issues"
+  },
+  "homepage": "https://github.com/almibe/chamber#readme",
   "keywords": [],
-  "author": "alex",
-  "license": "MIT",
+  "author": "https://github.com/almibe",
+  "license": "MPL-2.0",
   "config": {
     "forge": {
       "make_targets": {
@@ -37,8 +45,8 @@
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
+        "owner": "almibe",
+        "name": "chamber"
       },
       "windowsStoreConfig": {
         "packageName": "",
@@ -47,8 +55,11 @@
     }
   },
   "dependencies": {
+    "abcjs": "^5.6.7",
+    "bulma": "^0.7.4",
     "electron-compile": "^6.4.4",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "font-awesome": "^4.7.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
