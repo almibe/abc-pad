@@ -1,2 +1,3 @@
-# library-weasel-music
-Random music plugin for Library Weasel.
+# Chamber
+
+Simple ABC based music application using Electron and abc.js.
