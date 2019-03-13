@@ -1,13 +1,12 @@
 <template>
-  <h2>Hello from {{text}}</h2>
+  <h1>Editor</h1>
 </template>
 
 <script>
 export default {
-  name: 'main',
+  name: 'c-editor',
   data () {
     return {
-       text: ''
     }
   }
 }

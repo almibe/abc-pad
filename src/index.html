@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css">
     <meta charset="utf-8">
     <title></title>
   </head>
@@ -10,11 +12,8 @@
 
   <script>
   import Vue from 'vue';
-  import Main from './main';
+  import CMain from './c-main';
 
-  const app = new Vue(Main).$mount('#main');
-
-  app.text = "Electron Forge with Vue.js!";
-
+  const app = new Vue(CMain).$mount('#main');
   </script>
 </html>
