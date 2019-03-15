@@ -3,8 +3,10 @@
     <div class="container">
       <c-header></c-header>
       <c-menu></c-menu>
-      <c-editor></c-editor>
     </div>
+    <section class="section">
+      <c-editor></c-editor>
+    </section>
   </section>
 </template>
 
