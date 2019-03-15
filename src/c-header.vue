@@ -1,5 +1,5 @@
 <template>
-  <h1>Header</h1>
+  <h1 class="title">Chamber</h1>
 </template>
 
 <script>
