@@ -23,6 +23,16 @@
             </div>
           </div>
         </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Tempo:</label>
+          </div>
+          <div class="field-body">
+            <div class="control">
+              <input v-model="tempo" @change="changeTempo" type="text">
+            </div>
+          </div>
+        </div>
         <div id="midi"></div>
       </div>
       <div class="column">
@@ -50,20 +60,25 @@ export default {
     changeTranspose: function() {
       if (this.transpose === 'Piano') {
         this.abcEditor.paramChanged({midiTranspose: 0})
-        //this.abcEditor.abcjsParams = {midiTranspose: 0}
       } else if (this.transpose === 'Guitar') {
         this.abcEditor.paramChanged({midiTranspose: -12})
-        //this.abcEditor.abcjsParams = {midiTranspose: -12}
       } else {
         this.abcEditor.paramChanged({midiTranspose: 0})
-        //this.abcEditor.abcjsParams = {midiTranspose: 0}
+      }
+    },
+    changeTempo: function() {
+      if (isNan(this.tempo)) {
+         //TODO handle error
+      } else {
+         this.abcEditor.paramChanged({qpm: this.tempo})
       }
     }
   },
   data() {
     return {
       transpose: 'Piano',
-      abcEditor: null
+      abcEditor: null,
+      tempo: 180
     }
   }
 }
