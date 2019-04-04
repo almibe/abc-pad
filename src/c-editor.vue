@@ -4,7 +4,7 @@
       <div class="column">
         <div class="field">
           <div class="control">
-            <textarea id="abcEditor" v-model="editorContent" class="textarea code" rows="20"></textarea>
+            <textarea id="abcEditor" v-model="editorContent" class="textarea code" rows="20" ref="abcEditor"></textarea>
           </div>
         </div>
         <div id="warnings"></div>
@@ -54,6 +54,7 @@ export default {
     EventBus.$on('new-doc', () => {
       this.editorContent = abcTemplate;
       this.$nextTick(() => { this.abcEditor.fireChanged(); })
+      this.$refs.abcEditor.focus()
     });
 
     EventBus.$on('save-doc', () => {
