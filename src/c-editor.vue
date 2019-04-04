@@ -29,7 +29,7 @@
           </div>
           <div class="field-body">
             <div class="control">
-              <input v-model="tempo" @input="changeTempo" type="text">
+              <input v-model="tempo" @input="changeTempo" class="input" ref="tempoInput" type="text">
             </div>
           </div>
         </div>
@@ -121,10 +121,11 @@ export default {
       }
     },
     changeTempo: function() {
-      if (isNaN(this.tempo)) {
-         //TODO handle error
+      if (isNaN(this.tempo) || this.tempo <= 0) {
+        this.$refs.tempoInput.classList.add("is-danger")
       } else {
-         this.abcEditor.paramChanged({qpm: this.tempo})
+        this.$refs.tempoInput.classList.remove("is-danger")
+        this.abcEditor.paramChanged({qpm: this.tempo})
       }
     }
   },
