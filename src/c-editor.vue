@@ -52,24 +52,29 @@ export default {
   name: 'c-editor',
   created() {
     EventBus.$on('new-doc', () => {
-      this.editorContent = abcTemplate;
-      this.$nextTick(() => { this.abcEditor.fireChanged(); })
-      this.$refs.abcEditor.focus()
+      if (this.saveCheck()) {
+        this.editorContent = abcTemplate;
+        this.$nextTick(() => { this.abcEditor.fireChanged(); })
+        this.$refs.abcEditor.focus()
+      }
     });
 
     EventBus.$on('save-doc', () => {
-      console.log("save");
-      //TODO
+      if (this.fileReference != null) {
+        //TODO show save as dialog
+      } else {
+        //TODO write file
+      }
     });
 
     EventBus.$on('save-doc-as', () => {
-      console.log("save as");
-      //TODO
+      //TODO show save as dialog
     });
 
     EventBus.$on('load-doc', () => {
-      console.log("load");
-      //TODO
+      if (this.saveCheck()) {
+        //TODO show load dialog
+      }
     });
   },
   mounted: function() {
@@ -82,6 +87,10 @@ export default {
     })
   },
   methods: {
+    saveCheck: function() {
+      //TODO return true to continue with action or false to cancel
+      return true;
+    },
     changeTranspose: function() {
       if (this.transpose === 'Piano') {
         this.abcEditor.paramChanged({midiTranspose: 0})
@@ -104,7 +113,9 @@ export default {
       transpose: 'Piano',
       abcEditor: null,
       editorContent: abcTemplate,
-      tempo: 180
+      savedContent: null,
+      tempo: 180,
+      fileReference: null
     }
   }
 }
