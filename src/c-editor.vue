@@ -4,7 +4,7 @@
       <div class="column">
         <div class="field">
           <div class="control">
-            <textarea id="abcEditor" class="textarea code" rows="20" ></textarea>
+            <textarea id="abcEditor" v-model="editorContent" class="textarea code" rows="20"></textarea>
           </div>
         </div>
         <div id="warnings"></div>
@@ -29,7 +29,7 @@
           </div>
           <div class="field-body">
             <div class="control">
-              <input v-model="tempo" @change="changeTempo" type="text">
+              <input v-model="tempo" @input="changeTempo" type="text">
             </div>
           </div>
         </div>
@@ -44,9 +44,33 @@
 
 <script>
 import abcjs from 'abcjs/midi'
+import { EventBus } from './event-bus.js';
+
+const abcTemplate = "T:Title\nC:Composer\nM:4/4\nK:C\n"
 
 export default {
   name: 'c-editor',
+  created() {
+    EventBus.$on('new-doc', () => {
+      this.editorContent = abcTemplate;
+      this.$nextTick(() => { this.abcEditor.fireChanged(); })
+    });
+
+    EventBus.$on('save-doc', () => {
+      console.log("save");
+      //TODO
+    });
+
+    EventBus.$on('save-doc-as', () => {
+      console.log("save as");
+      //TODO
+    });
+
+    EventBus.$on('load-doc', () => {
+      console.log("load");
+      //TODO
+    });
+  },
   mounted: function() {
     this.abcEditor = new abcjs.Editor('abcEditor', {
       canvas_id: 'canvas',
@@ -78,6 +102,7 @@ export default {
     return {
       transpose: 'Piano',
       abcEditor: null,
+      editorContent: abcTemplate,
       tempo: 180
     }
   }
