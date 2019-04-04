@@ -4,7 +4,6 @@
     <a class="button" @click="save">Save</a>
     <a class="button" @click="saveAs">Save As</a>
     <a class="button" @click="load">Load</a>
-    <a class="button" @click="training">Training</a>
   </div>
 </template>
 
@@ -19,8 +18,7 @@ export default {
     newDoc: function() { /*TODO*/ },
     save: function() { /*TODO*/ },
     saveAs: function() { /*TODO*/ },
-    load: function() { /*TODO*/ },
-    training: function() { /*TODO*/ }
+    load: function() { /*TODO*/ }
   }
 }
 </script>
