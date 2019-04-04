@@ -61,19 +61,19 @@ export default {
 
     EventBus.$on('save-doc', () => {
       if (this.fileReference != null) {
-        //TODO show save as dialog
+        this.handleSaveAs()
       } else {
         //TODO write file
       }
     });
 
     EventBus.$on('save-doc-as', () => {
-      //TODO show save as dialog
+      this.handleSaveAs()
     });
 
     EventBus.$on('load-doc', () => {
       if (this.saveCheck()) {
-        //TODO show load dialog
+        this.handleLoad()
       }
     });
   },
@@ -88,8 +88,25 @@ export default {
   },
   methods: {
     saveCheck: function() {
-      //TODO return true to continue with action or false to cancel
-      return true;
+      if (this.editorContent === abcTemplate && this.fileReference === null) {
+        return true;
+      } else if (this.fileReference === null) {
+        //TODO prompt user to save with dialog
+        return true;
+      } else {
+        //TODO read file reference and compare to editorContent
+        return true;
+      }
+    },
+    handleSaveAs: function() {
+      //TODO show show as dialog
+      //TODO update file reference
+      //TODO write file
+    },
+    handleLoad: function() {
+      //TODO show load dialog
+      //TODO set file reference
+      //TODO load file
     },
     changeTranspose: function() {
       if (this.transpose === 'Piano') {
@@ -113,7 +130,6 @@ export default {
       transpose: 'Piano',
       abcEditor: null,
       editorContent: abcTemplate,
-      savedContent: null,
       tempo: 180,
       fileReference: null
     }
