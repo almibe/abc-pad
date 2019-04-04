@@ -67,7 +67,7 @@ export default {
       }
     },
     changeTempo: function() {
-      if (isNan(this.tempo)) {
+      if (isNaN(this.tempo)) {
          //TODO handle error
       } else {
          this.abcEditor.paramChanged({qpm: this.tempo})

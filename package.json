@@ -1,6 +1,6 @@
 {
-  "name": "chamber",
-  "productName": "chamber",
+  "name": "abc-pad",
+  "productName": "abc-pad",
   "version": "0.1.0-SNAPSHOT",
   "description": "",
   "main": "src/index.js",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/almibe/chamber.git"
+    "url": "git+https://github.com/almibe/abc-pad.git"
   },
   "bugs": {
-    "url": "https://github.com/almibe/chamber/issues"
+    "url": "https://github.com/almibe/abc-pad/issues"
   },
-  "homepage": "https://github.com/almibe/chamber#readme",
+  "homepage": "https://github.com/almibe/abc-pad#readme",
   "keywords": [],
   "author": "https://github.com/almibe",
   "license": "MIT",
@@ -40,17 +40,17 @@
         "packageManager": "npm"
       },
       "electronWinstallerConfig": {
-        "name": "chamber"
+        "name": "abc-pad"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": "almibe",
-        "name": "chamber"
+        "name": "abc-pad"
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "chamber"
+        "name": "abc-pad"
       }
     }
   },
