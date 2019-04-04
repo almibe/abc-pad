@@ -55,15 +55,15 @@ export default {
       if (this.saveCheck()) {
         this.editorContent = abcTemplate;
         this.$nextTick(() => { this.abcEditor.fireChanged(); })
-        this.$refs.abcEditor.focus()
+        this.$refs.abcEditor.focus();
       }
     });
 
     EventBus.$on('save-doc', () => {
       if (this.fileReference != null) {
-        this.handleSaveAs()
+        this.handleSaveAs();
       } else {
-        //TODO write file
+        this.writeFile();
       }
     });
 
@@ -101,12 +101,15 @@ export default {
     handleSaveAs: function() {
       //TODO show show as dialog
       //TODO update file reference
-      //TODO write file
+      this.writeFile();
     },
     handleLoad: function() {
       //TODO show load dialog
       //TODO set file reference
       //TODO load file
+    },
+    writeFile: function() {
+      //TODO
     },
     changeTranspose: function() {
       if (this.transpose === 'Piano') {
