@@ -9,11 +9,7 @@ export function newDoc(v) {
 }
 
 export function saveDoc(v) {
-  if (v.fileReference != null) {
-    handleSaveAs();
-  } else {
-    writeFile();
-  }
+  handleSave();
 }
 
 export function saveDocAs(v) {
@@ -33,7 +29,7 @@ function saveCheck(v) {
     if (v.fileReference === null || v.checkUnsavedFile()) {
       const result = promptSave()
       if (result === 0) { //yes
-        return handleSave();
+        return handleSave(v);
       } else if (result === 1) { //no
         return true;
       } else { //cancel
@@ -50,7 +46,7 @@ function checkUnsavedFile() {
 }
 
 function promptSave() {
-  return remote.dialog.showMessageBox({
+  return remote.dialog.showMessageBox(remote.getCurrentWindow(), {
     type: 'question',
     buttons: ['Yes', 'No', 'Cancel'],
     defaultId: 0,
@@ -60,8 +56,16 @@ function promptSave() {
   });
 }
 
+function handleSave(v) {
+  if (v.fileReference == null) {
+    return handleSaveAs();
+  } else {
+    return writeFile();
+  }
+}
+
 function handleSaveAs() {
-  //TODO show show as dialog
+  //TODO show save as dialog
   //TODO update file reference
   writeFile();
 }
