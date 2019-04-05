@@ -47,28 +47,27 @@ import abcjs from 'abcjs/midi'
 import { EventBus } from './event-bus.js';
 import { newDoc, saveDoc, saveDocAs, loadDoc } from './abc-file-persistence.js'
 
-const abcTemplate = "T:Title\nC:Composer\nM:4/4\nK:C\n"
-
 export default {
   name: 'c-editor',
   created() {
     EventBus.$on('new-doc', () => {
-      newDoc(); //TODO pass arguments
+      newDoc(this); //TODO pass arguments
     });
 
     EventBus.$on('save-doc', () => {
-      saveDoc(); //TODO pass arguments
+      saveDoc(this); //TODO pass arguments
     });
 
     EventBus.$on('save-doc-as', () => {
-      saveDocAs(); //TODO pass arguments
+      saveDocAs(this); //TODO pass arguments
     });
 
     EventBus.$on('load-doc', () => {
-      loadDoc(); //TODO pass arguments
+      loadDoc(this); //TODO pass arguments
     });
   },
   mounted: function() {
+    this.editorContent = this.abcTemplate;
     this.abcEditor = new abcjs.Editor('abcEditor', {
       canvas_id: 'canvas',
       generate_midi: true,
@@ -100,9 +99,10 @@ export default {
     return {
       transpose: 'Piano',
       abcEditor: null,
-      editorContent: abcTemplate,
+      editorContent: '',
       tempo: 180,
-      fileReference: null
+      fileReference: null,
+      abcTemplate: "T:Title\nC:Composer\nM:4/4\nK:C\n"
     }
   }
 }
