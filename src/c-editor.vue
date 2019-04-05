@@ -45,6 +45,7 @@
 <script>
 import abcjs from 'abcjs/midi'
 import { EventBus } from './event-bus.js';
+import { newDoc, saveDoc, saveDocAs, loadDoc } from './abc-file-persistence.js'
 
 const abcTemplate = "T:Title\nC:Composer\nM:4/4\nK:C\n"
 
@@ -52,29 +53,19 @@ export default {
   name: 'c-editor',
   created() {
     EventBus.$on('new-doc', () => {
-      if (this.saveCheck()) {
-        this.editorContent = abcTemplate;
-        this.$nextTick(() => { this.abcEditor.fireChanged(); })
-        this.$refs.abcEditor.focus();
-      }
+      newDoc(); //TODO pass arguments
     });
 
     EventBus.$on('save-doc', () => {
-      if (this.fileReference != null) {
-        this.handleSaveAs();
-      } else {
-        this.writeFile();
-      }
+      saveDoc(); //TODO pass arguments
     });
 
     EventBus.$on('save-doc-as', () => {
-      this.handleSaveAs()
+      saveDocAs(); //TODO pass arguments
     });
 
     EventBus.$on('load-doc', () => {
-      if (this.saveCheck()) {
-        this.handleLoad()
-      }
+      loadDoc(); //TODO pass arguments
     });
   },
   mounted: function() {
@@ -87,30 +78,6 @@ export default {
     })
   },
   methods: {
-    saveCheck: function() {
-      if (this.editorContent === abcTemplate && this.fileReference === null) {
-        return true;
-      } else if (this.fileReference === null) {
-        //TODO prompt user to save with dialog
-        return true;
-      } else {
-        //TODO read file reference and compare to editorContent
-        return true;
-      }
-    },
-    handleSaveAs: function() {
-      //TODO show show as dialog
-      //TODO update file reference
-      this.writeFile();
-    },
-    handleLoad: function() {
-      //TODO show load dialog
-      //TODO set file reference
-      //TODO load file
-    },
-    writeFile: function() {
-      //TODO
-    },
     changeTranspose: function() {
       if (this.transpose === 'Piano') {
         this.abcEditor.paramChanged({midiTranspose: 0})
