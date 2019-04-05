@@ -8,21 +8,21 @@ export function newDoc(v) {
   }
 }
 
-export function saveDoc() {
-  if (this.fileReference != null) {
-    this.handleSaveAs();
+export function saveDoc(v) {
+  if (v.fileReference != null) {
+    handleSaveAs();
   } else {
-    this.writeFile();
+    writeFile();
   }
 }
 
-export function saveDocAs() {
-  this.handleSaveAs()
+export function saveDocAs(v) {
+  handleSaveAs()
 }
 
-export function loadDoc() {
-  if (this.saveCheck()) {
-    this.handleLoad()
+export function loadDoc(v) {
+  if (saveCheck()) {
+    handleLoad()
   }
 }
 
@@ -63,7 +63,7 @@ function promptSave() {
 function handleSaveAs() {
   //TODO show show as dialog
   //TODO update file reference
-  this.writeFile();
+  writeFile();
 }
 
 function handleLoad() {
