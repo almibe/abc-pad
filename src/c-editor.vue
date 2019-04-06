@@ -75,6 +75,8 @@ export default {
       generate_warnings: true,
       warnings_id: 'warnings'
     })
+    this.$nextTick(() => { this.abcEditor.fireChanged(); })
+    this.$refs.abcEditor.focus();
   },
   methods: {
     changeTranspose: function() {
